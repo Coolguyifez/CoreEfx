@@ -13,6 +13,8 @@ from flask_login import (
     logout_user, current_user, UserMixin
 )
 from flask_bcrypt import Bcrypt
+from CoreEfx import db
+db.create_all()
 
 # === gTTS helper ===
 def generate_audio(text):
