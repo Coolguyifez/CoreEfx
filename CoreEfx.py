@@ -2875,5 +2875,5 @@ def index():
 
     return render_template_string(main_template,result=safe_result, hospitals=hospitals, history_reports=history_reports, feedback_message=feedback_message,   audio_file=safe_audio, current_user=safe_user,  user_message=user_input)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
