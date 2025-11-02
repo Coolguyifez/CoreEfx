@@ -13,7 +13,7 @@ from flask_login import (
     logout_user, current_user, UserMixin
 )
 from flask_bcrypt import Bcrypt
-from CoreEfx import db
+
 
 
 
