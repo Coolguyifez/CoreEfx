@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CoreEfx AI privacy Policy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+        :root {
+            /* Light Mode Colors - Copy these from your main CSS */
+            --primary-color: #007bff; /* A professional blue */
+            --secondary-color: #6c757d; /* Muted grey */
+            --accent-color: #28a745; /* Success green */
+            --background-light: #f8f9fa;
+            --background-white: #ffffff;
+            --text-dark: #343a40;
+            --text-muted: #6c757d;
+            --border-color: #e2e6ea;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
+        }
+
+        body.dark-mode {
+            --primary-color: #6aabff; /* Lighter blue for dark mode */
+            --secondary-color: #a0a8b1; /* Lighter grey for dark mode */
+            --accent-color: #38b45a; /* Slightly lighter green for dark mode */
+            --background-light: #2c2f33; /* Darker background */
+            --background-white: #36393f; /* Even darker background for cards/containers */
+            --text-dark: #e0e0e0; /* Light text */
+            --text-muted: #b0b0b0; /* Lighter muted text */
+            --border-color: #4a4d52; /* Darker border */
+            --shadow-light: rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+        }
+
+        /* --- NEW: System Theme Preference --- */
+    /* This rule applies dark mode styles if the system prefers dark,
+       BUT ONLY if the body doesn't already have the 'light-mode' class
+       (which we'll add via JS if user explicitly selected light). */
+    @media (prefers-color-scheme: dark) {
+        body:not(.light-mode) {
+            --primary-color: #6aabff;
+            --secondary-color: #a0a8b1;
+            --accent-color: #38b45a;
+            --background-light: #2c2f33;
+            --background-white: #36393f;
+            --text-dark: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --border-color: #4a4d52;
+            --shadow-light: rgba(0, 0, 0, 0.3);
+            /* Also apply other dark mode specific styles here if they're not
+               already covered by the variables. For example, if you had
+               'h2 { color: black; }' in light mode, you'd change it here to
+               'h2 { color: var(--text-dark); }' or specific dark mode color. */
+        }
+    }
+
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        @media (max-width: 768px) {
+            body {
+            padding: 15px; /* Reduce overall padding on smaller screens */
+            }
+            .policy-container {
+                margin: 20px auto; /* Reduce top/bottom margin */
+                padding: 20px; /* Reduce container padding */
+            }
+            h1 {
+                font-size: 2em; /* Smaller heading for mobile */
+            }
+            h2 {
+                font-size: 1.5em; /* Smaller subheading for mobile */
+            }
+            h3{
+                font-size:1em;
+            }
+            p, ul, li {
+                font-size: 0.95em; /* Slightly smaller text for body content */
+            }
+            .theme-toggle {
+                top: 15px;
+                right: 15px;
+                padding: 6px 10px; /* Smaller padding for toggle button */
+                font-size: 0.8em; /* Smaller font for toggle button */
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px; /* Even smaller padding on very small screens */
+            }
+            .policy-container {
+                margin: 15px auto;
+                padding: 15px; /* Further reduce container padding */
+                border-radius: 5px; /* Slightly smaller border-radius */
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            h3{
+                font-size: 0.8em;
+            }
+            p, ul, li {
+                font-size: 0.9em;
+            }
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 5px 8px;
+                font-size: 0.75em;
+            }
+        }
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color:var(--background-white);
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+
+        h1, h2, h3{
+            color: var(--accent-color); /* Use CSS variable */
+            margin-bottom: 20px;
+            transition: color var(--transition-speed);
+        }
+
+        p {
+            margin-bottom: 15px;
+            margin-bottom: 15px;
+            color: var(--text-dark); /* Ensure text color respects theme */
+            transition: color var(--transition-speed);
+            bo
+
+            
+        }
+
+        b{
+            color: #28a745;
+        }
+        ul {
+            list-style-type: ;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+            color: var(--text-dark); /* Ensure list item text color respects theme */
+            transition: color var(--transition-speed);
+        }
+
+        .theme-toggle {
+            background: var(--background-white);
+            color: var(--text-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-size: 0.9em;
+            position: absolute; /* Keep position absolute for this page for now */
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
+            z-index: 1001; /* Ensure it's on top */
+        }
+        .theme-toggle:hover {
+            background-color: var(--background-light);
+            transform: translateY(-1px);
+        }
+        body.dark-mode .theme-toggle:hover {
+            background-color: var(--background-light);
+        }
+
+  </style> 
+</head>
+<body>
+
+    <a href="{{ url_for('index') }}">← Back to App</a>
+
+    <div class="policy-container">
+
+        <div><h1><b>Policy for CoreEfx AI App</b> </h1></div>
+        <p><b>Effective Date</b>: July 22, 2025</p>                
+
+        <div>This Privacy Policy describes how  CoreEfx AI App collects, uses, and discloses your information when you use our App mobile application/website,AI health adviser. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy</div>
+        <b><hr></b>
+        <div><h2>1. &nbsp; Information We Collect </h2>
+        <p>This section details what information we collect. We are committed to transparency about the data we gather to provide and improve our AI Health Advisor Service.</p>
+        <h3>1.1 Personal Information You Provide to Us:</h3>
+        <ul>
+            <li><b>Account Information</b>: If you create an account, we collect your username, email address, password, and any optional profile picture or name you choose to provide.</li>
+            <li><b>Health-Related Information</b>: As an AI Health Advisor, this information is crucial for us to provide accurate and personalized guidance. We collect:</li>
+                <ul>
+                    <li><b>Symptoms entered by the user</b>: Details you input about your health concerns.</li>
+                    <li><b>Any other health-related details explicitly provided</b>: This may include, for example, your age, gender, or pre-existing conditions, if you choose to provide them with us for more tailored advice.</li>
+                    <li><b>Crucial Note</b>: We understand the extremely sensitive nature of your health data. We handle this information with the utmost care, implementing strict security measures and processing it only for the purposes outlined in this policy. Your health data is central to the Service's functionality, allowing our AI to offer relevant insights.</li>
+                </ul>
+            <li><b>Contact Information</b>: If you reach out to us, we collect your email or phone number for support, feedback, or other communication purposes.</li>
+            <li><b>Feedback/Communication Data</b>: Information you provide when contacting our customer support, submitting feedback about the Service, or participating in optional surveys.</li>
+
+        </ul>
+
+        <h3>1.2&nbsp; Information Collected Automatically:</h3>
+        <ul>
+            <li><b>Data</b> : Information about how you access and use the Service, such as the features you use, the time you spend on different screens, your search queries within the app, and the order of pages visited. This helps us understand user engagement and optimize the Service.</li>
+            <li><b>Device Information</b>: Details about the device you use to access our Service, including the type of device, its operating system, unique device identifiers, and mobile network information. This helps ensure compatibility andperformance.</li>
+            <li><b>Log Data</b>: When you use our Service, our servers automatically record information, including your IP address, browser type, pages visited, and the date and time of your access. This data helps us diagnose technical issues and maintain security.</li>
+            <li><b>Location Information</b>:</li>
+                <ul>
+                    <li><b>Precise Location</b>: If you explicitly grant us permission, we may collect your precise location using technologies like GPS or network-based location services to help you find "nearby hospitals" or other relevant local services. We will always ask for your explicit consent before collecting precise location data.</li>
+                    <li><b>Approximate Location</b>: We may derive your approximate location from your IP address. This data is used for general service optimization and regional analysis.</li>
+                </ul>
+            <li><b>Cookies and Tracking Technologies</b>: We use cookies, web beacons, pixels, and similar tracking technologies to collect information and track activity on our Service. These technologies are used for purposes such as:</li>
+                <ul>   
+                    <li><b>Authentication</b>: To remember when you log in.</li>
+                    <li><b>Analytics</b>: To understand how users interact with our Service and improve its functionality.</li>
+                    <li><b>Personalizing Experience</b>: To remember your preferences and tailor the content you see.</li>
+                <li>You can typically manage cookie preferences through your browser or device settings.</li>
+            
+                </ul>
+        </ul>
+        </div>
+    
+
+    
+        <b><hr></b>
+        <div><h2>2.&nbsp; How We Use Your Information</h2>
+        <p>We collect your data to provide you with valuable and secure AI Health Advisor experience.</p>
+        <ul>
+            <li><b>To Provide and Maintain the Service</b>: To operate the AI health advisor functionality, process your queries, deliver health guidance, and facilitate finding hospitals or other relevant services.</li>
+            <li><b>To Improve and Personalize the Service</b>: We use your data (often in an aggregated or anonymized form) to understand user behavior, optimize features, fix bugs, and offer a more tailored and efficient experience.</li>
+            <li><b>For Communication</b>: To respond to your inquiries, send you important service updates, security alerts, and provide customer support messages.</li>
+            <li><b>For Analytics and Research</b>: To monitor usage trends, diagnose technical issues, and improve the accuracy and effectiveness of our AI models. For health-related information used in this context, we primarily rely on anonymized and aggregated data to ensure your privacy.</li>
+            <li><b>For Security and Fraud Prevention</b>: To protect against malicious activity, unauthorized access, and ensure the integrity and safety of our Service and our users.</li>
+            <li><b>To Comply with Legal Obligations</b>: To meet applicable laws, regulations, legal processes, or enforceable governmental requests.</li>
+        </ul>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>3.&nbsp; How We Share Your Information</h2>
+        <p>We are extremely careful and transparent about who we share your data with, especially your sensitive health information.</p>
+        <ul>
+            <li><b>Service Providers</b>:  We may share your information with third-party vendors, consultants, and other service providers who perform services on our behalf, such as hosting, data analytics, email delivery, and hospital database providers.</li>
+                <ul>
+                    <li><b>Crucial Note</b>: We ensure that these service providers are bound by strict confidentiality obligations and are only permitted to process your data for the specified purposes for which we engage them. They are not authorized to use or disclose your personal information for their own purposes.</li>
+                </ul>
+            <li><b>For Legal Reasons</b>: We may disclose your information if required to do so by law, in response to a subpoena, court order, or other governmental request, or if we believe such action is necessary to comply with a legal obligation, rotect our rights, or investigate potential violations.</li>
+            <li><b>In Case of Business Transfer</b>: In the event of a merger, acquisition, sale of assets, or other business transaction involving our company, your information may be transferred as part of that transaction. We will notify you of any such change in ownership or control of your personal information.</li>
+            <li><b>With Your Consent</b>: We may share your information with third parties when we have obtained your explicit consent to do so for a specific purpose (e.g., if you choose to share a generated health report with a specific doctor).</li>
+            <li><b>Aggregated or Anonymized Data</b>: We may share non-identifiable, aggregated, or anonymized data for research, analytics, product development, or other business purposes. This data is processed in a way that cannot identify individual users, ensuring your personal privacy.</li>
+        </ul>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>4.&nbsp; Data Security</h2>
+        <p>We are committed to protecting your information. We implement a variety of security measures designed to safeguard your data, including:</p>
+        <ul> 
+            <li><b>Encryption</b>: Using encryption technologies to protect data during transmission and at rest.</li>
+            <li><b>Access Controls</b>: Implementing strict access controls to limit who can access your data.</li>
+            <li><b>Regular Security Audits</b>: Conducting regular security audits and vulnerability assessments to identify and address potential weaknesses.</li>
+        </ul>
+   
+        <p>While we strive to use commercially acceptable means to protect your personal information, it's important to remember that no method of transmission over the internet or electronic storage is 100% secure. Therefore, we cannot guarantee its absolute security.</p>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>5.&nbsp; Your Data Rights</h2>
+        <p>We believe you should have control over your personal information. Depending on your location and applicable privacy laws (such as the Nigeria Data Protection Regulation (NDPR), GDPR, CCPA, etc.), you may have the following rights regarding your data:</p>
+        <ul>
+            <li><b>Right to Access</b>: To request a copy of the personal information we hold about you.</li>
+            <li><b>Right to Rectification</b>: To request the correction of inaccurate or incomplete personal data we hold about you.</li>
+            <li><b>Right to Erasure ("Right to Be Forgotten")</b>: To request the deletion of your personal information, subject to certain legal exceptions (e.g., if we are legally required to retain it).</li>
+            <li><b>Right to Restrict Processing</b>: To request that we limit the way we use your data in certain circumstances.</li>
+            <li><b>Right to Data Portability</b>: To receive your personal data in a structured, commonly used, and machine-readable format, and to transmit that data to another controller where technically feasible.</li>
+            <li><b>Right to Object</b>: To object to the processing of your data in certain circumstances, such as for direct marketing purposes.</p>
+            <li><b>Right to Withdraw Consent</b>: If we process your data based on your consent, you have the right to withdraw that consent at any time. Withdrawal of consent will not affect the lawfulness of processing based on consent before its withdrawal.</li>
+        </ul>
+    
+        <P><b>How to Exercise Rights</b>: To exercise any of these rights, please submit your request by contacting us at our Email. We will respond to your request within the timeframes required by applicable law.</P>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>6.&nbsp; Data Retention</h2>
+        <P>We retain personal information only for as long as necessary to fulfill the purposes for which it was collected, including for the purpose of satisfying any legal, accounting, or reporting requirements. When your personal information is no longer needed, we will securely delete or anonymize it.</P>
+        </div>
+        <b><hr></b>
+
+
+        <div><h2>7.&nbsp; Children's Privacy</h2>
+        <p>Our Service is not intended for individuals under the age of 12. We do not knowingly collect personal information from children without parental consent. If you are a parent or guardian and believe we have collected information from your child, please contact us immediately. If we become aware that we have collected personal information from a child without parental consent, we will take steps to remove that information from our servers.</p>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>8.&nbsp; International Data Transfers (If Applicable)</h2>
+        <p>If you are accessing our Service from outside of Nigeria, please be aware that your information may be transferred to, stored, and processed in [ e.g., the United States] or other countries where our service providers are located. These countries may have data protection laws that are different from the laws of your country. When we transfer your data internationally, we implement appropriate safeguards, such as standard contractual clauses (SCCs) or rely on adequacy decisions, to ensure that your information is protected.</p>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>9.&nbsp; Changes to This Privacy Policy</h2>
+        <p>We may update our Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, and other factors. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Effective Date" at the top. We may also notify you through other means, such as by email notification or a prominent notice within the Service, prior to the change becoming effective. We encourage you to review this Privacy Policy periodically for any changes.</p>
+        </div>
+
+        <b><hr></b>
+
+        <div><h2>10.&nbsp; Contact Us</h2>
+        <p>If you have any questions or concerns about this Privacy Policy or our data practices, please do not hesitate to contact us:</p>
+        <ul>
+            <li><b>Email</b>: ikukaiweemmanuel@yahoo.com</li>
+            <li><b>Phone Number</b>: +2348154675347</li>
+        </ul>
+    
+        </div>
+    </div>
+     
+</body>
+</html>
