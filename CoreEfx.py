@@ -866,7 +866,7 @@ login_template = """
 <body>
   
     <form method="POST">
-    <h1>Login</h1>
+     <h1><i class="fa-solid fa-brain fa-icon-large"></i>CoreEfx AI</h1>
       <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="username" name="username" placeholder="Username" required />
@@ -1111,7 +1111,7 @@ signup_template = """
 </head>
 <body>
   <form method="POST">
-    <h1>Sign Up</h1>
+     <h1><i class="fa-solid fa-brain fa-icon-large"></i>CoreEfx AI</h1>
     <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="text" name="name" placeholder="Fullname" required>
@@ -1140,7 +1140,6 @@ signup_template = """
     </div>
     <button type="submit">Sign Up</button>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-    <br>
     <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI 
     <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
   </form>
@@ -2355,16 +2354,6 @@ main_template = """
     </footer>    
     </div>
     
-    <!--<footer class="footer">
-        <p>&copy; 2025 CoreEfx AI. All rights reserved.</p>
-        <p>Developed with <span style="color: var(--accent-color);">&hearts;</span> by Emmanuel Ifeanyi Ikukaiwe</p>
-        <br>
-        <div class="contact-info">
-            <p>Contact Us:</p>
-            <p><i class="fa-solid fa-envelope" style="color: var(--accent-color);"></i>&nbsp; <a href="https://mail.yahoo.com/">ikukaiweemmanuel@yahoo.com</a></p>
-            <p><i class="fa-solid fa-phone" style="color: var(--accent-color);"></i>&nbsp; <a href="+2348154675347">+2348154675347</a></p>
-        </div>
-    </footer>-->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   
