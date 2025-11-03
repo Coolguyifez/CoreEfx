@@ -2809,7 +2809,7 @@ def index():
                             advice = symptom_data[cond_key]["advice"]
                             result.append(advice)  # ✅ only advice, no condition name
                             advice_texts.append(advice)  # for audio
-                        #else:
+                        else:
                             #print(f"⚠️ No advice found for: {cond_key}")
 
                     audio_file = generate_audio(" ".join(advice_texts)) or ""
