@@ -556,7 +556,7 @@ welcome_template = """
             font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 700;
             line-height: 1.2;
-            margin-bottom: 30px;
+            margin-bottom: 1px;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
@@ -571,6 +571,21 @@ welcome_template = """
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
+            }
+        }
+        h3{
+            opacity: 0; /* Start hidden for animation */
+            transform: translateY(20px); /* Start slightly below for animation */
+            animation: fadeInScale 3s ease-out forwards; /* Apply animation */
+       }
+       @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.75);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(0.95);
             }
         }
 
@@ -629,6 +644,9 @@ welcome_template = """
             h1 {
                 font-size: clamp(2rem, 12vw, 4rem);
             }
+            h3 {
+                font-size: 15px;
+            }
             .welcome-button {
                 padding: 15px 35px;
                 font-size: 1em;
@@ -639,6 +657,7 @@ welcome_template = """
 </head>
 <body>
     <h1><i class="fa-solid fa-brain"></i>CoreEfx AI</h1>
+     <h3><i>Your symptom Health Advisory<i></h3>
     <a href="{{ url_for('login') }}" class="welcome-button">Get Started &nbsp;<i class="fa-solid fa-arrow-right"></i></a>
 </body>
 </html>
@@ -1112,17 +1131,38 @@ signup_template = """
             <i class="fa-solid fa-eye" id="eye-icon"></i>
         </div>
     </div>
-
+    <div class="input-group">
+        <i class="fa fa-lock icon"></i>
+        <input type="password" id="con-password" name="Confirm-password" placeholder="Confirm Password" required />
+        <div type="button" class="toggle-password" onclick="togglePasswords()">
+            <i class="fa-solid fa-eye" id="eye-icons"></i>
+        </div>
+    </div>
     <button type="submit">Sign Up</button>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
     <br>
-    <p><a href="{{ url_for('privacy_policy') }}">Privacy Policy</a> | <a href="{{ url_for('terms_of_service') }}">Terms of Service</a></p>
+    <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI 
+    <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
   </form>
 
   <script>
     function togglePassword() {
       const password = document.getElementById("password");
       const icon = document.getElementById("eye-icon");
+
+      if (password.type === "password") {
+        password.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        password.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+    function togglePasswords() {
+      const password = document.getElementById("con-password");
+      const icon = document.getElementById("eye-icons");
 
       if (password.type === "password") {
         password.type = "text";
