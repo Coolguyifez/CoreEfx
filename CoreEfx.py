@@ -1783,7 +1783,7 @@ main_template = """
           background: none; 
           border: none; 
           color: var(--text-dark); 
-          font-size: 2em; 
+          font-size: 1.5em; 
           cursor: pointer; 
           display: flex; 
           align-items: center; 
@@ -1802,7 +1802,7 @@ main_template = """
           flex-direction: column;
           position: absolute;
           
-          top: 60px;
+          top: 30px;
           right: -18px;
           
           
