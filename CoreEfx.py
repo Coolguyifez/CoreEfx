@@ -657,7 +657,7 @@ welcome_template = """
 </head>
 <body>
     <h1><i class="fa-solid fa-brain"></i>CoreEfx AI</h1>
-     <h3><i>Your symptom Health Advisory<i></h3>
+     <h3><i>Check Symptoms, Stay Healthy<i></h3>
     <a href="{{ url_for('login') }}" class="welcome-button">Get Started &nbsp;<i class="fa-solid fa-arrow-right"></i></a>
 </body>
 </html>
