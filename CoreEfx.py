@@ -532,12 +532,16 @@ welcome_template = """
         :root {
             --transition-speed: 0.3s;
             --light-bg: #ffffff;
-            --light-text: #008000;
+            --accent-color: #008000;
+            --light-text: #343a40;
+            --muted-light-text:#6c757d;
+            --muted-dark-text: #b0b0b0;
             --dark-bg: #2c2f33;
-            --dark-text: #38b45a;
+            --dark-text: #e0e0e0;
         }
 
         body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
             margin: 0;
             padding: 0;
             font-family: 'Roboto', sans-serif;
@@ -553,6 +557,7 @@ welcome_template = """
         }
 
         h1 {
+            color:var(--light-text);
             font-size: clamp(2rem, 8vw, 5rem);
             font-weight: 750;
             line-height: 1.2;
@@ -561,6 +566,9 @@ welcome_template = """
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
+        }
+        .icon { 
+            color:var(--accent-color);
         }
 
         /* Animation Keyframes */
@@ -575,6 +583,8 @@ welcome_template = """
             }
         }
         h3 {
+            font-family: 'Amatic SC', Comic Sans MS, cursive, sans-serif;
+            color:var(--light-text);
             font-size: 30px;
             font-weight: 500;
             opacity: 0; /* Start hidden for animation */
@@ -637,8 +647,8 @@ welcome_template = """
     </style>
 </head>
 <body>
-    <h1><i class="fa-solid fa-brain"></i>CoreEfx AI</h1>
-     <h3><i>Check Symptoms, Stay Healthy<i></h3>
+   <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+     <h3>Check Symptoms, Stay Healthy</h3>
     
 </body>
 </html>
@@ -666,7 +676,7 @@ login_template = """
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       background: #f5f5f5;
       color: #333;
       margin: 0;
@@ -686,11 +696,15 @@ login_template = """
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h1 {
-      color: #008000;
+   h1 {
+      color:  #343a40;
       margin-bottom: 20px;
       text-align: center;
     }
+    .icon {
+        color: #008000;
+    }
+    
 
     input {
       width: 100%;
@@ -783,7 +797,8 @@ login_template = """
       input::placeholder { color: #aaa; }
       button { background: #38b45a; color: white; }
       a { color: #38b45a; }
-      h1 { color:#38b45a;}
+      h1 { color:#e0e0e0;}
+      .icon { color: #e0e0e0;}
       a:hover { color:#2e8b43;}
       button:hover { background:#2e8b43;}
       .toggle-password { color:#38b45a;}
@@ -847,7 +862,7 @@ login_template = """
 <body>
   
     <form method="POST">
-     <h1><i class="fa-solid fa-brain fa-icon-large"></i>CoreEfx AI</h1>
+     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
       <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="username" name="username" placeholder="Username" required />
@@ -909,7 +924,7 @@ signup_template = """
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       background: #f5f5f5;
       color: #333;
       margin: 0;
@@ -929,10 +944,13 @@ signup_template = """
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h1 {
-      color: #008000;
+   h1 {
+      color:  #343a40;
       margin-bottom: 20px;
       text-align: center;
+    }
+    .icon {
+        color: #008000;
     }
 
     input {
@@ -1027,7 +1045,8 @@ signup_template = """
       input::placeholder { color: #aaa; }
       button { background: #38b45a; color: white; }
       a { color: #38b45a; }
-      h1 { color:#38b45a;}
+      h1 { color:#e0e0e0;}
+      .icon { color:#e0e0e0;}
       a:hover { color:#2e8b43;}
       button:hover { background:#2e8b43;}
       .toggle-password { color:#38b45a;}
@@ -1092,7 +1111,7 @@ signup_template = """
 </head>
 <body>
   <form method="POST">
-     <h1><i class="fa-solid fa-brain fa-icon-large"></i>CoreEfx AI</h1>
+     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
     <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="text" name="name" placeholder="Fullname" required>
@@ -1205,7 +1224,7 @@ main_template = """
         }
 
         body {
-            font-family: 'Open Sans', sans-serif; /* Professional, legible font */
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; /* Professional, legible font */
             margin: 0;
             padding: 1px;
             height: 100%;
@@ -1239,8 +1258,6 @@ main_template = """
         }
         
         h3, h4 {
-            font-family: 'Roboto', sans-serif; /* A more prominent font for headings */
-            /*color: #008000;*/
             text-align: center;
             margin-bottom: 25px;
             font-weight: 700; /* Bolder headings */
@@ -1251,11 +1268,18 @@ main_template = """
         h2 {
             font-size: 2em;
             margin-bottom: 10px;
-            color: var(--accent-color);
+            color: var(--text-dark);
             font:700;
             margin-left: 25px;
             transition: color var(--transition-speed); /* Smooth transition */
         }
+        .icon {
+            color: var(--accent-color);
+        }
+        body.dark-mode  .icon{
+            color: var(--text-dark);
+        }
+        
 
         h3 {
             font-size: 1.8em;
@@ -1399,11 +1423,7 @@ main_template = """
             border-radius: 25px;
             padding: 8px 10px;
             box-shadow: none;
-            width: 90%;
-            max-width: 600px;
-            
-            transform: translateX(9%);
-            
+            width: 97%;    
             transition: all 0.3s ease;
             z-index: 999; 
         }
@@ -1428,7 +1448,6 @@ main_template = """
           outline: none;
           resize: none;
           font-size: 1em;
-          font-family: 'Open Sans', sans-serif;
           color: var(--text-dark);
           background: transparent;
           padding: 8px;
@@ -1489,7 +1508,6 @@ main_template = """
           outline: none;
           resize: none;
           font-size: 1em;
-          font-family: 'Open Sans', sans-serif;
           color: var(--text-dark);
           background: transparent;
           padding: 8px;
@@ -1558,11 +1576,6 @@ main_template = """
           transform: scale(1.05);
         }
         
-            
-        
-
-
-
 
         hr {
             border: 0;
@@ -1688,6 +1701,9 @@ main_template = """
             text-align: left;
             margin: 5px 0;
             max-width: 100%;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
             color: var(--text-dark);
             transition: color var(--transition-speed); /* Smooth transition */
         }
@@ -1858,13 +1874,7 @@ main_template = """
         }
         
         
-        
-        
-        
-        
-        
-        
-        
+    
         
 
         /* When the navigation is expanded */
@@ -1931,13 +1941,11 @@ main_template = """
             }
             .input-with-icon {
                 bottom: 100px; /* keeps it above footer on mobile */
-                width: 80%;
                 padding: 10px 12px;
                 border-radius: 20px;
             }
             .input-feed-icon{
                 bottom: 300px; /* keeps it above footer on mobile */
-                width: 90%;
                 padding: 10px 12px;
                 border-radius: 20px;
             }
@@ -1954,14 +1962,11 @@ main_template = """
             .circle-btn {
                 font-size: 18px;
             }
-
-            
            
             .reply-me{
                max-width: 70%;
                font-size: 0.95em;
-               padding: 12px 14px;
-                
+               padding: 12px 14px; 
             }
             .input-sympt{
                 max-width: 70%;
@@ -1972,6 +1977,15 @@ main_template = """
                 max-width: 70%;
                 font-size: 0.95em;
                 padding: 12px 14px;
+            }
+            .nav-toggle:hover {
+                color: none;
+                background: none;
+          
+            }
+            nav-menu a:hover, .nav-menu button:hover {
+                background:none;
+                color: none;
             }
             
                 
@@ -2038,17 +2052,14 @@ main_template = """
                 
             }
            .input-with-icon {
-                
-                width: 80%;
-                align-item: center;
-                margin-right: 30%;
+                bottom: 120%;
+                width: 94%;
                 border-radius: 18px;
                 padding: 8px 10px;
-                top: 30%;
            }
            .input-feed-icon {
                 bottom: 120px;
-                width: 90%;
+                width: 94%;
                 border-radius: 18px;
                 padding: 8px 10px;
            }
@@ -2058,6 +2069,15 @@ main_template = """
                 min-height: 32px;
                 max-height: 90px;
            }
+           .nav-toggle:hover {
+                color: none;
+                background: none;
+          
+            }
+            nav-menu a:hover, .nav-menu button:hover {
+                background: none;
+                color: none;
+            }
             
             .mic-btn,
             .circle-btn {
@@ -2150,7 +2170,7 @@ main_template = """
     <div class="container">
         <!-- New app-header for mobile alignment -->
         <header class="app-header">
-            <h2><i class="fa-solid fa-brain fa-icon-large"></i>CoreEfx AI</h2>
+            <h2><i class="fa-solid fa-user fa-icon-large icon"></i> &nbsp;{{ current_user.username }}</h2>
             <!-- ✅ NEW NAVBAR -->
             <nav class="navbar">
               <button class="nav-toggle" id="navToggle">
@@ -2247,7 +2267,7 @@ main_template = """
             <form method="POST">
                 
                 <div class="input-with-icon">
-                    <textarea type="text" id="symptoms" name="symptoms" rows="5"  required class="symptom-input" placeholder="What symptoms are you experiencing today? e.g., I have a fever, chills, and a headache."></textarea>
+                    <textarea type="text" id="symptoms" name="symptoms" rows="1"  required class="symptom-input" placeholder="What symptoms are you experiencing today?></textarea>
                     <div class ="icon-group">
                         <button type="button" class="mic-btn" onclick="startDictation('symptoms')"><i class="fa-solid fa-microphone"></i></button>
                         <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane"></i></button>
