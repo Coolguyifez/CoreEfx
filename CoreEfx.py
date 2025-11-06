@@ -554,9 +554,10 @@ welcome_template = """
 
         h1 {
             font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: 700;
+            font-weight: 720;
             line-height: 1.2;
-            margin-bottom: 1px;
+            margin-bottom: -10px;
+            margin-top: -5px;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
@@ -573,7 +574,9 @@ welcome_template = """
                 transform: translateY(0) scale(1);
             }
         }
-        h3{
+        h3 {
+            font-size: 30px;
+            font-weight: 1;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
@@ -589,31 +592,14 @@ welcome_template = """
             }
         }
 
-        .welcome-button {
-            padding: 15px 30px;
-            background-color: #008000;
-            color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 1.2em;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease; /* Add transform for hover */
-            animation: fadeIn 5s ease-out forwards 1s; /* Delay button animation */
-            opacity: 0; /* Start hidden for animation */
-            display:flex;
-        }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
 
-        .welcome-button:hover {
-            background-color: #005f00;
-            transform: scale(1.05); /* Slightly enlarge on hover */
-        }
+       
 
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
@@ -621,44 +607,39 @@ welcome_template = """
                 background: var(--dark-bg);
                 color: var(--dark-text);
             }
-            .welcome-button {
-                background-color: var(--dark-text);
-            }
-            .welcome-button:hover {
-                background-color: #2e8b43;
-            }
+           
         }
 
         /* Extra small screen tweaks */
         @media (max-width: 780px) {
             h1 {
-                font-size: clamp(2.5rem, 12.5vw, 4.5rem);
+                font-size: clamp(2.2rem, 12vw, 2.2rem);
+                 
             }
-            .welcome-button {
-                padding: 18px 37px;
-                font-size: 1.5em;
-                margin top: 20px;
+            
+            h3 {
+                font-size: 20px;
             }
+           
         }
          @media (max-width: 480px) {
-            h1 {
-                font-size: clamp(2rem, 12vw, 4rem);
+           h1 {
+                font-size: clamp(1.5rem, 10vw, 1.5rem);
+                
+                
             }
-            h3 {
-                font-size: 15px;
+            h3{
+                font-size: 14px;
+               
             }
-            .welcome-button {
-                padding: 15px 35px;
-                font-size: 1em;
-                margin top: 20px;
-            }
+            
         }
     </style>
 </head>
 <body>
     <h1><i class="fa-solid fa-brain"></i>CoreEfx AI</h1>
      <h3><i>Check Symptoms, Stay Healthy<i></h3>
-    <a href="{{ url_for('login') }}" class="welcome-button">Get Started &nbsp;<i class="fa-solid fa-arrow-right"></i></a>
+    
 </body>
 </html>
 """
@@ -2712,10 +2693,27 @@ main_template = """
 
 @app.route("/", methods=["GET", "POST"])
 def welcome():
-    # If user is already logged in, redirect them directly to the main app
-    #if current_user.is_authenticated:
-        #return redirect(url_for("index"))
-    return render_template_string(welcome_template)
+    if current_user.is_authenticated:
+        # If logged in, show welcome first, then go to home
+        return render_template_string(welcome_template.replace(
+            '</body>',
+            """<script>
+                setTimeout(() => {
+                    window.location.href = '/home';
+                }, 8000); // 8 seconds delay
+            </script></body>"""
+        ))
+    else:
+        # If not logged in, show welcome first, then go to login
+        return render_template_string(welcome_template.replace(
+            '</body>',
+            """<script>
+                setTimeout(() => {
+                    window.location.href = '/login';
+                }, 8000); // 8 seconds delay
+            </script></body>"""
+        ))
+    
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
