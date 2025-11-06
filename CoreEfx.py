@@ -576,7 +576,7 @@ welcome_template = """
         }
         h3 {
             font-size: 30px;
-            font-weight: 20;
+            font-weight: 200;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
