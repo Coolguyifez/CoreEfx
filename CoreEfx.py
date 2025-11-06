@@ -554,7 +554,7 @@ welcome_template = """
 
         h1 {
             font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: 720;
+            font-weight: 750;
             line-height: 1.2;
             margin-bottom: -10px;
             margin-top: -5px;
@@ -576,7 +576,7 @@ welcome_template = """
         }
         h3 {
             font-size: 30px;
-            font-weight: 200;
+            font-weight: 500;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
