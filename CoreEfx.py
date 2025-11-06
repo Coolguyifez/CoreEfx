@@ -1224,7 +1224,9 @@ main_template = """
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; /* Professional, legible font */
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
+            
             margin: 0;
             padding: 1px;
             height: 100%;
@@ -1258,6 +1260,8 @@ main_template = """
         }
         
         h3, h4 {
+             /* A more prominent font for headings */
+            /*color: #008000;*/
             text-align: center;
             margin-bottom: 25px;
             font-weight: 700; /* Bolder headings */
@@ -1266,10 +1270,10 @@ main_template = """
        
 
         h2 {
-            font-size: 2em;
+           
+            font-size: 2.2em;
             margin-bottom: 10px;
             color: var(--text-dark);
-            font:700;
             margin-left: 25px;
             transition: color var(--transition-speed); /* Smooth transition */
         }
@@ -1423,7 +1427,7 @@ main_template = """
             border-radius: 25px;
             padding: 8px 10px;
             box-shadow: none;
-            width: 97%;    
+            width: 97%;
             transition: all 0.3s ease;
             z-index: 999; 
         }
@@ -1448,6 +1452,7 @@ main_template = """
           outline: none;
           resize: none;
           font-size: 1em;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
           color: var(--text-dark);
           background: transparent;
           padding: 8px;
@@ -1508,6 +1513,7 @@ main_template = """
           outline: none;
           resize: none;
           font-size: 1em;
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
           color: var(--text-dark);
           background: transparent;
           padding: 8px;
@@ -1576,7 +1582,6 @@ main_template = """
           transform: scale(1.05);
         }
         
-
         hr {
             border: 0;
             height: 1px;
@@ -1598,6 +1603,7 @@ main_template = """
         }
 
          .reply-me{
+         
             align-self: flex-start;
             background-color: var(--background-light);
             color: var(--text-dark);
@@ -1707,6 +1713,7 @@ main_template = """
             color: var(--text-dark);
             transition: color var(--transition-speed); /* Smooth transition */
         }
+        
 
         .history-item .timestamp {
             font-size: 0.85em;
@@ -1873,10 +1880,6 @@ main_template = """
           display: flex;
         }
         
-        
-    
-        
-
         /* When the navigation is expanded */
         .tabs.active {
             display: flex; /* Show the tabs */
@@ -1907,7 +1910,6 @@ main_template = """
                 padding bottom: 50px;
             }
             .container {
-                
                 width: 100%;
                 min-width:100%;
                 min-height: 100dvh; /* ✅ fills full device viewport height (modern and reliable) */
@@ -1962,11 +1964,14 @@ main_template = """
             .circle-btn {
                 font-size: 18px;
             }
+
+            
            
             .reply-me{
                max-width: 70%;
                font-size: 0.95em;
-               padding: 12px 14px; 
+               padding: 12px 14px;
+                
             }
             .input-sympt{
                 max-width: 70%;
@@ -1980,11 +1985,10 @@ main_template = """
             }
             .nav-toggle:hover {
                 color: none;
-                background: none;
           
             }
             nav-menu a:hover, .nav-menu button:hover {
-                background:none;
+          
                 color: none;
             }
             
@@ -2052,10 +2056,12 @@ main_template = """
                 
             }
            .input-with-icon {
-                bottom: 120%;
+                
                 width: 94%;
+                bottom: 120px;
                 border-radius: 18px;
                 padding: 8px 10px;
+               
            }
            .input-feed-icon {
                 bottom: 120px;
@@ -2069,13 +2075,12 @@ main_template = """
                 min-height: 32px;
                 max-height: 90px;
            }
-           .nav-toggle:hover {
+            .nav-toggle:hover {
                 color: none;
-                background: none;
           
             }
             nav-menu a:hover, .nav-menu button:hover {
-                background: none;
+          
                 color: none;
             }
             
@@ -2267,7 +2272,7 @@ main_template = """
             <form method="POST">
                 
                 <div class="input-with-icon">
-                    <textarea type="text" id="symptoms" name="symptoms" rows="1"  required class="symptom-input" placeholder="What symptoms are you experiencing today?></textarea>
+                    <textarea type="text" id="symptoms" name="symptoms" rows="1"  required class="symptom-input" placeholder="What symptoms are you experiencing today?... "></textarea>
                     <div class ="icon-group">
                         <button type="button" class="mic-btn" onclick="startDictation('symptoms')"><i class="fa-solid fa-microphone"></i></button>
                         <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane"></i></button>
