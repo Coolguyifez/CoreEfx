@@ -524,7 +524,7 @@ welcome_template = """
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Welcome to CoreEfx AI</title>
+    <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
@@ -576,7 +576,7 @@ welcome_template = """
         }
         h3 {
             font-size: 30px;
-            font-weight: 1;
+            font-weight: 6;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
@@ -651,7 +651,7 @@ login_template = """
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CoreEfx AI Login</title>
+  <title>CoreEfx AI Health Advisor</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
 
   <!-- Leaflet & FontAwesome -->
@@ -893,7 +893,7 @@ signup_template = """
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CoreEfx AI Sign Up</title>
+  <title>CoreEfx AI Health Advisor</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
 
   <!-- Leaflet & FontAwesome -->
