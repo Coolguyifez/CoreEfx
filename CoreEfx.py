@@ -583,7 +583,7 @@ welcome_template = """
             }
         }
         h3 {
-            font-family: 'Amatic SC', Comic Sans MS, cursive, sans-serif;
+            font-family:  Comic Sans MS, cursive, sans-serif;
             color:var(--light-text);
             font-size: 30px;
             font-weight: 500;
