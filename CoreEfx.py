@@ -74,13 +74,14 @@ class SymptomReport(db.Model):
     detected location, the advice given, and a timestamp.
     """
     id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each report
-    input_text = db.Column(db.String(500))  # The raw text input from the user (symptoms)
-    location = db.Column(db.String(100))  # User's approximate location (latitude,longitude string)
-    result = db.Column(db.String(500))  # The health advice/diagnosis provided by the system (increased length)
+    input_text = db.Column(db.Text)  # The raw text input from the user (symptoms)
+    location =  db.Column(db.String(100))  # User's approximate location (latitude,longitude string)
+    result = db.Column(db.Text)  # The health advice/diagnosis provided by the system (increased length)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Time when the report was created
     # 🔑 Link report to user
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('reports', lazy=True))
+
 
 class UserActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -544,7 +545,6 @@ welcome_template = """
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -583,7 +583,7 @@ welcome_template = """
             }
         }
         h3 {
-            font-family:  Comic Sans MS, cursive, sans-serif;
+            font-family:  Comic Sans MS, cursive;
             color:var(--light-text);
             font-size: 30px;
             font-weight: 500;
@@ -615,8 +615,11 @@ welcome_template = """
         @media (prefers-color-scheme: dark) {
             body {
                 background: var(--dark-bg);
-                color: var(--dark-text);
+                
             }
+            .icon { color: var(--dark-text);}
+            h1 { color: var(--dark-text);}
+            h3 { color:var(--muted-dark-text);}
            
         }
 
