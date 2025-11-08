@@ -558,8 +558,8 @@ welcome_template = """
 
         h1 {
             color:var(--light-text);
-            font-size: clamp(2rem, 8vw, 5rem);
-            font-weight: 750;
+            font-size: clamp(4.5rem, 15vw, 4.5rem);
+            font-weight: 680;
             line-height: 1.2;
             margin-bottom: -10px;
             margin-top: -5px;
@@ -583,10 +583,10 @@ welcome_template = """
             }
         }
         h3 {
-            font-family:  Comic Sans MS, cursive;
+            font-family:  Comic Sans MS;
             color:var(--light-text);
-            font-size: 30px;
-            font-weight: 500;
+            font-size: 40px;
+            font-weight: 600;
             opacity: 0; /* Start hidden for animation */
             transform: translateY(20px); /* Start slightly below for animation */
             animation: fadeInScale 3s ease-out forwards; /* Apply animation */
@@ -626,23 +626,23 @@ welcome_template = """
         /* Extra small screen tweaks */
         @media (max-width: 780px) {
             h1 {
-                font-size: clamp(2.2rem, 12vw, 2.2rem);
+                font-size: clamp(3.1rem, 14vw, 3.1rem);
                  
             }
             
             h3 {
-                font-size: 20px;
+                font-size: 25px;
             }
            
         }
          @media (max-width: 480px) {
            h1 {
-                font-size: clamp(1.5rem, 10vw, 1.5rem);
+                font-size: clamp(2.1rem, 12vw, 2.1rem);
                 
                 
             }
             h3{
-                font-size: 14px;
+                font-size: 18px;
                
             }
             
@@ -2883,10 +2883,10 @@ def index():
                     user_lat = float(lat_str)
                     user_lon = float(lon_str)
                     location_text = f"{user_lat},{user_lon}"
-                    hospitals = find_nearby_hospitals(user_lat, user_lon, radius_km=50)
+                    hospitals = find_nearby_hospitals(user_lat, user_lon, radius_km=20)
                     if not hospitals:
                         # If no hospitals are found within default radius, try a larger radius
-                        hospitals = find_nearby_hospitals(user_lat, user_lon, radius_km=100) # Increased radius
+                        hospitals = find_nearby_hospitals(user_lat, user_lon, radius_km=80) # Increased radius
                         if not hospitals:
                             result.append("\nNo nearby hospitals found within 200km. Please consider widening your search or manually looking for facilities.")
                         else:
