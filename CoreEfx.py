@@ -583,7 +583,7 @@ welcome_template = """
             }
         }
         h3 {
-            font-family:  Comic Sans MS;
+            font-family:  Poppins(Semibold, Medium);
             color:var(--light-text);
             font-size: 40px;
             font-weight: 600;
