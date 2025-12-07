@@ -2,16 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Terms of Service - CoreEfx AI</title>
+  <title>CoreEfx AI Terms of Service </title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
-  <style>
-    body { font-family: 'Open Sans', sans-serif; margin: 40px; line-height: 1.6; }
-    h1 { color: #008000; }
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ <style>
+        :root {
+            /* Light Mode Colors - Copy these from your main CSS */
+            --primary-color: #007bff; /* A professional blue */
+            --secondary-color: #6c757d; /* Muted grey */
+            --accent-color: #008000; /* Success green */
+            --background-light: #f8f9fa;
+            --background-white: #ffffff;
+            --text-dark: #343a40;
+            --text-muted: #6c757d;
+            --border-color: #e2e6ea;
+            --shadow-light: rgba(0, 0, 0, 0.08);
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        @media (max-width: 1020px) {
+            body {
+            padding: 15px; /* Reduce overall padding on smaller screens */
+            }
+            h1 {
+                font-size: 1.8em; /* Smaller heading for mobile */
+            }
+            h2 {
+                font-size: 1.6em; /* Smaller subheading for mobile */
+            }
+            h3{
+                font-size:1.4em;
+            }
+            p, ul, li {
+                font-size: 1.2em; /* Slightly smaller text for body content */
+            }
+            .back{
+                font-size: 0.9em;
+                
+            }
+            
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px; /* Even smaller padding on very small screens */
+            }
+            h1 {
+                font-size: 1.4em;
+                text-align: none;
+                margin-left: 50px;
+                margin-top: 30px;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            h3{
+                font-size: 1.1em;
+            }
+            p, ul, li {
+                font-size: 1em;
+            }
+            .back{
+                font-size: 0.5em;
+                bottom: 20px;
+                
+            }
+        }
+
+        h1, h2, h3{
+            color: var(--accent-color); /* Use CSS variable */
+            margin-bottom: 20px;
+            transition: color var(--transition-speed);
+        }
+
+        h1{
+            
+            text-align: center;
+        }
+
+       
+
+        p {
+            margin-bottom: 15px;
+            margin-bottom: 15px;
+            color: var(--text-dark); /* Ensure text color respects theme */
+            transition: color var(--transition-speed);            
+        }
+
+        b{
+            color: var(--accent-color);
+        }
+        ul {
+            list-style-type: ;
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+            color: var(--text-dark); /* Ensure list item text color respects theme */
+            transition: color var(--transition-speed);
+        }
+
+        .back, a{
+            text-decoration: none;
+            font-size: 1.3em;
+            color: var(--accent-color);
+            bottom: none;
+            top: 20px;
+            flex-grow:1;
+            position: absolute;
+            
+        }
+        
+
   </style>
 </head>
 <body>
-  <h1>Terms of Service</h1>
-  <p>By using CoreEfx AI, you agree to our terms and conditions, including the responsible use of our platform...</p>
-  <a href="{{ url_for('index') }}">← Back to App</a>
+  <div><div class="back"><a href="{{ url_for('home') }}"><i class="fa-sharp fa-solid fa-arrow-left"></i></a></div>
+  <div><h1><b>Terms of Service</b></h1></div>
+  <p>By using CoreEfx AI, you agree to our terms and conditions, including the responsible use of our platform...</p></div>
 </body>
 </html>
+ 
