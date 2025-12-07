@@ -4,15 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>CoreEfx AI privacy Policy</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-        :root {
+       :root {
             /* Light Mode Colors - Copy these from your main CSS */
             --primary-color: #007bff; /* A professional blue */
             --secondary-color: #6c757d; /* Muted grey */
-            --accent-color: #28a745; /* Success green */
+            --accent-color: #008000; /* Success green */
             --background-light: #f8f9fa;
             --background-white: #ffffff;
             --text-dark: #343a40;
@@ -22,46 +23,11 @@
             --transition-speed: 0.3s;
         }
 
-        body.dark-mode {
-            --primary-color: #6aabff; /* Lighter blue for dark mode */
-            --secondary-color: #a0a8b1; /* Lighter grey for dark mode */
-            --accent-color: #38b45a; /* Slightly lighter green for dark mode */
-            --background-light: #2c2f33; /* Darker background */
-            --background-white: #36393f; /* Even darker background for cards/containers */
-            --text-dark: #e0e0e0; /* Light text */
-            --text-muted: #b0b0b0; /* Lighter muted text */
-            --border-color: #4a4d52; /* Darker border */
-            --shadow-light: rgba(0, 0, 0, 0.3); /* More pronounced shadow */
-        }
-
-        /* --- NEW: System Theme Preference --- */
-    /* This rule applies dark mode styles if the system prefers dark,
-       BUT ONLY if the body doesn't already have the 'light-mode' class
-       (which we'll add via JS if user explicitly selected light). */
-    @media (prefers-color-scheme: dark) {
-        body:not(.light-mode) {
-            --primary-color: #6aabff;
-            --secondary-color: #a0a8b1;
-            --accent-color: #38b45a;
-            --background-light: #2c2f33;
-            --background-white: #36393f;
-            --text-dark: #e0e0e0;
-            --text-muted: #b0b0b0;
-            --border-color: #4a4d52;
-            --shadow-light: rgba(0, 0, 0, 0.3);
-            /* Also apply other dark mode specific styles here if they're not
-               already covered by the variables. For example, if you had
-               'h2 { color: black; }' in light mode, you'd change it here to
-               'h2 { color: var(--text-dark); }' or specific dark mode color. */
-        }
-    }
-
-
         body {
             font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 20px;
-            background-color: var(--background-light);
+            background-color: var(--background-white);
             color: var(--text-dark);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -69,70 +35,54 @@
             transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1020px) {
             body {
             padding: 15px; /* Reduce overall padding on smaller screens */
             }
-            .policy-container {
-                margin: 20px auto; /* Reduce top/bottom margin */
-                padding: 20px; /* Reduce container padding */
-            }
             h1 {
-                font-size: 2em; /* Smaller heading for mobile */
+                font-size: 1.8em; /* Smaller heading for mobile */
             }
             h2 {
-                font-size: 1.5em; /* Smaller subheading for mobile */
+                font-size: 1.6em; /* Smaller subheading for mobile */
             }
             h3{
-                font-size:1em;
+                font-size:1.4em;
             }
             p, ul, li {
-                font-size: 0.95em; /* Slightly smaller text for body content */
+                font-size: 1.2em; /* Slightly smaller text for body content */
             }
-            .theme-toggle {
-                top: 15px;
-                right: 15px;
-                padding: 6px 10px; /* Smaller padding for toggle button */
-                font-size: 0.8em; /* Smaller font for toggle button */
+            .back{
+                font-size: 0.9em;
+                
             }
+            
         }
 
         @media (max-width: 480px) {
             body {
                 padding: 10px; /* Even smaller padding on very small screens */
             }
-            .policy-container {
-                margin: 15px auto;
-                padding: 15px; /* Further reduce container padding */
-                border-radius: 5px; /* Slightly smaller border-radius */
-            }
             h1 {
-                font-size: 1.8em;
+                font-size: 1.4em;
+                text-align: none;
+                margin-left: 50px;
+                margin-top: 30px;
             }
             h2 {
-                font-size: 1.3em;
+                font-size: 1.2em;
             }
             h3{
-                font-size: 0.8em;
+                font-size: 1.1em;
             }
             p, ul, li {
-                font-size: 0.9em;
+                font-size: 1em;
             }
-            .theme-toggle {
-                top: 10px;
-                right: 10px;
-                padding: 5px 8px;
-                font-size: 0.75em;
+            .back{
+                font-size: 0.5em;
+                bottom: 20px;
+                
             }
         }
-        .policy-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color:var(--background-white);
-            border-radius: 10px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-            padding: 30px;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 
         h1, h2, h3{
             color: var(--accent-color); /* Use CSS variable */
@@ -140,18 +90,22 @@
             transition: color var(--transition-speed);
         }
 
+        h1{
+            
+            text-align: center;
+        }
+
+       
+
         p {
             margin-bottom: 15px;
             margin-bottom: 15px;
             color: var(--text-dark); /* Ensure text color respects theme */
-            transition: color var(--transition-speed);
-            bo
-
-            
+            transition: color var(--transition-speed);            
         }
 
         b{
-            color: #28a745;
+            color: var(--accent-color);
         }
         ul {
             list-style-type: ;
@@ -164,43 +118,29 @@
             transition: color var(--transition-speed);
         }
 
-        .theme-toggle {
-            background: var(--background-white);
-            color: var(--text-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-size: 0.9em;
-            position: absolute; /* Keep position absolute for this page for now */
+        .back, a{
+            text-decoration: none;
+            font-size: 1.3em;
+            color: var(--accent-color);
+            bottom: none;
             top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
-            z-index: 1001; /* Ensure it's on top */
+            flex-grow:1;
+            position: absolute;
+            
         }
-        .theme-toggle:hover {
-            background-color: var(--background-light);
-            transform: translateY(-1px);
-        }
-        body.dark-mode .theme-toggle:hover {
-            background-color: var(--background-light);
-        }
+        
 
   </style> 
 </head>
 <body>
 
-    <a href="{{ url_for('index') }}">← Back to App</a>
+    <div>
+        <div class="back"><a href="{{ url_for('home') }}"><i class="fa-sharp fa-solid fa-arrow-left"></i></a></div>
 
-    <div class="policy-container">
-
-        <div><h1><b>Policy for CoreEfx AI App</b> </h1></div>
+        <div><h1><b>Policy for CoreEfx AI App</b></h1></div>
         <p><b>Effective Date</b>: July 22, 2025</p>                
 
-        <div>This Privacy Policy describes how  CoreEfx AI App collects, uses, and discloses your information when you use our App mobile application/website,AI health adviser. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy</div>
+        <div><p>This Privacy Policy describes how  CoreEfx AI App collects, uses, and discloses your information when you use our App mobile application/website,AI health adviser. By using the Service, you agree to the collection and use of information in accordance with this Privacy Policy</p></div>
         <b><hr></b>
         <div><h2>1. &nbsp; Information We Collect </h2>
         <p>This section details what information we collect. We are committed to transparency about the data we gather to provide and improve our AI Health Advisor Service.</p>
