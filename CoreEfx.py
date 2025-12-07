@@ -120,28 +120,168 @@ with app.app_context():
     if Hospital.query.count() == 0:
         sample_hospitals = [
             # Hospitals in major Nigerian cities
-            Hospital(name="Lagos State University Teaching Hospital (LASUTH)", city="lagos", lat=6.59047449787585,   lon=3.3422608588498037,
+            Hospital(name="Lagos State University Teaching Hospital (LASUTH)", city="lagos", lat=6.59047449787585,
+                     lon=3.3422608588498037,
                      url="https://lasuth.org.ng/"),
-            Hospital(name="University of Port Harcourt Teaching Hospital", city="choba port harcourt", lat=4.903006121694171,  lon=6.928573993848487,
+            Hospital(name="University of Port Harcourt Teaching Hospital", city="East-West Road, PH",
+                     lat=4.90053, lon=6.92877,
                      url="https://www.google.com/search?q=upth+port+harcourt&rlz"),
-            Hospital(name="University of Abuja Specialist Hospital", city="abuja", lat=8.965031007601917,  lon=7.064360769741204,
+            Hospital(name="Rivers State University Teaching Hospital", city="Harley Street, Old GRA port harcourt",
+                     lat=4.77999, lon=7.01429,
+                     url="https://www.google.com/search?q=upth+port+harcourt&rlz"),
+            Hospital(name="Professor Kelsey Harrison Hospital", city="11 Emenike Street, Mile 1, Diobu, Port harcourt",
+                     lat=4.79096, lon=6.99437,
+                     url="https://www.google.com/search?q=upth+port+harcourt&rlz"),
+            Hospital(name="Rivers State Dental and Maxillofacial Hospital", city="Garrison, Port Harcourt",
+                     lat=4.80552, lon=7.00923,
+                     url="https://www.google.com/search?q=upth+port+harcourt&rlz"),
+            Hospital(name="Obio Cottage Hospital",
+                     city="near Trans-Amadi Industrial Layout Road, Rumuola, Port Harcourt", lat=4.83444, lon=7.03362,
+                     url="https://farepharm.com/hospital/313"),
+            Hospital(name="Portharcourt Government House Clinic", city="Forces Ave, Old GRA, Port Harcourt 500101",
+                     lat=4.77454, lon=7.01643,
+                     url="https://www.google.com/search?q=upth+port+harcourt&rlz"),
+            Hospital(name="University of Abuja Specialist Hospital", city="abuja", lat=8.965031007601917,
+                     lon=7.064360769741204,
                      url="https://www.google.com/search?q=university+of+abuja+specialist+hospital+gwagwalada&sca"),
 
-            # Hospitals near Delta State (specifically added for your location context)
-            Hospital(name="Central Hospital Warri", city="warri", lat=5.517178270540105, lon=5.734592093139206,
+            # Hospitals near Delta State,Rivers State, FCT, Lagos (specifically added for your location context)
+            Hospital(name="Central Hospital - Warri Emergency Unit", city=" Mabiaku Rd, Warri-Ogunu Rd, Warri",
+                     lat=5.51702, lon=5.73447,
                      url="https://www.google.com/search?q=central+hospital+warri&sca"),
-            Hospital(name="Delta State University Teaching Hospital", city="Oghara", lat=5.9602250750294345 , lon= 5.702942682383533,
-                     url="https://www.google.com/search?q=delta+state+university+teaching+hospital&sca"),  # Located in Oghara
-            Hospital(name="Federal Medical Centre Asaba", city="asaba", lat=6.2121256496757615, lon=6.7122751952742465,
+            Hospital(name="Delta State University Teaching Hospital (DELSUTH)", city="Oghara", lat=5.9602250750294345,
+                     lon=5.702942682383533,
+                     url="https://www.google.com/search?q=delta+state+university+teaching+hospital&sca"),
+            # Located in Oghara
+            Hospital(name="Federal Medical Centre (FMC)", city=" Isieke-Asaba", lat=6.2121256496757615,
+                     lon=6.7122751952742465,
                      url="https://www.google.com/search?q=Federal+Medical+Centre+Asaba&sca"),
-            Hospital(name="University of Benin Teaching Hospital (UBTH)", city="benin city", lat=6.3903335466504725, lon=5.611826787114936,
+            Hospital(name="University of Benin Teaching Hospital (UBTH)",
+                     city=" Benin Lagos Express Road, Uselu, Benin City", lat=6.3903335466504725, lon=5.611826787114936,
                      url="https://www.google.com/search?q=ubth&sca"),
-            Hospital(name="Federal Medical Centre Yenagoa", city="yenagoa", lat=4.937291400004392, lon=6.266638050617462,
+            Hospital(name="Federal Medical Centre Yenagoa", city="Hospital Rd, Yenagoa", lat=4.937291400004392,
+                     lon=6.266638050617462,
                      url="https://www.google.com/search?q=federal+medical+centre+yenagoa&sca"),
-            Hospital(name="Divine Grace Hospital Warri", city="warri", lat=5.568987307199267,  lon=5.767263095268969, url="https://www.bing.com/search?q=divine_grace_hospital%2ceffurun.delta_state&qs"),
-            Hospital(name="Lily Hospitals Ltd. Warri", city="warri", lat=5.526185526750632,  lon=5.765111210609841,
+            Hospital(name="Divine Grace Hospital Warri", city="2 Rubber Crescent, Warri ", lat=5.568987307199267,
+                     lon=5.767263095268969,
+                     url="https://www.bing.com/search?q=divine_grace_hospital%2ceffurun.delta_state&qs"),
+            Hospital(name="Lily Hospitals Ltd. Warri", city="6 BrisibeLane, Deco Rd, off Etuwewe Road, Warri",
+                     lat=5.526185526750632, lon=5.765111210609841,
                      url="https://lilyhospitals.com/"),
-            Hospital(name="Asaba Specialist Hospital", city="asaba", lat=6.234913709017079,  lon=6.685982039450925, url="https://asabaspecialisthospital.org/")
+            Hospital(name="Asaba Specialist Hospital", city="GRA Phase I, Okpanam, Asaba", lat=6.234913709017079,
+                     lon=6.685982039450925, url="https://asabaspecialisthospital.org/"),
+            Hospital(name="Ughelli Central Hospital", city="Oteri, Ughelli", lat=5.49428, lon=5.99526,
+                     url="https://www.cybo.com/NG-biz/ughelli-central-hospital"),
+            Hospital(name="Sapele Central Hospital", city="Market Rd,Sapele", lat=5.90041, lon=5.68115,
+                     url="https://www.cybo.com/NG-biz/sapele-central-hospital"),
+            Hospital(name="Sapele Primary Health Centre", city="Market Rd,Sapele", lat=5.90041, lon=5.68115,
+                     url="https://www.africabizinfo.com/NG/sapele-primary-health-centre"),
+            Hospital(name=" Agbor Central Hospital", city="Lagos-Asaba Rd, Umutu-Aliagwai Agbor Rd, Agbor", lat=6.25575,
+                     lon=6.18205, url="https://www.cybo.com/NG-biz/central-hospital-agbor"),
+            Hospital(name="Oleh Central Hospital", city=" Oleh-Okpari-Warri Rd, Oleh", lat=5.47793, lon=6.20428,
+                     url="https://www.cybo.com/NG-biz/central-hospital-oleh"),
+            Hospital(name="Boji Boji Owa Primary Health Centre", city="Boji Boji, Agbor", lat=6.25396, lon=6.21760,
+                     url="https://www.cybo.com/NG-biz/boji-boji-owa-primary-health-centre"),
+            Hospital(name="SECHO Specialist Hospital", city="Okobi St, Boji Boji-Agbor", lat=6.25123, lon=6.19940,
+                     url="https://www.cybo.com/NG-biz/secho-specialist-hospital"),
+            Hospital(name=" Agbor General Hospital", city="Boji Boji-Agbor", lat=6.24236, lon=6.20610,
+                     url="https://www.cybo.com/NG-biz/general-hospital_170c"),
+            Hospital(name="Boji-Boji Agbor Primary Health Centre", city="Urubisi st,Agbor", lat=6.26338, lon=6.18474,
+                     url="https://www.cybo.com/NG-biz/boji-boji-agbor-primary-health-centre"),
+            Hospital(name="Onicha-Olona General Hospital ", city=" Atuma Rd, Onicha-Olona ", lat=6.36676, lon=6.56661,
+                     url="https://www.africabizinfo.com/NG/onicha-olone-general-hospital"),
+            Hospital(name="Onicha-Uku Primary Health Centre", city="Ugbodu Rd, Onicha-Uku", lat=6.37447, lon=6.46181,
+                     url="https://www.africabizinfo.com/NG/onicha-uku-primary-health-centre"),
+            Hospital(name="Issele-Uku Primary Health Centre", city="otolokpo Rd, Issele-Uku", lat=6.31878, lon=6.47624,
+                     url="https://www.cybo.com/NG-biz/issele-uku-primary-health-centre"),
+            Hospital(name="Ogwashi uku General hospital", city="Agidase, Ogwashi-Ukwu", lat=618167, lon=6.53025,
+                     url="https://branches.com.ng/branch-detail/Hospitals-and-Clinics-in-Nigeria-General-Hospital-Ogwashi-Uku-Delta"),
+            Hospital(name="Ubulu-Uku Health Centre", city="Ubulu-Uku", lat=6.23348, lon=6.44983,
+                     url="https://branches.com.ng/branch-detail/Hospitals-and-Clinics-in-Nigeria-Ubulu-Uku-Primary-Health-Centre-Delta"),
+            Hospital(name="Isheagu Government Hospital", city=" Ewulu/Ishagu, Isheagu", lat=6.03929, lon=6.54674,
+                     url="https://thehospitalbook.com/isheagu-government-hospital/"),
+            Hospital(name="Bomadi General Hospital", city="Bomadi", lat=5.16843, lon=5.91396,
+                     url="https://branches.com.ng/branch-detail/Hospitals-and-Clinics-in-Nigeria-Bomadi-General-Hospital-Bomadi-Delta"),
+            Hospital(name="Government Hospital Ehwerhe", city="Ehwerhe- Agbarho", lat=5.58586, lon=5.86606,
+                     url="https://www.cybo.com/NG-biz/government-hospital-ehwerhe-agbarho"),
+            Hospital(name="Orogun General Hospital", city="Ogor-otagba Rd, Ejeba, Orogun", lat=5.63683, lon=615289,
+                     url=""),
+            Hospital(name="Burutu General Hospital", city="Burutu", lat=5.35024, lon=5.51655, url=""),
+            Hospital(name="Focados Government Hospital", city="Focados", lat=5.35884, lon=5.43361, url=""),
+            Hospital(name="Cottage Hospital", city="Ogulagha", lat=5.35136, lon=5.34302, url=""),
+            Hospital(name="Ojobo Government Hospital", city="Bolou-Ojobo", lat=5.03185, lon=5.66679, url=""),
+            Hospital(name="Kiagbodo Government Hospital", city="Akugbene", lat=5.24324, lon=5.83601, url=""),
+            Hospital(name="Eku Baptist Hospital", city="Igun Watershed, Eku", lat=5.75175, lon=5.99549, url=""),
+            Hospital(name="Isokolo General Hospital",
+                     city="Orhokpor Orokpor Rd, Ughelli-Isokolo Rd, Agbon VII, Isokolo", lat=5.59122, lon=5.98717,
+                     url=""),
+            Hospital(name="Isiokolo Health Centre", city="Isokoko-Egume Rd, Isokolo", lat=5.60097, lon=6.00240, url=""),
+            Hospital(name="Abraka Central Hospital", city="Akure-Abedei Rd, Abraka", lat=5.78942, lon=6.10226, url=""),
+            Hospital(name="Cottage Hospital Erhoike", city="Obajere-Orokpor Rd, Isokolo", lat=5.64449, lon=6.03590,
+                     url=""),
+            Hospital(name="Erhoike Cottage Hospital", city="Eko-Obiaruku Rd, Oria", lat=5.76508, lon=6.04901, url=""),
+            Hospital(name="Abraka Health Centre", city=" Eko-Obiaruku Rd, Oria", lat=5.76678, lon=6.04982, url=""),
+            Hospital(name="Oghara General Hospital", city="Oghara-Ajagbodudu Rd, Oghara", lat=5.93847, lon=5.67954,
+                     url=""),
+            Hospital(name="Great Land Hospital", city="College Rd, Mosogar", lat=5.90345, lon=5.73071, url=""),
+            Hospital(name="Ugbevwe-Jesse Government Hospital", city="Ajavwuni Ugbevwe", lat=5.03185, lon=5.66679,
+                     url=""),
+            Hospital(name="Government Hospital Umunede", city="Umunede-Ogan Rd, Umunede", lat=6.24562, lon=6.30772,
+                     url=""),
+            Hospital(name="Owa-Oyibu Primary Health Centre", city="Idulaka Rd, Owa-Oyibu", lat=6.18137, lon=6.19174,
+                     url=""),
+            Hospital(name="Owa-Alero Government Hospital", city="Owa-Eke Rd, Owa-Aliosimi", lat=6.21982, lon=6.21651,
+                     url=""),
+            Hospital(name="Abavo Primary Health Centre", city="Ekuma, Abavo", lat=6.13373, lon=6.15210, url=""),
+            Hospital(name="Agbor-Alidinma General Hospital", city="Ewuru Road, Agbor", lat=6.26440, lon=6.14770,
+                     url=""),
+            Hospital(name="Government Hospital Ofagbe", city="Ofagbe", lat=5.53712, lon=6.35289, url=""),
+            Hospital(name="Delta State Government Hospital, Owhelogbo", city="Old Emevor Rd, Owhelogbo ", lat=5.59201,
+                     lon=6.19493, url=""),
+            Hospital(name="Ozoro Primary Health Centre", city="Oruamudhu St, Ozoro", lat=5.54870, lon=6.23822, url=""),
+            Hospital(name="Ozoro General Hospital", city="Oruamudhu St, Ozoro", lat=5.54811, lon=6.23670, url=""),
+            Hospital(name="Government Hospital Aviara", city="Aviara", lat=5.39010, lon=6.26589, url=""),
+            Hospital(name="Warri South Local Government Cottage Hospital", city="Upper Erejuwa Rd, Warri", lat=5.52205,
+                     lon=5.75031, url=""),
+            Hospital(name="Uzere Primary Health Centre", city="Uzere", lat=5.33328, lon=6.23905, url=""),
+            Hospital(name="Erhoke COttage Hospital", city="College Road, Kokori", lat=5.64176, lon=6.06593, url=""),
+            Hospital(name="Government Hospital Olomoro", city="Oruabe", lat=5.41887, lon=6.12950, url=""),
+            Hospital(name="Ashaka Government Hospital", city="Ushie Rd, Ashaka", lat=5.63243, lon=6.39060, url=""),
+            Hospital(name="Ashaka General Hospital", city="Ushie Rd, Ashake", lat=5.63211, lon=6.39035, url=""),
+            Hospital(name="General Hospital Aboh", city="Mbutu", lat=5.42157, lon=7.24102, url=""),
+            Hospital(name="Umuolu General Hospital", city="Umuolu", lat=5.43130, lon=6.48587, url=""),
+            Hospital(name="Kwale General Hospital", city="Kwale", lat=5.70558, lon=6.44199, url=""),
+            Hospital(name="General Hospital Orerokpe", city="Orerokpe", lat=5.63270, lon=5.89132, url=""),
+            Hospital(name="Government Hospital Mereje.", city="Mereje", lat=5.66380, lon=5.72023, url=""),
+            Hospital(name="Mereje Primary Health Centre", city="Mereje", lat=5.66728, lon=5.71292, url=""),
+            Hospital(name="Government Hospital Ibusa", city="Igbuzor, Umejei Rd, Ibusa", lat=5.03185, lon=5.66679,
+                     url=""),
+            Hospital(name="Ebu Primary Health Centre", city="Ebu", lat=6.48223, lon=6.60817, url=""),
+            Hospital(name="Ebu General Hospital", city=" Illah-Okwe Rd, Ebu", lat=6.46942, lon=6.62947, url=""),
+            Hospital(name="Akwukwu-Igbo General Hospital", city="Illah-Atumo Rd, Akwukwu Igbo", lat=6.35886,
+                     lon=6.59324, url=""),
+            Hospital(name="General Hospital Okwe", city="Okwe General Hospital Rd, Asaba", lat=6.16947, lon=6.74174,
+                     url=""),
+            Hospital(name="Patani General Hospital", city="Patani", lat=5.23569, lon=6.19255, url=""),
+            Hospital(name="Patani Primary Health Centre", city="Patani", lat=5.22756, lon=6.19153, url=""),
+            Hospital(name="Otor Udu General Hospital", city="Oleh-Okpari-Warri Rd, Udu lGC, Otudu", lat=5.45906,
+                     lon=5.86813, url=""),
+            Hospital(name="General Hospital Otu Jeremi", city=" Edjovhe-Otujerimi Rd, Otu Jeremi", lat=5.43296,
+                     lon=5.87538, url=""),
+            Hospital(name="Ewu General Hospital", city="Edjekota-Ewu Rd, Ewu", lat=5.38166, lon=5.98982, url=""),
+            Hospital(name="Ewu Primary Health Centre", city="Edjekota-Ewu Rd, Oviri Olomu-Ogor Rd, Ewu", lat=5.38882,
+                     lon=5.99336, url=""),
+            Hospital(name="Umutu Primary Health Centre", city="Abraka - Umutu Rd, Agbor - Eku Rd, Umutu", lat=5.90853,
+                     lon=6.22560, url=""),
+            Hospital(name="Umutu Health Centre", city="Old Agbor- Sapele Rd, Umutu", lat=5.91450, lon=6.22603, url=""),
+            Hospital(name="Obiaruku General Hospital", city="opposite idise, Obiaruku", lat=5.84561, lon=6.14491,
+                     url=""),
+            Hospital(name="Ekpan General Hospital", city="Hospital Rd, Ekpan, Warri", lat=5.56266, lon=5.74862, url=""),
+            Hospital(name="Koko General Hospital", city="Koko Camp", lat=5.99871, lon=5.44544, url=""),
+            Hospital(name="Abigborodo Primary Health Centre", city="Abigborudu", lat=5.89397, lon=5.53655, url=""),
+            Hospital(name="Omadino Cottage Hospital", city="Omadino Town, Warri", lat=5.62656, lon=5.65092, url=""),
+            Hospital(name="Ogbe-Ijoh Primary Health Centre", city="Ogbe-Ijoh", lat=5.47970, lon=5.73611, url=""),
+
         ]
         # Add all sample hospital objects to the current database session.
         db.session.bulk_save_objects(sample_hospitals)
@@ -149,6 +289,7 @@ with app.app_context():
 # === NEW: Machine Learning Setup ===
 ml_vectorizer = None
 ml_model = None
+
 
 def train_ml_model():
     """
@@ -185,6 +326,7 @@ def ml_predict_condition(text, top_n=5, threshold=0.0):
 
     # Return top N
     return filtered[:top_n]
+
 
 # Predefined Symptom Data and Advice
 # This dictionary holds various health conditions, their associated keywords/symptoms,
@@ -407,8 +549,6 @@ symptom_data = {
 }
 
 
-
-
 def check_symptoms(user_input, min_score_threshold=1, top_n=5):
     """
     Analyzes user symptom input with spaCy lemmas & scores each condition.
@@ -441,14 +581,17 @@ def check_symptoms(user_input, min_score_threshold=1, top_n=5):
     # Return top N conditions with scores
     return sorted_conditions[:top_n]
 
+
 def normalize_condition_name(name: str) -> str:
     """Standardize condition names to match symptom_data keys."""
     return name.strip().lower()
 
+
 medical_keywords = [
     "fever", "body hot", "body dey hot", "chills", "body dey shake", "sweating", "too much sweat",
     "headache", "head dey pain", "fatigue", "body weak", "no strength", "nausea", "body dey turn",
-    "vomiting", "dey vomit", "muscle aches", "body pain", "stomach pain", "stomach cramp", "belly twist"  "belly dey pain",
+    "vomiting", "dey vomit", "muscle aches", "body pain", "stomach pain", "stomach cramp",
+    "belly twist"  "belly dey pain",
     "diarrhea", "stool dey run", "stool dey rush", "constipation", "no fit stool", "weakness",
     "body weak well well", "loss of appetite", "no wan chop", "cough", "dey cough", "sore throat",
     "throat dey pain", "runny nose", "catarrh dey come out", "nasal congestion", "nose block",
@@ -468,12 +611,14 @@ medical_keywords = [
     "child no grow well"
 ]
 
+
 def has_medical_relevance(text):
     text_lower = text.lower()
     return any(keyword in text_lower for keyword in medical_keywords)
 
 
 train_ml_model()
+
 
 # --- Example Usage (assuming you have your symptom_data loaded elsewhere) ---
 # user_input_example = "I have fever, chills and loss of appetite"
@@ -518,6 +663,7 @@ def find_nearby_hospitals(user_lat, user_lon, radius_km=200):
                 })
     return nearby
 
+
 # === NEW Welcome Template ===
 welcome_template = """
 <!DOCTYPE html>
@@ -525,7 +671,7 @@ welcome_template = """
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>CoreEfx AI Health Advisor</title>
+    <title>Welcome to CoreEfx AI</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
@@ -543,15 +689,17 @@ welcome_template = """
 
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
             margin: 0;
             padding: 0;
+
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background: var(--light-bg);
-            color: var(--light-text);
+
             text-align: center;
             transition: background var(--transition-speed), color var(--transition-speed);
         }
@@ -560,16 +708,18 @@ welcome_template = """
             color:var(--light-text);
             font-size: clamp(4.5rem, 15vw, 4.5rem);
             font-weight: 680;
-            line-height: 1.2;
+
             margin-bottom: -10px;
             margin-top: -5px;
-            opacity: 0; /* Start hidden for animation */
-            transform: translateY(20px); /* Start slightly below for animation */
-            animation: fadeInScale 3s ease-out forwards; /* Apply animation */
+            opacity: 0; /*Start hidden for animation */
+            transform: translateY(20px);  /*Start slightly below for animation */
+            animation:  fadeInScale 3s ease-out forwards; /*Apply animation */
         }
         .icon { 
             color:var(--accent-color);
         }
+
+
 
         /* Animation Keyframes */
         @keyframes fadeInScale {
@@ -582,14 +732,15 @@ welcome_template = """
                 transform: translateY(0) scale(1);
             }
         }
-        h3 {
-            font-family:  Poppins(Semibold, Medium);
+
+        h3{ 
+            font-family: Poppins(Semibold, Medium);
             color:var(--light-text);
             font-size: 40px;
             font-weight: 600;
-            opacity: 0; /* Start hidden for animation */
-            transform: translateY(20px); /* Start slightly below for animation */
-            animation: fadeInScale 3s ease-out forwards; /* Apply animation */
+            opacity: 0; /*Start hidden for animation */
+            transform: translateY(20px);  /*Start slightly below for animation */
+            animation:  fadeInScale 3s ease-out forwards; /*Apply animation */
        }
        @keyframes fadeInScale {
             from {
@@ -600,59 +751,53 @@ welcome_template = """
                 opacity: 1;
                 transform: translateY(0) scale(0.95);
             }
-        }
-
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+       }
 
 
-       
 
         /* Dark mode support */
         @media (prefers-color-scheme: dark) {
             body {
                 background: var(--dark-bg);
-                
+
             }
             .icon { color: var(--dark-text);}
             h1 { color: var(--dark-text);}
             h3 { color:var(--muted-dark-text);}
-           
+
         }
 
         /* Extra small screen tweaks */
-        @media (max-width: 780px) {
+        @media (max-width: 1020px) {
             h1 {
                 font-size: clamp(3.1rem, 14vw, 3.1rem);
-                 
+
             }
-            
+
             h3 {
                 font-size: 25px;
             }
-           
+
+
         }
          @media (max-width: 480px) {
-           h1 {
+            h1 {
                 font-size: clamp(2.1rem, 12vw, 2.1rem);
-                
-                
+
+
             }
             h3{
                 font-size: 18px;
-               
+
+
             }
-            
+
         }
     </style>
 </head>
 <body>
-   <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
-     <h3>Check Symptoms, Stay Healthy</h3>
-    
+    <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+    <h3>Check Symptoms, Stay Healthy</h3>
 </body>
 </html>
 """
@@ -664,7 +809,7 @@ login_template = """
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CoreEfx AI Health Advisor</title>
+  <title>CoreEfx AI Login</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
 
   <!-- Leaflet & FontAwesome -->
@@ -679,7 +824,7 @@ login_template = """
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+     font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
       background: #f5f5f5;
       color: #333;
       margin: 0;
@@ -699,7 +844,7 @@ login_template = """
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-   h1 {
+    h1 {
       color:  #343a40;
       margin-bottom: 20px;
       text-align: center;
@@ -707,7 +852,7 @@ login_template = """
     .icon {
         color: #008000;
     }
-    
+
 
     input {
       width: 100%;
@@ -810,18 +955,15 @@ login_template = """
     }
 
     /* ✅ Mobile view adjustments */
-    @media (max-width: 768px) {
+    @media (max-width: 1020px) {
       body {
         padding: 0;
       }
 
       form {
-       
+
         width: 100%;
         margin: 0 auto;
-        border-radius: 10px;
-        /*height: 150vh;*/
-        box-shadow: none;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -841,7 +983,7 @@ login_template = """
         right: 10px;
         left: auto;
       }
-      
+
     }
 
     @media (max-width: 480px) {
@@ -863,9 +1005,9 @@ login_template = """
   </style>
 </head>
 <body>
-  
+
     <form method="POST">
-     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+    <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
       <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="username" name="username" placeholder="Username" required />
@@ -884,7 +1026,7 @@ login_template = """
     <p>
       Don't have an account? <a href="/signup">Sign Up</a>
     </p>
-    
+
     </form>
  <script>
     function togglePassword() {
@@ -911,7 +1053,7 @@ signup_template = """
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CoreEfx AI Health Advisor</title>
+  <title>CoreEfx AI Sign Up</title>
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
 
   <!-- Leaflet & FontAwesome -->
@@ -928,6 +1070,7 @@ signup_template = """
 
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+
       background: #f5f5f5;
       color: #333;
       margin: 0;
@@ -947,7 +1090,7 @@ signup_template = """
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-   h1 {
+     h1 {
       color:  #343a40;
       margin-bottom: 20px;
       text-align: center;
@@ -955,6 +1098,7 @@ signup_template = """
     .icon {
         color: #008000;
     }
+
 
     input {
       width: 100%;
@@ -1000,7 +1144,7 @@ signup_template = """
     .input-group {
       position: relative;
     }
-    
+
     .input-group .icon {
         position: absolute;
         top: 50%;
@@ -1058,18 +1202,14 @@ signup_template = """
     }
 
     /* ✅ Mobile view adjustments */
-    @media (max-width: 768px) {
+    @media (max-width: 1020px) {
       body {
         padding: 0;
       }
 
       form {
-       
         width: 100%;
         margin: 0 auto;
-        border-radius: 10px;
-        /*height: 150vh;*/
-        box-shadow: none;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -1085,7 +1225,7 @@ signup_template = """
         font-size: 36px;
         margin-bottom: 30px;
       }
-      
+
       .toggle-password{
         right: 10px;
         left: auto;
@@ -1097,8 +1237,8 @@ signup_template = """
         padding: 300px 18px;
         margin: 0 auto;
         position: fixed;
-        
-        
+
+
       }
 
       input, button {
@@ -1114,7 +1254,7 @@ signup_template = """
 </head>
 <body>
   <form method="POST">
-     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+    <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
     <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="text" name="name" placeholder="Fullname" required>
@@ -1134,17 +1274,17 @@ signup_template = """
             <i class="fa-solid fa-eye" id="eye-icon"></i>
         </div>
     </div>
-    <div class="input-group">
+     <div class="input-group">
         <i class="fa fa-lock icon"></i>
         <input type="password" id="con-password" name="Confirm-password" placeholder="Confirm Password" required />
         <div type="button" class="toggle-password" onclick="togglePasswords()">
             <i class="fa-solid fa-eye" id="eye-icons"></i>
         </div>
     </div>
+
     <button type="submit">Sign Up</button>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-    <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI 
-    <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
+    <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI  <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
   </form>
 
   <script>
@@ -1179,7 +1319,11 @@ signup_template = """
   </script>
 </body>
 </html>
+
+
+
 """
+
 # HTML Template for the Web Interface
 # This string contains the full HTML structure and inline JavaScript for the front-end.
 main_template = """
@@ -1229,7 +1373,7 @@ main_template = """
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
-            
+
             margin: 0;
             padding: 1px;
             height: 100%;
@@ -1245,7 +1389,7 @@ main_template = """
             background-attachment: fixed; /* Keep background fixed when scrolling */
             background-position: center center; /* Center the background image */*/
     /* ------------------------------------------- */
-            
+
         }
 
         .container {
@@ -1256,12 +1400,12 @@ main_template = """
             border-radius: none;
             box-shadow: 0 8px 20px var(--shadow-light);
             padding: 80px 20px;
-           
+
             box-sizing: border-box;
             transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
-            
+
         }
-        
+
         h3, h4 {
              /* A more prominent font for headings */
             /*color: #008000;*/
@@ -1270,11 +1414,11 @@ main_template = """
             font-weight: 700; /* Bolder headings */
             transition: color var(--transition-speed); /* Smooth transition */
         }
-       
+
 
         h2 {
-           
-            font-size: 2.2em;
+
+            font-size: 2em;
             margin-bottom: 10px;
             color: var(--text-dark);
             margin-left: 25px;
@@ -1286,7 +1430,7 @@ main_template = """
         body.dark-mode  .icon{
             color: var(--text-dark);
         }
-        
+
 
         h3 {
             font-size: 1.8em;
@@ -1299,24 +1443,18 @@ main_template = """
             margin-top: 25px;
             color: var(--accent-color);
         }
-        
+
 
         .intro-welcome{
-            align-self: flex-start;
-            background-color: var(--background-light);
+            align-item: centre;
             color: var(--text-dark);
             padding: 15px 18px;
-            border-radius: 15px 15px 15px 0;
-            max-width: 60%;
-            text-align: left;
+            text-align: centre;
             font-weight: 500;
             word-wrap: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            font-size: 1em;
+            font-size: 2em;
             transition: color var(--transition-speed); /* Smooth transition */
             margin-top: 40px;
-            margin-bottom:-48px;
-            
         }
         .intro-text { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 1.1em;  transition: color var(--transition-speed); /* Smooth transition */ }
 
@@ -1348,14 +1486,14 @@ main_template = """
 
         .tab-button:hover .nav-icon {
             color: var(--hover-accent); /* Change text color to accent on hover */
-            
+
         }
-        
+
 
         .tab-button.active{
             font-weight: 1000;
         }
-        
+
         .tab-button .nav-icon {
             font-size: 18px;
             margin-bottom: 6px;
@@ -1365,8 +1503,8 @@ main_template = """
         .tab-button.active .nav-icon {
           color: var(--accent-color); /* ✅ icon color when active */
         }
-        
-        
+
+
         /* App Header for Desktop (default) */
         .app-header {
             display: flex; /* Hidden by default on desktop */
@@ -1383,7 +1521,7 @@ main_template = """
             position: fixed;
             padding: 5px 1px;
         }
-        
+
 
         /* Tab Content Styles */
         .tab-content {
@@ -1394,24 +1532,8 @@ main_template = """
         .tab-content.active {
             display: block; /* Shown when active */
         }
-       
-        .audio-icon {
-            margin-top: 10px;
-        }
-        .audio-icon .speak-btn {
-            background: none; /* darker green button */
-            color: var(--accent-color);
-            border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-        .audio-icon .speak-btn:hover {
-            color: var(--hover-accent); /* Slightly darker green for hover */
-        }
-        
+
+
         form {
             padding: 0;
             border-radius: 8px;
@@ -1420,96 +1542,46 @@ main_template = """
             margin-top: 140px; 
             top: 150px;
         }
-        .input-with-icon {
-           
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            background-color: var(--background-white);
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            padding: 8px 10px;
-            box-shadow: none;
-            width: 97%;
-            transition: all 0.3s ease;
-            z-index: 999; 
-        }
-        .input-with-icon:focus-within{
-            border-color: var(--accent-color) !important;
-            box-shadow: 0 0 0 0.2rem rgb(0, 256, 55, 0.1);
-            outline: none;
-            background: white;
-        }
-        
-        .input-with-icon textarea::-webkit-scrollbar {
-          display: none;
-        }
-        .input-with-icon.active{
-        background: white;
-        }
-        
-        
-        .input-with-icon textarea{
-          flex: 1;
-          border: none;
-          outline: none;
-          resize: none;
-          font-size: 1em;
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-          color: var(--text-dark);
-          background: transparent;
-          padding: 8px;
-          line-height: 1.4;
-          overflow-y: auto;
-          min-height: 40px;
-          max-height: 160px;
-          -ms-overflow-style: none;  /* IE, Edge */
-          scrollbar-width: none;     /* Firefox */
-        }
-        .input-with-icon textarea:focus-within{
-            color: black;
-        }
-        
-        
-        
-        
+
         .icon-group {
           display: flex;
           align-items: center;
           gap: 8px;
           margin-left: 8px;
         }
+
         
         /* feedback */
-       
+
         .input-feed-icon {
-           
+
             display: flex;
             align-items: flex-end;
             justify-content: space-between;
-            background-color: var(--background-white);
+            background-color: var(--background-light);
             border: 1px solid var(--border-color);
             border-radius: 25px;
             padding: 8px 10px;
             box-shadow: none;
             width: 95%;
-            
+
             margin-bottom:none;
             transition: all 0.3s ease;
             z-index: 999; 
         }
         .input-feed-icon:focus-within{
-            border-color: var(--accent-color) !important;
+             border-color: var(--accent-color) !important;
             box-shadow: 0 0 0 0.2rem rgb(0, 256, 55, 0.1);
             outline: none;
-            background: white;
+            background:var(--background-light);
+            
         }
-        
+
         .input-feed-icon textarea::-webkit-scrollbar {
           display: none;
         }
-        
-        
+
+
         .input-feed-icon textarea{
           flex: 1;
           border: none;
@@ -1528,21 +1600,19 @@ main_template = """
           scrollbar-width: none;     /* Firefox */
         }
         .input-feed-icon textarea:focus-within{
-            color: black;
+             color: var(--text-dark);
         }
         
-        
-        
-        
+
         .icon-feed {
           display: flex;
           align-items: center;
           gap: 8px;
           margin-left: 8px;
         }
-        
 
-        
+
+
         /* 🎙 Mic stays fixed at the right, vertically centered */
         .mic-btn {
             background: none;
@@ -1557,9 +1627,9 @@ main_template = """
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-          
+
         }
-        
+
         .mic-btn:hover {
           color: var(--hover-accent); 
         }
@@ -1584,62 +1654,15 @@ main_template = """
           background-color: var(--hover-accent);
           transform: scale(1.05);
         }
-        
-        hr {
-            border: 0;
-            height: 1px;
-            background: var(--border-color);
-            margin: 40px 0;
-            transition: background var(--transition-speed); /* Smooth transition */
-        }
+
 
         .results-section, .history-section, .feedback-form-section { /* Renamed feedback-section to feedback-form-section for clarity */
             margin-top: 40px;
             padding-top: 20px;
-            
         }
-        .chat-area {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 12px;
-        }
+        
 
-         .reply-me{
-         
-            align-self: flex-start;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            padding: 15px 18px;
-            border-radius: 15px 15px 15px 0;
-            max-width: 60%;
-            text-align: left;
-            word-wrap: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            font-size: 1em;
-            font-weight: 500;
-            animation: fadeIn 1s ease-in;
-         }
-         .input-sympt{
-            align-self: flex-end;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 15px 18px;
-            border-radius: 15px 15px 0 15px;
-            max-width: 60%;
-            text-align: left;
-            word-wrap: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            font-size: 1em;
-            font-weight: 500;
-            animation: fadeIn o.4s ease-in;
-         }
-         @keyframes fadeIn {
-              from {opacity:0; transform: translateY(10px);}
-              to {opacity:1; transform: translateY(0);}
-         }
-         
-                        
+        
 
         .results-section:first-of-type, .history-section:first-of-type, .feedback-form-section:first-of-type {
             margin-top: 0;
@@ -1665,22 +1688,26 @@ main_template = """
             transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
         }
 
-        li a {
-            color: var(--primary-color);
+       
+        
+        .chat-btn{
+            background:  var(--accent-color);
+            align-item: center !important;
+            border-radius: 30px;
+            padding: 15px; 
+            width: 40%;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        .chat-btn, a{
             text-decoration: none;
-            font-weight: 600;
-            transition: color var(--transition-speed);
+            color: white;            
         }
-
-        li a:hover {
-            color: #0056b3;
-            text-decoration: underline;
-        }
-
-        body.dark-mode li a:hover {
-            color: #8bbdff; /* Lighter hover for dark mode links */
-        }
-
 
         p {
             margin-top: 20px;
@@ -1716,7 +1743,7 @@ main_template = """
             color: var(--text-dark);
             transition: color var(--transition-speed); /* Smooth transition */
         }
-        
+
 
         .history-item .timestamp {
             font-size: 0.85em;
@@ -1733,7 +1760,7 @@ main_template = """
             margin-top: 40px; /* Space from the "Advice:" heading */
             margin-bottom: 3px; /* Space below the entire advice list */
         }
-        
+
         .advice-list li {
             background-color: transparent; /* No background for individual advice points */
             box-shadow: none; /* No shadow for individual advice points */
@@ -1745,7 +1772,7 @@ main_template = """
             color: var(--text-dark); /* Ensure text color is correct */
             font-size: 1em; /* Adjust font size if needed */
         }
-        
+
         .advice-list li:last-child {
             margin-bottom: 0; /* No bottom margin for the last advice point */
         }
@@ -1765,11 +1792,9 @@ main_template = """
             margin: 30px auto;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            /* Note: Leaflet map tiles are usually external and don't automatically theme. */
-            /* You might need to use dark-themed map providers for full dark mode consistency. */
         }
 
-        
+
         /* ✅ NAVBAR STYLES */
         .navbar {
           background: none !important;
@@ -1782,10 +1807,10 @@ main_template = """
           z-index: 1000;
           background-color: none !important;
           right: 20px;
-         
-          
+
+
         }
-        
+
         .nav-toggle {
           background: none; 
           border: none; 
@@ -1796,31 +1821,27 @@ main_template = """
           align-items: center; 
           font-weight: bold; 
         }
-        
+
         .nav-toggle:hover {
-          color: var(--hover-accent);
           transform: scale(1.05);
           transition: color 0.2s ease, transform 0.2s ease;
         }
-        
-       
+
+
         .nav-menu {
           display: none;
           flex-direction: column;
           position: absolute;
-          
           top: 30px;
           right: -18px;
-          
-          
           background: var(--background-light);
           border-radius: 10px;
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
           padding: 10px 0;
           min-width: 200px;
-          z-index: 1001;
+          z-index: 1010;
         }
-        
+
         .nav-menu a, .nav-menu button {
           text-align: Center;
           text-decoration: none;
@@ -1835,24 +1856,23 @@ main_template = """
           align-items: center;
           gap: 6px;
         }
-        
+
         .nav-menu a:hover, .nav-menu button:hover {
           background: var(--background-white);
           border-radius: 15px;
-          color: var(--accent-color);
         }
-        
+
         .nav-menu.show {
           display: flex;
-          
+
         }
-        
+
         /* Dropdown submenu inside navbar */
         .dropdown {
           position: relative;
           width: 100%;
         }
-        
+
         .dropdown-content {
           display: none;
           flex-direction: column;
@@ -1865,65 +1885,27 @@ main_template = """
           display: inline-block !important; 
           margin-top: 10px;
           border-radius: 20px;
-          
+
         }
         .mobile-logout{
           display: none !important;
         }
-        
-        
-        
-        
+
+
+
+
         .dropdown-content button {
           padding: 8px 20px;
-          
+
         }
-        
+
         .dropdown.show .dropdown-content {
           display: flex;
         }
-        
-        /* When the navigation is expanded */
-        .tabs.active {
-            display: flex; /* Show the tabs */
-            flex-direction: column; /* Stack them vertically */
-            max-width: 100%;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Slight shadow for the dropdown */
-            border-radius: 8px;
-            background-color: var(--background-white); /* Match container background */
-        }
 
-        .tabs.active .tab-button {
-            border-bottom: 1px solid var(--border-color); /* Separator for mobile tabs */
-            width: 100%;
-            text-align: left;
-            padding: 15px 20px;
-        }
-
-        .tabs.active .tab-button:last-child {
-            border-bottom: none;
-        }
-        
-       
          /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .footer-nav {
-                height: 80px;
-                padding bottom: 50px;
-            }
-            .container {
-                width: 100%;
-                min-width:100%;
-                min-height: 100dvh; /* ✅ fills full device viewport height (modern and reliable) */
-                margin: 0;
-                padding: 80px 20px;
-                box-sizing: border-box;
-                background-color: var(--background-white);
-                border-radius: 0;
-                box-shadow: 0 8px 20px var(--shadow-light);
-                transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
-            }
+        @media (max-width: 1020px) {
+            
             .tab-button {
                 font-size: 14px;
                 padding: 10px 0;
@@ -1935,8 +1917,6 @@ main_template = """
             h2 {
                 font-size: 1.6em;
                 text-align:left;
-                
-            
             }
             h3 {
                 font-size: 1.5em;
@@ -1944,43 +1924,26 @@ main_template = """
             h4 {
                 font-size: 1.2em;
             }
-            .input-with-icon {
-                bottom: 100px; /* keeps it above footer on mobile */
-                padding: 10px 12px;
-                border-radius: 20px;
-            }
+            
             .input-feed-icon{
                 bottom: 300px; /* keeps it above footer on mobile */
                 padding: 10px 12px;
                 border-radius: 20px;
             }
-                
-            
-            .input-with-icon textarea {
-                font-size: 0.95em;
-                padding: 8px 10px;
-                min-height: 35px;
-                max-height: 100px;
+
+            .chat-btn{
+                width: 50%;
             }
-            
+
             .mic-btn,
             .circle-btn {
                 font-size: 18px;
             }
-
             
-           
-            .reply-me{
-               max-width: 70%;
-               font-size: 0.95em;
-               padding: 12px 14px;
-                
+            .mic-btn{
+                display: none;
             }
-            .input-sympt{
-                max-width: 70%;
-                font-size: 0.95em;
-                padding: 12px 14px;
-             }
+
             .intro-welcome{
                 max-width: 70%;
                 font-size: 0.95em;
@@ -1988,23 +1951,21 @@ main_template = """
             }
             .nav-toggle:hover {
                 color: none;
-          
+
             }
+            
             nav-menu a:hover, .nav-menu button:hover {
-          
+
                 color: none;
             }
-            
-                
-            
-            
+
              /* Make tabs full width on smaller screens */
             .tab-button {
                 flex-grow: 1; /* Make buttons take equal width */
                 padding: 10px 15px;
                 font-size: 0.9em;
             }
-            
+
             li {
                 padding: 15px;
                 font-size: 1em;
@@ -2014,7 +1975,7 @@ main_template = """
             li a {
                 margin-top: 5px;
             }
-            
+
             /* Mobile-specific header layout */
             .app-header {
                 display: flex; /* Activate flexbox for mobile */
@@ -2028,7 +1989,7 @@ main_template = """
             }
             .mobile-logout {
                 display: flex !important;
-                
+
             }
         }
 
@@ -2039,86 +2000,48 @@ main_template = """
             .footer-nav {
                 height: 100px; /* taller footer on mobile */
             }
-            .container {
-                width: 150%;
-                max-width: 100%;
-                min-height: 100dvh; /* ✅ fills full device viewport height (modern and reliable) */
-                margin: 0;
-                padding: 80px 20px;
-                box-sizing: border-box;
-                background-color: var(--background-white);
-                border-radius: 0;
-                box-shadow: 0 8px 20px var(--shadow-light);
-                transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
-               
-            }
             
             h2 {
-                font-size: 1.5em;
+                font-size: 1.3em;
                 text-align: left;
-                
+
             }
-           .input-with-icon {
-                
-                width: 94%;
-                bottom: 120px;
-                border-radius: 18px;
-                padding: 8px 10px;
-               
-           }
+           
            .input-feed-icon {
                 bottom: 120px;
                 width: 94%;
                 border-radius: 18px;
                 padding: 8px 10px;
            }
-            
-           .input-with-icon textarea {
-                font-size: 0.9em;
-                min-height: 32px;
-                max-height: 90px;
-           }
-            .nav-toggle:hover {
-                color: none;
-          
-            }
-            nav-menu a:hover, .nav-menu button:hover {
-          
-                color: none;
-            }
-            
+
+
             .mic-btn,
             .circle-btn {
                 font-size: 17px;
             }
-            
-            .reply-me{
-                max-width: 65%;
-                font-size: 0.9em;
-                padding: 10px 12px;
-            }
-             .input-sympt{
-                max-width: 65%;
-                font-size: 0.9em;
-                padding: 10px 12px;
-             }
+
              .intro-welcome{
                 max-width: 65%;
                 font-size: 0.9em;
                 padding: 10px 12px;
             }
             
-            
+            .chat-btn{
+                width: 50%;
+            }
+
+
             .logout-btn {
                 display: none !important;
             }
             .mobile-logout {
                 display: flex !important;
-               
+
             }
             #mapid {
                 height: 300px;
             }
+            
             .tabs {
                 flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
                 padding-right: 0px;
@@ -2136,13 +2059,13 @@ main_template = """
                 font-size: 20px;
                 margin-bottom:
             }
-            
-           
+
+
              main, .container {
                 padding-bottom: 10px; /* extra space for mobile footer */
-               
+
              }
-            
+
         }
         /* Footer container */
         .footer-nav {
@@ -2156,7 +2079,7 @@ main_template = """
           height:70px;
           justify-content: center; /* center the container */
         }
-        
+
         /* The actual container inside */
         .footer-container {
           width: 800px;              /* match your container width */
@@ -2164,27 +2087,32 @@ main_template = """
           background: var(--background-light);
           border-top: 1px solid var(--shadow-light); /* border only inside */
           box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
-    
+
         }
-        
-        
+
         /* Make sure content isn’t hidden behind footer */
         main, .container {
           padding-bottom: 100px;
-        }   
+        }  
+        .rotation{
+            transform: rotate(62deg);
+            align-self: center;
+            font-size: 19px; 
+        } 
+        
     </style>
 </head>
 <body>
     <div class="container">
         <!-- New app-header for mobile alignment -->
         <header class="app-header">
-            <h2><i class="fa-solid fa-user fa-icon-large icon"></i> &nbsp;{{ current_user.username }}</h2>
+            <h2><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h2>
             <!-- ✅ NEW NAVBAR -->
             <nav class="navbar">
               <button class="nav-toggle" id="navToggle">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
               </button>
-            
+
               <div class="nav-menu" id="navMenu">
                 <div class="dropdown">
                   <button class="dropdown-btn"><i class="fa fa-gear"></i> Settings ▾</button>
@@ -2197,7 +2125,7 @@ main_template = """
                         <i class="fa fa-desktop"></i>
                         <span>System Mode</span>
                     </button>
-    
+
                     <button class="mobile-logout" onclick="window.location='{{ url_for('logout') }}'">
                       <i class="fa fa-sign-out-alt"></i> 
                       <span>Logout</span>
@@ -2206,7 +2134,7 @@ main_template = """
                 </div>
                 <a href="{{ url_for('privacy_policy') }}"><i class="fa fa-lock"></i> Privacy Policy</a>
                 <a href="{{ url_for('terms_of_service') }}"><i class="fa fa-file-alt"></i> Terms of Service</a>
-                
+
                 <button class="logout-btn" onclick="window.location='{{ url_for('logout') }}'">
                     <i class="fa fa-sign-out-alt"></i> 
                     <span>Logout</span>
@@ -2215,77 +2143,16 @@ main_template = """
             </nav>
 
         </header>
-            
+
         <div id="home" class="tab-content active">
-           
 
-            <div class="intro-welcome"><b>Welcome {{ current_user.username }}, as your AI Health Advisor, I provide initial symptom guidance & help you find nearby hospitals. Please remember, a medical professional diagnosis is essential.</b></div>
-            
-            
-
-            {% if user_message or result %}
-            
-            <div class="results-section">
-                 <div class="chat-area">  <!-- ✅ New wrapper -->    
-                    {% if user_message %}
-                        <div class="input-sympt">
-                            <b>{{ user_message }}</b>
-                        </div>     
-                    {% endif %}
-                
-                    {% if result %}
-                       
-                        {% for item in result %}
-                        <div class="reply-me">
-                            <b>{{ item }}</b>
-                        </div>
-                           
-                        {% endfor %}
-                 </div>   
-                    {% if audio_file %}
-                    <div class="audio-icon">
-                        <button onclick="playAdvice()" class="speak-btn">
-                            <i class="fa-solid fa-volume-low"></i>
-                        </button>
-                        <audio id="adviceAudio" style="display:none;">
-                            <source src="{{ audio_file }}" type="audio/mpeg">
-                        </audio>
-                    </div>
-                    {% endif %}
-            
-                    <h4>Here are nearby hospitals that may help, based on your location:</h4>
-                    <ul>
-                    {% for hospital in hospitals %}
-                        <li><b>
-                            {{ hospital.name }} ({{ hospital.city.title() }})</b>
-                            {% if hospital.url %}
-                                <a href="{{ hospital.url }}" target="_blank" title="{{ hospital.url }}">More Info</a>
-                            {% endif %}
-                        
-                        </li>
-                    {% endfor %}
-                    </ul>
-                    <div id="mapid"></div>
-                {% endif %}
-            </div>
-            
-            {% endif %}
-
-            
-            <form method="POST">
-                
-                <div class="input-with-icon">
-                    <textarea type="text" id="symptoms" name="symptoms" rows="1"  required class="symptom-input" placeholder="What symptoms are you experiencing today?... "></textarea>
-                    <div class ="icon-group">
-                        <button type="button" class="mic-btn" onclick="startDictation('symptoms')"><i class="fa-solid fa-microphone"></i></button>
-                        <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane"></i></button>
-                    </div>
-                </div>
-                
-                <input type="hidden" name="lat" id="lat">
-                <input type="hidden" name="lon" id="lon">
-            </form>
+            <h3>Welcome {{ current_user.username }}</h3>
+            <p class="intro-text"><b>As your AI Health Advisor, I provide initial symptom guidance & help you find nearby hospitals. Please remember, a medical professional diagnosis is essential.</b></p>
+           <a href="{{ url_for('chat') }}"> <div class="chat-btn"><span>Let's Chat</span></div></a>
         </div>
+
+
+            
 
         <div id="history" class="tab-content">
             <div class="history-section">
@@ -2310,8 +2177,8 @@ main_template = """
                                 </ul>
                                 <div><span class="timestamp">{{ report.timestamp.strftime('%d-%m-%Y %H:%M') }}</span></div>
                             </div>
-                            
-                            
+
+
                          </li>
                     {% endfor %}
                     </ul>
@@ -2328,15 +2195,15 @@ main_template = """
                 {% if feedback_message %}
                     <p class="feedback-message">{{ feedback_message }}</p>
                 {% endif %}
-                
-                
+
+
                 <form method="POST">
                     <label for="feedback_message" class="label-tittle"><b>Your Feedback:</b></label><br><br>
                         <div class="input-feed-icon">
                             <textarea type="text" id="feedback_message" name="feedback_message"  required class="feedback_message" rows="5" class="feedback-textarea"  placeholder="e.g., The advice was helpful, but the map didn't load..."></textarea> 
                             <div class ="icon-group">
                                 <button type="button" class="mic-btn" onclick="startDictation('feedback_message')"><i class="fa-solid fa-microphone"></i></button>
-                                <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                                <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane rotation"></i></button>
                             </div>
                         </div>
                 </div>
@@ -2363,52 +2230,40 @@ main_template = """
     </footer>    
     </div>
     
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  
+
 
     <script>
-        let map;
-        
-        
-        document.querySelectorAll('textarea').forEach(textarea => {
-          textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = this.scrollHeight + 'px';
-          });
-        });
-
-
-        
+       
         // NEW JAVASCRIPT FUNCTION FOR MOBILE NAV TOGGLE -- MOVED HERE
         const navToggle = document.getElementById('navToggle');
         const navMenu = document.getElementById('navMenu');
         const dropdownBtn = document.querySelector('.dropdown-btn');
         const dropdown = document.querySelector('.dropdown');
-        
+
         navToggle.addEventListener('click', () => {
           navMenu.classList.toggle('show');
         });
-        
+
         dropdownBtn.addEventListener('click', (e) => {
            e.stopPropagation();
            dropdown.classList.toggle('show');
         });
-        
+
         document.addEventListener('click', (event) => {
           if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
             navMenu.classList.remove('show');
             dropdown.classList.remove('show');
           }
         });
-        
+
         function toggleNavMenu() {
           navMenu.classList.remove('show');
           dropdown.classList.remove('show');
         }
 
 
-      
+
 
         // Theme Toggle Functionality -- MOVED HERE (or keep inside DOMContentLoaded if it strictly depends on DOM being ready)
 
@@ -2417,14 +2272,14 @@ main_template = """
         const body = document.body;
         const themeBtn = document.querySelector('.theme-toggle i');
         const themeText = document.querySelector('.theme-toggle span');
-        
+
         let systemModeActive = true;
         const systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        
+
         // Apply selected theme
         function applyTheme(mode) {
           body.classList.remove('dark-mode');
-          
+
           if (mode === 'dark') {
             body.classList.add('dark-mode');
             themeBtn.className = 'fa fa-sun';
@@ -2438,7 +2293,7 @@ main_template = """
             themeText.textContent = 'System Mode';
           }
         }
-        
+
         // Force manual theme
         function setTheme(mode) {
           localStorage.setItem('theme', mode);
@@ -2446,11 +2301,11 @@ main_template = """
           systemModeActive = false;
           systemQuery.removeEventListener('change', handleSystemChange);
         }
-        
+
         // Switch between dark/light/system manually
         function toggleTheme() {
           const currentMode = localStorage.getItem('theme') || 'system';
-        
+
           if (currentMode === 'light') {
             setTheme('dark');
           } else if (currentMode === 'dark') {
@@ -2459,30 +2314,30 @@ main_template = """
             setTheme('light');
           }
         }
-        
+
         // Follow system automatically
         function setSystemMode() {
           localStorage.setItem('theme', 'system');
           applyTheme('system');
           systemModeActive = true;
-        
+
           // Apply system’s current theme immediately
           applyTheme(systemQuery.matches ? 'dark' : 'light');
-        
+
           // Update dynamically if system theme changes
           systemQuery.addEventListener('change', handleSystemChange);
         }
-        
+
         function handleSystemChange(e) {
           if (systemModeActive) {
             applyTheme(e.matches ? 'dark' : 'light');
           }
         }
-        
+
         // On page load
         document.addEventListener('DOMContentLoaded', () => {
           const saved = localStorage.getItem('theme') || 'system';
-          
+
           if (saved === 'dark') {
             applyTheme('dark');
           } else if (saved === 'light') {
@@ -2492,11 +2347,6 @@ main_template = """
           }
         });
         
-        function playAdvice() {
-            let audio = document.getElementById("adviceAudio");
-            audio.play();
-        }
-            
         // ✅ NEW: Voice Input (Speech-to-Text)
         function startDictation(targetId) {
           if ('webkitSpeechRecognition' in window) {
@@ -2505,13 +2355,13 @@ main_template = """
             recognition.interimResults = false;
             recognition.lang = "en-US";
             recognition.start();
-        
+
             recognition.onresult = function (e) {
               const transcript = e.results[0][0].transcript;
               document.getElementById(targetId).value = transcript;
               recognition.stop();
             };
-        
+
             recognition.onerror = function (event) {
               console.warn("Speech recognition error:", event.error);
               recognition.stop();
@@ -2521,151 +2371,7 @@ main_template = """
           }
         }
 
-
-                
-
-
-        // Geolocation functions (keep these outside DOMContentLoaded as they are callable by themselves)
-        function getLocation() {
-            console.log("Attempting to get location...");
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError, {timeout: 10000});
-            } else {
-                console.log("Geolocation is not supported by this browser.");
-                // Using a custom message box instead of alert()
-                const messageBox = document.createElement('div');
-                messageBox.style.cssText = `
-                    position: fixed;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-                    background-color: #e2e3e5;
-                    color: #383d41;
-                    border: 1px solid #d6d8db;
-                    border-radius: 5px;
-                    padding: 20px;
-                    z-index: 9999;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                    font-family: Arial, sans-serif;
-                    text-align: center;
-                `;
-                messageBox.innerHTML = `
-                    <p>Geolocation is not supported by this browser. Cannot provide nearby hospitals.</p>
-                    <button onclick="this.parentNode.remove()" style="
-                        background-color: #6c757d;
-                        color: white;
-                        border: none;
-                        padding: 8px 15px;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        margin-top: 10px;
-                    ">OK</button>
-                `;
-                document.body.appendChild(messageBox);
-            }
-        }
-
-        function showPosition(position) {
-            console.log("Location obtained successfully!");
-            document.getElementById("lat").value = position.coords.latitude;
-            document.getElementById("lon").value = position.coords.longitude;
-            console.log("Lat:", position.coords.latitude, "Lon:", position.coords.longitude);
-
-            const userLat = position.coords.latitude;
-            const userLon = position.coords.longitude;
-            const hospitalsData = {{ hospitals | tojson }};
-
-            if (hospitalsData && hospitalsData.length > 0 && document.getElementById('mapid')) {
-                 initializeMap(userLat, userLon, hospitalsData);
-            } else {
-                console.log("Map not initialized: No hospitals to display or map container not found.");
-            }
-        }
-
-        function showError(error) {
-            console.error("Geolocation error object:", error);
-            let errorMessage = "An unknown geolocation error occurred.";
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    errorMessage = "User denied the request for Geolocation. Please allow location access in your browser settings to find nearby hospitals.";
-                    console.error("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    errorMessage = "Location information is unavailable. This may be due to network issues or your device's settings.";
-                    console.error("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    errorMessage = "The request to get user location timed out. Please check your internet connection or try again.";
-                    console.error("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    errorMessage = "An unknown error occurred while getting your location.";
-                    console.error("An unknown error occurred.");
-                    break;
-            }
-            console.error(errorMessage);
-            document.getElementById("lat").value = "";
-            document.getElementById("lon").value = "";
-            
-            // Display custom message box for geolocation errors
-            const messageBox = document.createElement('div');
-            messageBox.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background-color: #f8d7da;
-                color: #721c24;
-                border: 1px solid #f5c6cb;
-                border-radius: 5px;
-                padding: 20px;
-                z-index: 9999;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                font-family: Arial, sans-serif;
-                text-align: center;
-            `;
-            messageBox.innerHTML = `
-                <p>${errorMessage}</p>
-                <button onclick="this.parentNode.remove()" style="
-                    background-color: #dc3545;
-                    color: white;
-                    border: none;
-                    padding: 8px 15px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    margin-top: 10px;
-                ">OK</button>
-            `;
-            document.body.appendChild(messageBox);
-        }
-
-        function initializeMap(userLat, userLon, hospitalsData) {
-            if (map && map.remove) {
-                map.remove();
-            }
-
-            const mapDiv = document.getElementById('mapid');
-            if (!mapDiv) {
-                console.error("Map container #mapid not found. Cannot initialize map.");
-                return;
-            }
-
-            map = L.map('mapid').setView([userLat, userLon], 12);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 100,
-                //attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([userLat, userLon]).addTo(map)
-                .bindPopup("<b>Your Approximate Location</b>").openPopup();
-
-            hospitalsData.forEach(function(hospital) {
-                L.marker([hospital.lat, hospital.lon]).addTo(map)
-                    .bindPopup(`<b>${hospital.name}</b><br>${hospital.city.charAt(0).toUpperCase() + hospital.city.slice(1)}<br><a href="${hospital.url}" target="_blank">More Info</a>`);
-            });
-        }
-
+        
         function openTab(evt, tabName) {
             var i, tabcontent, tablinks;
 
@@ -2682,42 +2388,21 @@ main_template = """
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
             // --- END OF KEY PART ---
-
-            if (tabName === 'home' && map) {
-                setTimeout(() => {
-                    map.invalidateSize();
-                    if (document.getElementById("lat").value && document.getElementById("lon").value) {
-                         const userLat = parseFloat(document.getElementById("lat").value);
-                         const userLon = parseFloat(document.getElementById("lon").value);
-                         const hospitalsData = {{ hospitals | tojson }};
-                         initializeMap(userLat, userLon, hospitalsData);
-                    }
-                }, 0);
-            }
         }
 
-       
+
         // All DOM-related initializations go here
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM content loaded for initial setup.");
-
-           
-
-
-
-            // Get location on page load for initial setup, even if not displayed immediately
-            getLocation();
-
-            // Ensure the correct tab is active on initial load (defaults to 'home') - if dynamically setting
-            // openTab(null, 'home'); // Call this if you want to explicitly ensure 'home' is active
         });
-        
+
     </script>
 </body>
 </html>
 """
 
-#MIN_HYBRID_THRESHOLD = 5 # more lenient
+
+# MIN_HYBRID_THRESHOLD = 5 # more lenient
 
 @app.route("/", methods=["GET", "POST"])
 def welcome():
@@ -2741,7 +2426,7 @@ def welcome():
                 }, 8000); // 8 seconds delay
             </script></body>"""
         ))
-    
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -2757,6 +2442,7 @@ def signup():
         return redirect(url_for("login"))
     return render_template_string(signup_template)
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -2767,10 +2453,11 @@ def login():
             login_user(user)
             db.session.add(UserActivity(user_id=user.id, action="login"))
             db.session.commit()
-            return redirect(url_for("index"))
+            return redirect(url_for("home"))
         else:
             return "Invalid login."
     return render_template_string(login_template)
+
 
 @app.route("/logout")
 @login_required
@@ -2780,144 +2467,157 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+
 @app.route('/privacy_policy')
 def privacy_policy():
     return render_template("privacy_policy.html")
+
 
 @app.route('/terms_of_service')
 def terms_of_service():
     return render_template('terms_of_service.html')
 
 
+@app.route('/chat', methods=['GET', 'POST'])
+@login_required
+def chat():
+    # 1. Handle Chat Messages (POST)
+    if request.method == 'POST':
+        data = request.get_json()
+        user_input = data.get("symptoms", "").strip()
+        lat_str = data.get("lat")
+        lon_str = data.get("lon")
 
+        result = []
+        hospitals_list = []
+        audio_file = ""
+
+        # --- FIX: Initialize variables used in both branches ---
+        valid_conditions = []
+        ranked_conditions = []
+        # ----------------------------------------------------
+
+        # --- Symptom Logic (Start) ---
+        if not user_input or not has_medical_relevance(user_input):
+            # ... (Logic to set result and audio_file for invalid input) ...
+            msg = "I could not identify any symptoms. Please describe your health condition or Visit one of these hospitals close to you, if available. Thank you!!!..."
+            result = [msg]
+            audio_file = generate_audio(msg) or ""
+        else:
+            # --- START: ML & Keyword Matching Logic ---
+            # NOTE: Your full ML logic to populate ranked_conditions and valid_conditions
+            # MUST be present here. The snippet below assumes it is.
+            ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.0)
+            keyword_matches = check_symptoms(user_input, min_score_threshold=1, top_n=5)
+
+            hybrid_results = {}
+            for cond_name, prob in ml_results:
+                hybrid_results[cond_name] = {"ml_conf": prob, "spacy_score": 0}
+            for cond_name, score in keyword_matches:
+                if cond_name in hybrid_results:
+                    hybrid_results[cond_name]["spacy_score"] = score
+                else:
+                    hybrid_results[cond_name] = {"ml_conf": 0, "spacy_score": score}
+
+            ranked_conditions = []  # Re-assign here is okay
+            for cond_name, vals in hybrid_results.items():
+                ml_conf = vals["ml_conf"]
+                spacy_score = vals["spacy_score"]
+                hybrid_score = (ml_conf * 100) + (spacy_score * 10)
+                ranked_conditions.append((cond_name, hybrid_score))
+
+            ranked_conditions.sort(key=lambda x: x[1], reverse=True)
+
+            # This line successfully populates the initialized variable:
+            valid_conditions = [c for c, score in ranked_conditions if score >= 6][:5]
+            # --- END: ML & Keyword Matching Logic ---
+
+            if valid_conditions:
+                # ... (Logic to set result and audio_file based on valid conditions) ...
+                advice_texts = []
+                for cond_name in valid_conditions:
+                    cond_key = cond_name.strip().lower()
+                    if cond_key in symptom_data:
+                        advice = symptom_data[cond_key]["advice"]
+                        result.append(advice)
+                        advice_texts.append(advice)
+                audio_file = generate_audio(" ".join(advice_texts)) or ""
+            else:
+                msg = "\nI could not identify your condition. Please consult a doctor."
+                result = [msg]
+                audio_file = generate_audio(msg) or ""
+
+        # --- HOSPITAL LOGIC (Must be here and correctly indented) ---
+        if lat_str and lon_str:
+            try:
+                user_lat = float(lat_str)
+                user_lon = float(lon_str)
+
+                if user_lat == 0.0 and user_lon == 0.0:
+                    result.append("\nWarning: Location data appears to be unavailable or invalid (0, 0).")
+                else:
+                    # Search logic (using the list hospitals_list)
+                    hospitals_list = find_nearby_hospitals(user_lat, user_lon, radius_km=15)
+                    if not hospitals_list:
+                        hospitals_list = find_nearby_hospitals(user_lat, user_lon, radius_km=50)
+                        if hospitals_list:
+                            result.append("\nNote: Hospitals found outside the immediate 15km radius (within 50km).")
+                        else:
+                            result.append("\nNo nearby hospitals found within a 50km radius.")
+            except ValueError:
+                result.append("\nWarning: Could not process location data due to a format error.")
+        else:
+            result.append("\nWarning: Location access was not granted or coordinates were missing.")
+
+        # --- Save Report (Must be here) ---
+        new_report = SymptomReport(
+            user_id=current_user.id,
+            input_text=user_input,
+            location=f"{lat_str},{lon_str}" if lat_str and lon_str else "N/A",
+            result=" ".join(result)
+        )
+        db.session.add(new_report)
+        db.session.commit()
+
+        # 4. FINAL JSON RETURN (Must be here and unconditional)
+        return jsonify({
+            "result": result,
+            "audio_file": audio_file,
+            "hospitals": hospitals_list
+        })
+
+    # 2. Render Page (GET)
+    return render_template('chat.html', hospitals=[], result=[], user_message="", audio_file="")
+    
 @app.route("/home", methods=["GET", "POST"])
 @login_required
-def index():
-    user_input = ""  # ✅ Initialize to avoid UnboundLocalError
-
+def home():
+    # Initialize variables that the template expects, set to default values
+    # These were previously used for chat output, but are now reset for the dashboard view
     result = []
-    hospitals = []
-    feedback_message = None  # To display confirmation after feedback submission
-    audio_file = "" #default
+    audio_file = ""
+    user_input = ""
+    feedback_message = ""
 
-    # Fetch history on GET request (initial page load) or after POST
-    # Order by timestamp descending to show most recent first
+    # 1. Fetch Data for Dashboard Components (History & Map)
+
+    # Fetch history reports for the 'history' tab
     history_reports = SymptomReport.query.filter_by(user_id=current_user.id).order_by(
         SymptomReport.timestamp.desc()
     ).all()
 
+    # Fetch all hospitals for the initial map display on the Home tab
+    all_hospitals = Hospital.query.all()
+    hospitals = [
+        {"name": h.name, "city": h.city, "lat": h.lat, "lon": h.lon, "url": h.url}
+        for h in all_hospitals
+    ]
 
+    # 2. Handle POST Request (Now only handles Feedback Submission)
     if request.method == "POST":
-        # Check if it's a symptom submission or feedback submission
-        if "symptoms" in request.form:
-            user_input = request.form.get("symptoms", "").strip()
-            lat_str = request.form.get("lat")
-            lon_str = request.form.get("lon")
-
-            # ✅ Require at least 2 words
-            if not has_medical_relevance(user_input):
-                msg = "I could not identify any symptoms. Please describe your health condition."
-                result = [msg]
-                audio_file = generate_audio(msg) or ""
-
-            else:
-                # ✅ 1. Get ML predictions (top 3)
-                ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.0)
-
-                # ✅ 2. Get keyword matches
-                keyword_matches = check_symptoms(user_input, min_score_threshold=1, top_n=5)
-
-                # ✅ 3. Merge into one hybrid dictionary
-                hybrid_results = {}
-                for cond_name, prob in ml_results:
-                    hybrid_results[cond_name] = {"ml_conf": prob, "spacy_score": 0}
-
-                for cond_name, score in keyword_matches:
-                    if cond_name in hybrid_results:
-                        hybrid_results[cond_name]["spacy_score"] = score
-                    else:
-                        hybrid_results[cond_name] = {"ml_conf": 0, "spacy_score": score}
-
-
-                # ✅ Compute hybrid score for ranking
-                ranked_conditions = []
-                for cond_name, vals in hybrid_results.items():
-                    ml_conf = vals["ml_conf"]
-                    spacy_score = vals["spacy_score"]
-                    hybrid_score = (ml_conf * 100) + (spacy_score * 10)
-                    ranked_conditions.append((cond_name, hybrid_score))
-
-                # ✅ Sort by hybrid_score (highest first)
-                ranked_conditions.sort(key=lambda x: x[1], reverse=True)
-
-                # ✅ Pick top 3 conditions above a minimal threshold
-                valid_conditions = [c for c, score in ranked_conditions if score >= 6][:5]
-
-                # ✅ Build ONLY advice
-                if valid_conditions:
-                    advice_texts = []
-
-                    for cond_name in  valid_conditions:
-                        cond_key = cond_name.strip().lower()
-                        if cond_key in symptom_data:
-                            # ✅ Get just the advice sentence
-                            advice = symptom_data[cond_key]["advice"]
-                            result.append(advice)  # ✅ only advice, no condition name
-                            advice_texts.append(advice)  # for audio
-                        #else:
-                            #print(f"⚠️ No advice found for: {cond_key}")
-
-                    audio_file = generate_audio(" ".join(advice_texts)) or ""
-
-                else:
-                    msg = "\nI could not identify your condition. Please consult a doctor."
-                    result = [msg]
-                    audio_file = generate_audio(msg) or ""
-
-
-            location_text = "N/A"
-            user_lat, user_lon = None, None
-
-            if lat_str and lon_str:
-                try:
-                    user_lat = float(lat_str)
-                    user_lon = float(lon_str)
-                    location_text = f"{user_lat},{user_lon}"
-                    hospitals = find_nearby_hospitals(user_lat, user_lon, radius_km=20)
-                    if not hospitals:
-                        # If no hospitals are found within default radius, try a larger radius
-                        hospitals = find_nearby_hospitals(user_lat, user_lon, radius_km=80) # Increased radius
-                        if not hospitals:
-                            result.append("\nNo nearby hospitals found within 200km. Please consider widening your search or manually looking for facilities.")
-                        else:
-                            result.append("\nWe found some hospitals, but they might be a bit further away. Check the map for details.")
-                except ValueError:
-                    result.append("\nInvalid location data received. Cannot find nearby hospitals.")
-            else:
-                result.append("\nYour location was not provided or could not be determined. Cannot find nearby hospitals.")
-
-            # Save the symptom report to the database
-            new_report = SymptomReport(
-                user_id = current_user.id,
-                input_text=user_input,
-                location=location_text,
-                result=" ".join(result) # Join list of advice strings into a single string
-            )
-            db.session.add(new_report)
-            db.session.commit()
-
-            # Refresh history after a new submission
-            history_reports = SymptomReport.query.filter_by(user_id=current_user.id).order_by(
-                SymptomReport.timestamp.desc()
-            ).all()
-
-            # This is important to ensure the map loads correctly after a POST request
-            # if user_lat and user_lon:
-            #     # No direct call to initializeMap needed here, the JS onload will handle it
-            #     # by checking for `hospitals` data passed in render_template_string.
-            #     pass # Handled by the JavaScript
-
-        elif "feedback_message" in request.form:
+        # We only check for feedback here, as symptom submissions are handled by the
+        # separate AJAX call to the /chat route.
+        if "feedback_message" in request.form:
             feedback_content = request.form["feedback_message"]
             if feedback_content:
                 new_feedback = Feedback(message=feedback_content)
@@ -2927,11 +2627,10 @@ def index():
             else:
                 feedback_message = "Feedback message cannot be empty."
 
-    safe_result = result if isinstance(result, list) else []
-    safe_audio = audio_file if isinstance(audio_file, str) else ""
-    safe_user = current_user if current_user else ""
-
-    return render_template_string(main_template,result=safe_result, hospitals=hospitals, history_reports=history_reports, feedback_message=feedback_message,   audio_file=safe_audio, current_user=safe_user,  user_message=user_input)
+    # 3. Render the main dashboard template (main_template)
+    return render_template_string(main_template, result=result, hospitals=hospitals,
+                                  history_reports=history_reports, feedback_message=feedback_message,
+                                  audio_file=audio_file, current_user=current_user, user_message=user_input)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
