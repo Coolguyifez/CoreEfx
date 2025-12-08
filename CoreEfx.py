@@ -1274,14 +1274,6 @@ signup_template = """
             <i class="fa-solid fa-eye" id="eye-icon"></i>
         </div>
     </div>
-     <div class="input-group">
-        <i class="fa fa-lock icon"></i>
-        <input type="password" id="con-password" name="Confirm-password" placeholder="Confirm Password" required />
-        <div type="button" class="toggle-password" onclick="togglePasswords()">
-            <i class="fa-solid fa-eye" id="eye-icons"></i>
-        </div>
-    </div>
-
     <button type="submit">Sign Up</button>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
     <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI  <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
@@ -1302,20 +1294,7 @@ signup_template = """
         icon.classList.add("fa-eye");
       }
     }
-    function togglePasswords() {
-      const password = document.getElementById("con-password");
-      const icon = document.getElementById("eye-icons");
-
-      if (password.type === "password") {
-        password.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-      } else {
-        password.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-      }
-    }
+    
   </script>
 </body>
 </html>
@@ -1464,7 +1443,7 @@ main_template = """
             justify-content: space-around;   /* ensures perfect spacing */
             align-items: center;
             width: 100%;
-            padding: 10px 0;
+            padding: 9px 0;
         }
         
         .tab-button {
@@ -1900,7 +1879,7 @@ main_template = """
             
             .tabs {
                 justify-content: space-between;   /* better spacing on wider phones */
-                padding: 12px 15px;
+                padding: 8px 15px;
             }
         
             .tab-button i {
@@ -1945,20 +1924,15 @@ main_template = """
                 font-size: 0.95em;
                 padding: 12px 14px;
             }
-            .nav-toggle:hover {
-                color: none;
-
-            }
-            
             nav-menu a:hover, .nav-menu button:hover {
-
-                color: none;
+                background: none;
+                
             }
 
              /* Make tabs full width on smaller screens */
             .tab-button {
                 flex-grow: 1; /* Make buttons take equal width */
-                padding: 10px 15px;
+                padding: 9px 15px;
                 font-size: 0.9em;
             }
 
@@ -2039,7 +2013,7 @@ main_template = """
             }
             
             .tabs {
-                padding: 8px 0;
+                padding: 5px 0;
             }
         
             .tab-button i {
@@ -2065,9 +2039,8 @@ main_template = """
           margin: auto;
           background: var(--background-light); /* no border here */
           border-top: 1px solid var(--shadow-light);
-          box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
           z-index: 1010;
-         
+          height: auto;
         }
 
         /* The actual container inside */
