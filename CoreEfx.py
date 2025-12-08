@@ -1486,9 +1486,9 @@ main_template = """
             width: 100%;
             justify-content: space-between;
             align-items: center;
-            max-width: 800px;
-            background-color: var(--background-light);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 799px;
+            background-color: var(--background-white);
+            
             z-index:1000;
             position: fixed;
             padding: 5px 1px;
@@ -1924,7 +1924,7 @@ main_template = """
                 font-size: 0.95em;
                 padding: 12px 14px;
             }
-            nav-menu a:hover, .nav-menu button:hover {
+            .nav-menu a:hover, .nav-menu button:hover {
                 background: none;
                 
             }
@@ -2013,7 +2013,7 @@ main_template = """
             }
             
             .tabs {
-                padding: 6px 0;
+                padding: 5px 0;
             }
         
             .tab-button i {
@@ -2022,6 +2022,10 @@ main_template = """
         
             .tab-button span {
                 font-size: 12px;    /* smaller text */
+            }
+            .nav-menu a:hover, .nav-menu button:hover {
+                background: none;
+                
             }
 
 
@@ -2037,8 +2041,8 @@ main_template = """
           width: 100%;
           max-width: 800px;
           margin: auto;
-          background: var(--background-light); /* no border here */
-          border-top: 1px solid var(--shadow-light);
+          background: var(--background-white); /* no border here */
+          border-top: 0.2px solid var(--shadow-light);
           z-index: 1010;
           height: auto;
         }
