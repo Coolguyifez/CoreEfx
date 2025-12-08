@@ -334,7 +334,7 @@ def ml_predict_condition(text, top_n=5, threshold=0.0):
 symptom_data = {
     "malaria": {
         "symptoms": [
-            "fever (body hot / body dey hot)",
+            "fever (body hot / body dey hot/high temperature)",
             "chills (body dey shake)",
             "sweating (too much sweat)",
             "headache (head dey pain)",
@@ -348,7 +348,7 @@ symptom_data = {
 
     "typhoid fever": {
         "symptoms": [
-            "fever wey last many days",
+            "fever wey last many days(fever)",
             "stomach pain (belly dey pain)",
             "diarrhea (stool dey run)",
             "constipation (no fit stool)",
@@ -588,7 +588,7 @@ def normalize_condition_name(name: str) -> str:
 
 
 medical_keywords = [
-    "fever", "body hot", "body dey hot", "chills", "body dey shake", "sweating", "too much sweat",
+    "fever", "body", "body hot", "body dey hot", "chills", "body dey shake", "sweating", "too much sweat",
     "headache", "head dey pain", "fatigue", "body weak", "no strength", "nausea", "body dey turn",
     "vomiting", "dey vomit", "muscle aches", "body pain", "stomach pain", "stomach cramp",
     "belly twist"  "belly dey pain",
