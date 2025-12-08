@@ -2014,7 +2014,7 @@ main_template = """
             }
             
             .tabs {
-                padding: 5px 0;
+                padding: 8px 0;
             }
         
             .tab-button i {
