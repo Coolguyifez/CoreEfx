@@ -1461,47 +1461,40 @@ main_template = """
         /* Tab Navigation Styles */
         .tabs {
             display: flex;
-            justify-content: space-around;
-            align-item: centre;
-            width:100%;
-            max-width:800px;/* matches container width */
+            justify-content: space-around;   /* ensures perfect spacing */
+            align-items: center;
+            width: 100%;
+            padding: 10px 0;
         }
-
+        
         .tab-button {
-            background:none;
+            background: none;
             border: none;
-            flex: 1;
-            padding: 8px 0;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 300;
-            text-align: centre;
-            display: flex;
-            flex-direction: column;
+            flex: 1;                         /* each button same width */
+            text-align: center;
+            padding: 5px 0;
             color: var(--text-dark);
-            transition: color var(--transition-speed), border-bottom var(--transition-speed);
-            position: relative;
-            outline: none; /* Remove outline on focus for cleaner look */
         }
-
-        .tab-button:hover .nav-icon {
-            color: var(--hover-accent); /* Change text color to accent on hover */
-
+        
+        .tab-button i {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 3px;
         }
-
-
+        
         .tab-button.active{
             font-weight: 1000;
         }
-
-        .tab-button .nav-icon {
-            font-size: 18px;
-            margin-bottom: 6px;
-            color: var(--text-dark);
-            transition: color var(--transition-speed);
+        
+        .tab-button.active i{
+             color: var(--accent-color);
         }
-        .tab-button.active .nav-icon {
-          color: var(--accent-color); /* ✅ icon color when active */
+        .tab-button i:hover{
+            color: var(--hover-accent);
+        }
+        
+        .tab-button span {
+            font-size: 14px;
         }
 
 
@@ -1521,9 +1514,8 @@ main_template = """
             position: fixed;
             padding: 5px 1px;
         }
-
-
-        /* Tab Content Styles */
+        
+         /* Tab Content Styles */
         .tab-content {
             display: none; /* Hidden by default */
             padding-top: 20px; /* Space from tabs */
@@ -1906,13 +1898,17 @@ main_template = """
          /* Responsive adjustments */
         @media (max-width: 1020px) {
             
-            .tab-button {
-                font-size: 14px;
-                padding: 10px 0;
+            .tabs {
+                justify-content: space-between;   /* better spacing on wider phones */
+                padding: 12px 15px;
             }
-            .tab-button .nav-icon {
-                font-size: 19px;
-                
+        
+            .tab-button i {
+                font-size: 22px;
+            }
+        
+            .tab-button span {
+                font-size: 15px;
             }
             h2 {
                 font-size: 1.6em;
@@ -2043,21 +2039,15 @@ main_template = """
             }
             
             .tabs {
-                flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
-                padding-right: 0px;
+                padding: 8px 0;
             }
-            .tab-button {
-                padding: 4 2px; /* Full width for tabs on very small screens */
-                font-size: 13px;
+        
+            .tab-button i {
+                font-size: 18px;    /* smaller icon */
             }
-            /* Adjust top-right controls for very small mobile */
-            .top-right-controls {
-                top: 10px;
-                right: 10px;
-            }
-            .tab-button .nav-icon {
-                font-size: 20px;
-                
+        
+            .tab-button span {
+                font-size: 12px;    /* smaller text */
             }
 
 
@@ -2072,21 +2062,17 @@ main_template = """
           right: 0;
           width: 100%;
           max-width: 800px;
-          margin: 0 auto;
+          margin: auto;
           background: var(--background-light); /* no border here */
-          display: block;
-          height:-5px;
+          border-top: 1px solid var(--shadow-light);
+          box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
           z-index: 1010;
-          justify-content: space-around;
          
         }
 
         /* The actual container inside */
         .footer-container {
-           width: 100%; 
-            padding: 15px 20px; 
-            box-sizing: border-box;
-          box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+           width: 100%;  
 
         }
         .rotation{
