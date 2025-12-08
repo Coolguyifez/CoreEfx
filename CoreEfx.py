@@ -1674,6 +1674,7 @@ main_template = """
             font-weight: bold;
             cursor: pointer;
             transition: background-color var(--transition-speed);
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.12);
         }
         .chat-btn, a{
             text-decoration: none;
