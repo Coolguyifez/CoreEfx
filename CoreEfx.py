@@ -1912,7 +1912,7 @@ main_template = """
             }
             .tab-button .nav-icon {
                 font-size: 19px;
-                margin-bottom:10px;
+                
             }
             h2 {
                 font-size: 1.6em;
@@ -2047,7 +2047,7 @@ main_template = """
                 padding-right: 0px;
             }
             .tab-button {
-                padding: 12px 0; /* Full width for tabs on very small screens */
+                padding: 4 2px; /* Full width for tabs on very small screens */
                 font-size: 13px;
             }
             /* Adjust top-right controls for very small mobile */
@@ -2057,14 +2057,11 @@ main_template = """
             }
             .tab-button .nav-icon {
                 font-size: 20px;
-                margin-bottom:
+                
             }
 
 
-             main, .container {
-                padding-bottom: 10px; /* extra space for mobile footer */
-
-             }
+            
 
         }
         /* Footer container */
@@ -2072,28 +2069,26 @@ main_template = """
           position: fixed;
           bottom: 0;
           left: 0;
+          right: 0;
           width: 100%;
-          background: transparent; /* no border here */
-          z-index: 1000;
-          display: flex;
-          height:70px;
-          justify-content: center; /* center the container */
+          max-width: 800px;
+          margin: 0 auto;
+          background: var(--background-light); /* no border here */
+          display: block;
+          height:-5px;
+          z-index: 1010;
+          justify-content: space-around;
+         
         }
 
         /* The actual container inside */
         .footer-container {
-          width: 800px;              /* match your container width */
-          max-width: 100%;           /* responsive */
-          background: var(--background-light);
-          border-top: 1px solid var(--shadow-light); /* border only inside */
+           width: 100%; 
+            padding: 15px 20px; 
+            box-sizing: border-box;
           box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
 
         }
-
-        /* Make sure content isn’t hidden behind footer */
-        main, .container {
-          padding-bottom: 100px;
-        }  
         .rotation{
             transform: rotate(62deg);
             align-self: center;
