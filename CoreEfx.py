@@ -670,138 +670,78 @@ welcome_template = """
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Welcome to CoreEfx AI</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
     <style>
-        html, body {
-            
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
+        html, body { height: 100vh; width: 100vw; margin: 0; padding: 0; }
+        :root { 
+            --transition-speed: 0.3s; 
+            --light-bg: #ffffff; 
+            --accent-color: #008000; 
+            --light-text: #343a40; 
+            --muted-light-text:#6c757d; 
+            --muted-dark-text: #b0b0b0; 
+            --dark-bg: #36393f; 
+            --dark-text: #e0e0e0; 
         }
-        :root {
-            --transition-speed: 0.3s;
-            --light-bg: #ffffff;
-            --accent-color: #008000;
-            --light-text: #343a40;
-            --muted-light-text:#6c757d;
-            --muted-dark-text: #b0b0b0;
-            --dark-bg: #2c2f33;
-            --dark-text: #e0e0e0;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: var(--light-bg);
-            height:100vh
-            text-align: center;
-            transition: background var(--transition-speed), color var(--transition-speed);
+        body { 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; 
+            margin: 0 auto; 
+            height: 100%; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            background-color: var(--light-bg); 
+            color: var(--light-text); 
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
         }
 
-        h1 {
-            color:var(--light-text);
-            font-size: clamp(4.5rem, 15vw, 4.5rem);
-            font-weight: 680;
-
-            margin-bottom: -10px;
-            margin-top: -5px;
-            opacity: 0; /*Start hidden for animation */
-            transform: translateY(20px);  /*Start slightly below for animation */
-            animation:  fadeInScale 3s ease-out forwards; /*Apply animation */
-        }
-        .icon { 
-            color:var(--accent-color);
+        /* New container for semantic grouping */
+        .splash-content {
+            padding: 20px;
         }
 
-
-
-        /* Animation Keyframes */
-        @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        h1 { 
+            /* Slightly reduced max font size for stability */
+            font-size: clamp(3rem, 15vw, 3.5rem); 
+            margin-bottom: 0.5rem; 
+            color: var(--light-text); 
+            transition: color var(--transition-speed); 
+            font-weight: 700;
         }
+        h3 { 
+            font-size: clamp(1.5rem, 8vw, 1.8rem); 
+            margin-top: 0; 
+            color: var(--muted-light-text); 
+            transition: color var(--transition-speed); 
+            font-weight: 500;
+        }
+        .icon { color: var(--accent-color);}
 
-        h3{ 
-            font-family: Poppins(Semibold, Medium);
-            color:var(--light-text);
-            font-size: 40px;
-            font-weight: 600;
-            opacity: 0; /*Start hidden for animation */
-            transform: translateY(20px);  /*Start slightly below for animation */
-            animation:  fadeInScale 3s ease-out forwards; /*Apply animation */
-       }
-       @keyframes fadeInScale {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.75);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(0.95);
-            }
-       }
-
-
-
-        /* Dark mode support */
+        /* Dark Mode */
         @media (prefers-color-scheme: dark) {
-            body {
-                background: var(--dark-bg);
-
-            }
-            .icon { color: var(--dark-text);}
-            h1 { color: var(--dark-text);}
-            h3 { color:var(--muted-dark-text);}
-
+            body { background-color: var(--dark-bg); color: var(--dark-text); }
+            h1 { color: var(--dark-text); }
+            h3 { color: var(--muted-dark-text); }
+            .icon{color: var(--dark-text); }
         }
 
-        /* Extra small screen tweaks */
-        @media (max-width: 1020px) {
-            h1 {
-                font-size: clamp(3.1rem, 14vw, 3.1rem);
-
-            }
-
-            h3 {
-                font-size: 25px;
-            }
-
-
-        }
-         @media (max-width: 480px) {
-            h1 {
-                font-size: clamp(2.1rem, 12vw, 2.1rem);
-
-
-            }
-            h3{
-                font-size: 18px;
-
-
-            }
-
+        /* Mobile View Adjustments (can be simplified now with clamp()) */
+        @media (max-width: 480px) {
+            h1 { font-size: clamp(2.5rem, 12vw, 2.5rem); }
+            h3{ font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-    <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
-    <h3>Check Symptoms, Stay Healthy</h3>
+    <div class="splash-content">
+        <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+        <h3>Check Symptoms, Stay Healthy</h3>
+    </div>
 </body>
 </html>
 """
@@ -811,512 +751,310 @@ login_template = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>CoreEfx AI Login</title>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
-
-  <!-- Leaflet & FontAwesome -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    html, body {
-            overflow-y: hidden !important; /* Forcefully disable vertical scrolling */
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CoreEfx AI Login</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        html { box-sizing: border-box; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background:#ffffff;
+            margin: 0 auto;
+            padding: 20px ;
+            display: flex;
+            justify-content: center;
+            align-item: center
+        }
+        h1 { color: #343a40; margin-bottom: 20px; text-align: center; }
+        .icon { color: #008000; }
+        
+        /* 💡 FIX APPLIED HERE: Standardize Size and Look */
+        form {
+            background: none;
+            padding: 40px 10px;
+            width: 100%;
+            max-width: 450px;
+            position: sticky;
+            /* FORCE MINIMUM HEIGHT FOR CONSISTENCY */
+           /* Set to match the taller Signup form */
+            /* DISTRIBUTE CONTENT EVENLY */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        
+        /* ... (rest of the CSS styles are the same) ... */
+        
+        input { width: 100%; padding: 15px; margin: 12px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
+        .input-group { position: relative; width: 100%; }
+        .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
+        input[type="username"], input[type="password"] { padding-left: 45px; }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: #008000;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+        button:hover { background: #006400; }
+        a { color: #008000; text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
+        a:hover { color: #006400; }
+        p { text-align: center; font-size: 14px; }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #008000;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0;
-    }
-    html {
-      box-sizing: border-box;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-
-    body {
-     font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-      background: #f5f5f5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    form {
-      background: white;
-      padding: 30px;
-      width: 100%;
-      max-width: 420px;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      color:  #343a40;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .icon {
-        color: #008000;
-    }
-
-
-    input {
-      width: 100%;
-      padding: 15px;
-      margin: 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      background: #008000;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #28a428;
-    }
-
-    p {
-      margin-top: 15px;
-      font-size: 15px;
-      text-align: center;
-    }
-
-    a {
-      color: #008000;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* Eye icon positioning */
-    .input-group {
-      position: relative;
-    }
-    .input-group .icon {
-        position: absolute;
-        top: 50%;
-        left: 15px;
-        transform: translateY(-50%);
-        color: #008000;
-        font-size: 16px;
-    }
-
-    .input-group input {
-        padding-left: 45px;
-      padding-right: 100px; /* Make space for eye icon */
-    }
-
-    .toggle-password {
-      position: absolute;
-      top: 50%;
-      left: auto;
-      right: 15px;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      color: #008000;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-    }
-
-    .toggle-password:hover {
-      color: #28a428;
-      background: none;
-      boarder:none;
-    }
-
-    /* ✅ Dark Mode */
-    @media (prefers-color-scheme: dark) {
-      body { background: #2c2f33; color: #eee; }
-      form { background: #36393f; box-shadow: none; }
-      input { background: #2c2f33; color: #eee; border: 1px solid #444; }
-      input::placeholder { color: #aaa; }
-      button { background: #38b45a; color: white; }
-      a { color: #38b45a; }
-      h1 { color:#e0e0e0;}
-      .icon { color: #e0e0e0;}
-      a:hover { color:#2e8b43;}
-      button:hover { background:#2e8b43;}
-      .toggle-password { color:#38b45a;}
-      .toggle-password:hover{ color:#2e8b43;}
-      .input-group .icon { color:#38b45a;}
-    }
-
-    /* ✅ Mobile view adjustments */
-    @media (max-width: 1020px) {
-      body {
-        padding: 0;
-      }
-
-      form {
-
-        width: 100%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 40px 10px;
-      }
-
-      input, button {
-        font-size: 15px;
-        padding: 12px;
-      }
-
-      h1 {
-        font-size: 36px;
-        margin-bottom: 40px;
-      }
-      .toggle-password{
-        right: 10px;
-        left: auto;
-      }
-
-    }
-
-    @media (max-width: 480px) {
-      form {
-        padding: 300px 18px;
-        margin: 0 auto;
-        position: fixed;
-      }
-
-      input, button {
-        font-size: 14px;
-        padding: 12px;
-      }
-
-      h1{
-        font-size: 34px;
-      }
-    }
-  </style>
+            margin: 0;
+        }
+        .toggle-password:hover { color: #28a428; background: none; border:none; }
+        /* ✅ Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            body { background: #36393f; color: #eee; }
+            input { background: #2c2f33; color: #eee; border: 1px solid #444; }
+            input[type="username"], input[type="password"] { 
+                padding-left: 45px; 
+                padding-right: 45px;/* <-- ADD THIS LINE for the eye icon */
+            }
+            input::placeholder { color: #aaa; }
+            button { background: #38b45a; color: white; }
+            a { color: #38b45a; }
+            h1 { color:#e0e0e0;}
+            .icon { color:#e0e0e0;}
+            a:hover { color:#2e8b43;}
+            button:hover { background:#2e8b43;}
+            .toggle-password { color:#38b45a;}
+            .toggle-password:hover{ color:#2e8b43;}
+            .input-group .icon { color:#38b45a;}
+        }
+        /* ✅ Mobile view adjustments */
+        @media (max-width: 1020px) {
+            input, button { font-size: 15px; padding: 12px; }
+            h1 { font-size: 36px; margin-bottom: 30px; }
+            .toggle-password{ right: 10px; left: auto; }
+        }
+        @media (max-width: 480px) {
+            input, button { font-size: 14px; padding: 12px; }
+            h1 { font-size: 34px; }
+        }
+    </style>
 </head>
 <body>
-
-    <form method="POST">
+<form method="POST">
     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
-      <div class="input-group">
+    <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="username" name="username" placeholder="Username" required />
-      </div>
-      <div class="input-group">
+    </div>
+    <div class="input-group">
         <i class="fa fa-lock icon"></i>
         <input type="password" id="password" name="password" placeholder="Password" required />
         <div type="button" class="toggle-password" onclick="togglePassword()">
             <i class="fa-solid fa-eye" id="eye-icon"></i>
         </div>
-      </div>
-      <p style="margin-top: 10px;">
+    </div>
+    <p style="margin-top: 10px;">
         <a href="/forgot-password">Forgot Password?</a>
-      </p>
-      <button type="submit">Login</button>
-    <p>
-      Don't have an account? <a href="/signup">Sign Up</a>
     </p>
-
-    </form>
- <script>
+    <button type="submit">Login</button>
+    <p>
+        Don't have an account? <a href="/signup">Sign Up</a>
+    </p>
+</form>
+<script>
     function togglePassword() {
-      const password = document.getElementById("password");
-      const icon = document.getElementById("eye-icon");
-
-      if (password.type === "password") {
-        password.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-      } else {
-        password.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-      }
+        const password = document.getElementById("password");
+        const icon = document.getElementById("eye-icon");
+        if (password.type === "password") {
+            password.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
     }
- </script>
+</script>
 </body>
 </html>
+
 """
 signup_template = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>CoreEfx AI Sign Up</title>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
-
-  <!-- Leaflet & FontAwesome -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
-
-  <style>
-    html, body {
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CoreEfx AI Sign Up</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        html { box-sizing: border-box; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background:#ffffff;
+            margin: 0 auto;
+            padding: 20px ;
+            display: flex;
+            justify-content: center;
+            align-item: center
+        }
+        h1 { color: #343a40; margin-bottom: 20px; text-align: center; }
+        .icon { color: #008000; }
+        
+        /* Standardize Look/Spacing with Flexbox */
+        form {
+            position: sticky;
+            background: none;
+            padding: 40px 10px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 450px;
+            /* DISTRIBUTE CONTENT EVENLY */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+        
+        input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
+        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
+            padding-left: 45px; 
+            padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
+        }
+        .input-group { position: relative; width: 100%; }
+        .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
+        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { padding-left: 45px; }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: #008000;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+        button:hover { background: #006400; }
+        a { color: #008000; text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
+        a:hover { color: #006400; }
+        p { text-align: center; font-size: 14px; }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #008000;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 0;
-    }
-    html {
-      box-sizing: border-box;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-    }
-
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-
-      background: #f5f5f5;
-      color: #333;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    form {
-      background: white;
-      padding: 30px;
-      width: 100%;
-      max-width: 420px;
-      border-radius: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-     h1 {
-      color:  #343a40;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .icon {
-        color: #008000;
-    }
-
-
-    input {
-      width: 100%;
-      padding: 15px;
-      margin: 12px 0;
-      border: 1px solid #ccc;
-      border-radius: 20px;
-      font-size: 16px;
-    }
-
-    button {
-      width: 100%;
-      padding: 15px;
-      background: #008000;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      font-size: 17px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #28a428;
-    }
-
-    p {
-      margin-top: 15px;
-      font-size: 15px;
-      text-align: center;
-    }
-
-    a {
-      color: #008000;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* Eye icon positioning */
-    .input-group {
-      position: relative;
-    }
-
-    .input-group .icon {
-        position: absolute;
-        top: 50%;
-        left: 15px;
-        transform: translateY(-50%);
-        color: #008000;
-        font-size: 16px;
-    }
-
-    .input-group input {
-      padding-left: 45px;
-      padding-right: 100px; /* Make space for eye icon */
-    }
-
-    .toggle-password {
-      position: absolute;
-      top: 50%;
-      left: auto;
-      right: 15px;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 18px;
-      color: #008000;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-    }
-
-    .toggle-password:hover {
-      color: #28a428;
-      background: none;
-      border:none;
-    }
-
-    /* ✅ Dark Mode */
-    @media (prefers-color-scheme: dark) {
-      body { background: #2c2f33; color: #eee; }
-      form { background: #36393f; box-shadow: none; }
-      input { background: #2c2f33; color: #eee; border: 1px solid #444; }
-      input::placeholder { color: #aaa; }
-      button { background: #38b45a; color: white; }
-      a { color: #38b45a; }
-      h1 { color:#e0e0e0;}
-      .icon { color:#e0e0e0;}
-      a:hover { color:#2e8b43;}
-      button:hover { background:#2e8b43;}
-      .toggle-password { color:#38b45a;}
-      .toggle-password:hover{ color:#2e8b43;}
-      .input-group .icon { color:#38b45a;}
-    }
-
-    /* ✅ Mobile view adjustments */
-    @media (max-width: 1020px) {
-      body {
-        padding: 0;
-      }
-
-      form {
-        width: 100%;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding: 40px 10px;
-      }
-
-      input, button {
-        font-size: 15px;
-        padding: 12px;
-      }
-
-      h1 {
-        font-size: 36px;
-        margin-bottom: 30px;
-      }
-
-      .toggle-password{
-        right: 10px;
-        left: auto;
-      }
-    }
-
-    @media (max-width: 480px) {
-      form {
-        padding: 300px 18px;
-        margin: 0 auto;
-        position: fixed;
-
-
-      }
-
-      input, button {
-        font-size: 14px;
-        padding: 12px;
-      }
-
-      h1 {
-        font-size: 34px;
-      }
-    }
-  </style>
+            margin: 0;
+        }
+        .toggle-password:hover { color: #28a428; background: none; border:none; }
+        /* ✅ Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            body { background: #36393f; color: #eee; }
+            input { background: #2c2f33; color: #eee; border: 1px solid #444; }
+            input::placeholder { color: #aaa; }
+            button { background: #38b45a; color: white; }
+            a { color: #38b45a; }
+            h1 { color:#e0e0e0;}
+            .icon { color:#e0e0e0;}
+            a:hover { color:#2e8b43;}
+            button:hover { background:#2e8b43;}
+            .toggle-password { color:#38b45a;}
+            .toggle-password:hover{ color:#2e8b43;}
+            .input-group .icon { color:#38b45a;}
+        }
+        /* ✅ Mobile view adjustments */
+        @media (max-width: 1020px) {
+            input, button { font-size: 15px; padding: 12px; }
+            h1 { font-size: 36px; margin-bottom: 30px; }
+            .toggle-password{ right: 10px; left: auto; }
+        }
+        @media (max-width: 480px) {
+            input, button { font-size: 14px; padding: 12px; }
+            h1 { font-size: 34px; }
+        }
+    </style>
 </head>
 <body>
-  <form method="POST">
+<form method="POST">
     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+    
+    <div class="input-group">
+        <i class="fa fa-address-card icon"></i>
+        <input type="text" name="name" placeholder="Full Name" required />
+    </div>
+
     <div class="input-group">
         <i class="fa fa-user icon"></i>
-        <input type="text" name="name" placeholder="Fullname" required>
+        <input type="username" name="username" placeholder="Username" required />
     </div>
+
     <div class="input-group">
-        <i class="fa fa-user icon"></i>
-        <input type="text" name="username" placeholder="Username" required>
+        <i class="fa fa-envelope icon"></i>
+        <input type="email" name="email" placeholder="Email" required />
     </div>
-    <div class="input-group">
-        <i class="fa fa-envelope icon"></i>    
-        <input type="email" name="email" placeholder="Email" required>
-    </div>
+
     <div class="input-group">
         <i class="fa fa-lock icon"></i>
         <input type="password" id="password" name="password" placeholder="Password" required />
-        <div type="button" class="toggle-password" onclick="togglePassword()">
-            <i class="fa-solid fa-eye" id="eye-icon"></i>
+        <div type="button" class="toggle-password" onclick="togglePassword('password', 'eye-icon-pass')">
+            <i class="fa-solid fa-eye" id="eye-icon-pass"></i>
         </div>
     </div>
-    <button type="submit">Sign Up</button>
-    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
-    <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="{{ url_for('terms_of_service') }}">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI  <a href="{{ url_for('privacy_policy') }}">Privacy Policy</a></p>
-  </form>
-
-  <script>
-    function togglePassword() {
-      const password = document.getElementById("password");
-      const icon = document.getElementById("eye-icon");
-
-      if (password.type === "password") {
-        password.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-      } else {
-        password.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-      }
-    }
     
-  </script>
+    <button type="submit">Sign Up</button>
+    
+    <p>
+        Already have an account? <a href="/login">Login</a>
+    </p>
+     <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="/terms_of_service">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI  <a href="/privacy_policy">Privacy Policy</a></p>
+</form>
+<script>
+    function togglePassword(id, iconId) {
+        const password = document.getElementById(id);
+        const icon = document.getElementById(iconId);
+        if (password.type === "password") {
+            password.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>
 </body>
 </html>
-
-
 
 """
 
@@ -1327,19 +1065,13 @@ main_template = """
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        html, body {
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
-        }
         :root {
             /* Light Mode Colors */
             --primary-color: #007bff; /* A professional blue */
@@ -1374,12 +1106,10 @@ main_template = """
 
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-
-
-            margin: 0;
-            padding: 1px;
+            margin: 0 auto;
+            padding: 80px 20px;
             height: 100%;
-            background-color: var(--background-light);
+            background-color: var(--background-white);
             color: var(--text-dark);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -1394,24 +1124,10 @@ main_template = """
 
         }
 
-        .container {
-            max-width:800px;
-            min-height: calc(100dvh - 70px);
-            margin: 0 auto;
-            background-color: var(--background-white);
-            border-radius: none;
-            box-shadow: 0 8px 20px var(--shadow-light);
-            padding: 80px 20px;
-            box-sizing: border-box;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
-
-        }
-
         h3, h4 {
              /* A more prominent font for headings */
-            /*color: #008000;*/
             text-align: center;
-            margin-bottom: 25px;
+            margin-top: 25px;
             font-weight: 700; /* Bolder headings */
             transition: color var(--transition-speed); /* Smooth transition */
         }
@@ -1457,7 +1173,7 @@ main_template = """
             transition: color var(--transition-speed); /* Smooth transition */
             margin-top: 40px;
         }
-        .intro-text { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 1.1em;  transition: color var(--transition-speed); /* Smooth transition */ }
+        .intro-text { text-align: center; color: var(--text-muted); margin-bottom: 10px; font-size: 1.1em;  transition: color var(--transition-speed); /* Smooth transition */ }
 
         /* Tab Navigation Styles */
         .tabs {
@@ -1508,9 +1224,7 @@ main_template = """
             width: 100%;
             justify-content: space-between;
             align-items: center;
-            max-width: 799px;
             background-color: var(--background-white);
-            
             z-index:1000;
             position: fixed;
             padding: 5px 1px;
@@ -1532,7 +1246,7 @@ main_template = """
             border-radius: 8px;
             box-shadow: none;
             background-color: transparent;
-            margin-top: 140px; 
+            margin-top: 120px; 
             top: 150px;
         }
 
@@ -1688,7 +1402,8 @@ main_template = """
             align-item: center !important;
             border-radius: 30px;
             padding: 15px; 
-            width: 40%;
+            width: 25%;
+            margin-top: 25px;
             text-align: center;
             margin-left: auto;
             margin-right: auto;
@@ -1730,7 +1445,7 @@ main_template = """
         .history-item p {
             text-align: left;
             margin: 5px 0;
-            max-width: 100%;
+            width: 100%;
             white-space: pre-wrap;
             word-break: break-word;
             overflow-wrap: break-word;
@@ -1779,15 +1494,10 @@ main_template = """
             margin-bottom: 20px;
             transition: color var(--transition-speed); /* Smooth transition */
         }
-
-        #mapid {
-            height: 450px;
-            max-width: 100%;
-            margin: 30px auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
+        
+       label b {
+        margin-top: -60px;
+       }
 
         /* ✅ NAVBAR STYLES */
         .navbar {
@@ -1801,7 +1511,6 @@ main_template = """
           z-index: 1000;
           background-color: none !important;
           right: 20px;
-
 
         }
 
@@ -1818,11 +1527,11 @@ main_template = """
 
         .nav-toggle:hover {
           transform: scale(1.05);
-          transition: color 0.2s ease, transform 0.2s ease;
         }
 
 
         .nav-menu {
+          flex-grow: 1;
           display: none;
           flex-direction: column;
           position: absolute;
@@ -1832,7 +1541,7 @@ main_template = """
           border-radius: 10px;
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
           padding: 10px 0;
-          min-width: 200px;
+          width: 210px;
           z-index: 1010;
         }
 
@@ -1930,7 +1639,7 @@ main_template = """
             }
 
             .chat-btn{
-                width: 50%;
+                width: 40%;
             }
 
             .mic-btn,
@@ -1987,9 +1696,7 @@ main_template = """
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 0;
-            }
+           
             .footer-nav {
                 height: 100px; /* taller footer on mobile */
             }
@@ -1997,8 +1704,10 @@ main_template = """
             h2 {
                 font-size: 1.3em;
                 text-align: left;
-
+                
             }
+            
+            
            
            .input-feed-icon {
                 bottom: 120px;
@@ -2046,10 +1755,6 @@ main_template = """
             .tab-button span {
                 font-size: 12px;    /* smaller text */
             }
-            .nav-menu a:hover, .nav-menu button:hover {
-                background: none;
-                
-            }
 
 
             
@@ -2062,19 +1767,26 @@ main_template = """
           left: 0;
           right: 0;
           width: 100%;
-          max-width: 800px;
-          margin: auto;
           background: var(--background-white); /* no border here */
           border-top: 0.2px solid var(--shadow-light);
           z-index: 1010;
           height: auto;
+         
+         
         }
 
         /* The actual container inside */
         .footer-container {
-           width: 100%;  
+           width: 100%; 
+           
+           
 
         }
+
+        /* Make sure content isn’t hidden behind footer 
+        main, .container {
+          padding-bottom: 100px;
+        }*/
         .rotation{
             transform: rotate(62deg);
             align-self: center;
@@ -2113,8 +1825,8 @@ main_template = """
                     </button> 
                   </div>
                 </div>
-                <a href="{{ url_for('privacy_policy') }}"><i class="fa fa-lock"></i> Privacy Policy</a>
-                <a href="{{ url_for('terms_of_service') }}"><i class="fa fa-file-alt"></i> Terms of Service</a>
+                <a href="/privacy_policy"><i class="fa fa-lock"></i> Privacy Policy</a>
+                <a href="/terms_of_service"><i class="fa fa-file-alt"></i> Terms of Service</a>
 
                 <button class="logout-btn" onclick="window.location='{{ url_for('logout') }}'">
                     <i class="fa fa-sign-out-alt"></i> 
