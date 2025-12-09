@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoreEfx AI Chat</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -10,13 +10,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        html, body {
-
-            height: 100vh;
-            width: 100vw;
-            margin: 0;
-            padding: 0;
-        }
         :root {
             /* Light Mode Colors */
             --primary-color: #007bff; /* A professional blue */
@@ -51,12 +44,10 @@
 
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-
-
-            margin: 0;
-            padding: 1px;
+            margin: 0 auto;
+            padding: 80px 20px;
             height: 100%;
-            background-color: var(--background-light);
+            background-color: var(--background-white);
             color: var(--text-dark);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
@@ -68,19 +59,6 @@
             background-attachment: fixed; /* Keep background fixed when scrolling */
             background-position: center center; /* Center the background image */
     
-        }
-
-        .container {
-            max-width:800px;
-            min-height: calc(100dvh - 70px);
-            margin: 0 auto;
-            background-color: var(--background-white);
-            border-radius: none;
-            box-shadow: 0 8px 20px var(--shadow-light);
-            padding: 80px 20px;
-            box-sizing: border-box;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
-
         }
 
         h3, h4 {
@@ -102,9 +80,12 @@
            gap: 0px;
             transition: color var(--transition-speed); /* Smooth transition */
         }
+
+
         .icon {
             color: var(--accent-color);
         }
+
         body.dark-mode  .icon{
             color: var(--text-dark);
         }
@@ -123,23 +104,22 @@
         }
 
 
-        .intro-welcome{
+        .intro-welcome {
             flex: 1;
             align-self: flex-start;
             background-color: var(--background-light);
             color: var(--text-dark);
-            padding: 15px 18px;
+            padding: 15px 16px;
             border-radius: 0 30px 30px 30px ;
-            max-width: 60%;
+            max-width: 40%;
             text-align: left;
             font-weight: 500;
             word-wrap: break-word;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             font-size: 1em;
             transition: color var(--transition-speed); /* Smooth transition */
-            margin-top: 40px;
-            margin-bottom:-48px;
-
+            margin-top: 50px;
+            margin-bottom:-47px;
         }
 
 
@@ -153,7 +133,6 @@
             width: 100%;
             justify-content: space-between;
             align-items: center;
-            max-width: 800px;
             background-color: var(--background-light);
             box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.12);
             z-index:1010;
@@ -284,23 +263,24 @@
             align-self: flex-start;
             background-color: var(--background-light);
             color: var(--text-dark);
-            padding: 15px 18px;
+            padding: 15px 16px;
             border-radius: 0px 30px 30px 30px;
-            max-width: 60%;
+            max-width: 40%;
             text-align: left;
             word-wrap: break-word;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             font-size: 1em;
             font-weight: 500;
             
+            
          }
          .input-sympt{
             align-self: flex-end;
             background-color: var(--accent-color);
             color: white;
-            padding: 15px 18px;
+            padding: 15px 16px;
             border-radius: 30px 0 30px 30px;
-            max-width: 60%;
+            max-width: 40%;
             text-align: left;
             word-wrap: break-word;
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
@@ -308,6 +288,7 @@
             font-weight: 500;
             
          }
+
          @keyframes fadeIn {
               from {opacity:0; transform: translateY(10px);}
               to {opacity:1; transform: translateY(0);}
@@ -341,7 +322,7 @@
         }
 
         li a:hover {
-            color: #0056b3;
+            color: var(--accent-color);
             text-decoration: underline;
         }
 
@@ -363,7 +344,7 @@
 
         #mapid {
             height: 450px;
-            max-width: 100%;
+            width: 100%;
             margin: 30px auto;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -400,11 +381,11 @@
 
         .nav-toggle:hover {
           transform: scale(1.05);
-          transition: color 0.2s ease, transform 0.2s ease;
         }
 
 
         .nav-menu {
+          flex-grow: 1;
           display: none;
           flex-direction: column;
           position: absolute;
@@ -414,7 +395,7 @@
           border-radius: 10px;
           box-shadow: 0 4px 12px rgba(0,0,0,0.15);
           padding: 10px 0;
-          min-width: 200px;
+          min-width: 210px;
           z-index: 1010;
         }
 
@@ -498,6 +479,7 @@
             #custom-audio-controls {
                 gap: 12px;
                 padding: 9px 12px;
+                width: 70% !important;
             }
             
             #time-display {
@@ -521,25 +503,29 @@
 
 
             .reply-me{
-               max-width: 70%;
+               max-width: 50%;
                font-size: 0.95em;
                padding: 12px 14px;
 
             }
             .input-sympt{
-                max-width: 70%;
+                max-width: 50%;
                 font-size: 0.95em;
                 padding: 12px 14px;
              }
             .intro-welcome{
-                max-width: 70%;
+                max-width: 50%;
                 font-size: 0.95em;
                 padding: 12px 14px;
+                margin-top: 30px;
+
             }
+           
             .nav-menu a:hover, .nav-menu button:hover {
                 background: none;
                 
             }
+
 
             li {
                 padding: 15px;
@@ -559,9 +545,13 @@
                 padding: 10px 0; /* Adjust padding for mobile header */
                 margin-bottom: 15px;
             }
+
+
             .logout-btn {
                 display: none !important;
             }
+
+
             .mobile-logout {
                 display: flex !important;
 
@@ -573,11 +563,6 @@
         
 
         @media (max-width: 480px) {
-            body {
-                padding: 0;
-            }
-            time
-            
             
             h2 {
                 font-size: 1.1em;
@@ -604,11 +589,14 @@
                 max-width: 65%;
                 font-size: 0.9em;
                 padding: 10px 12px;
+                margin-top: 20px;
             }
 
             #custom-audio-controls {
                gap: 6px;
                 padding: 6px 8px; /* Further reduce padding */
+                width: 100% !important;
+            
             }
 
             #play-pause-btn {
@@ -649,7 +637,11 @@
             #mapid {
                 height: 300px;
             }
-             
+
+            .footer-container {
+                 width: 100% !important; 
+            }
+
         }
 
 
@@ -660,23 +652,21 @@
           left: 0;
           right: 0;
           width: 100%;
-          max-width: 800px;
           margin: 0 auto;
           background: var(--background-white); /* no border here */
-         
           z-index: 100;
           display: block;
           z-index: 1010;
+        
           
         }
         
         /* The actual container inside */
         .footer-container {
-          width: 100%; 
+            width: 90%; 
+            justify-self: center !important;
             padding: 15px 20px; 
             box-sizing: border-box;
-          
-    
         }
         
         
@@ -684,14 +674,13 @@
         .container {
           padding-bottom: 100px;
         } 
+
         h2, a{
             background-color: none;
             background: none;
             text-decoration: none;
             color: var(--text-dark);
-            margin-left: 4px;
-            
-            
+            margin-left: 4px; 
             
         } 
 
@@ -714,8 +703,9 @@
         background-color: var(--background-light);
         border-radius: 30px 30px 30px 30px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        width: 100%;
+        width: 60%;
     }
+
     .progress-wrapper {
         flex-grow: 1; /* Wrapper takes up space */
         /*Apply half the thumb width as margin to contain the range input */
@@ -786,7 +776,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div>
 
         <!-- New app-header for mobile alignment -->
         <header class="app-header">
@@ -829,57 +819,57 @@
         
 
 
-            <div class="intro-welcome"><b>What symptoms are you experiencing today?...</b></div>
+        <div class="intro-welcome"><b>What symptoms are you experiencing today?...</b></div>
 
 
 
-            
+        
 
-            <div class="results-section">
-                <div class="chat-area">  <!-- ✅ New wrapper -->    
-                    {% if user_message %}
-                        <div class="input-sympt">
-                            <b>{{ user_message }}</b>
-                        </div>     
-                    {% endif %}
+        <div class="results-section">
+            <div class="chat-area">  <!-- ✅ New wrapper -->    
+                {% if user_message %}
+                    <div class="input-sympt">
+                        <b>{{ user_message }}</b>
+                    </div>     
+                {% endif %}
 
-                    {% if result %}
+                {% if result %}
 
-                        {% for item in result %}
-                        <div class="reply-me">
-                            <b>{{ item }}</b>
-                        </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>   
+                    {% for item in result %}
+                    <div class="reply-me">
+                        <b>{{ item }}</b>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+            </div>   
 
-                <audio id="adviceAudio" src=""></audio>
+            <audio id="adviceAudio" src=""></audio>
 
-                <div class="audio-player-container">
-                    <div id="custom-audio-controls" style="display: none; margin-top: 3px;">
-                        <button id="play-pause-btn"><i class="fas fa-play"></i></button>
-                        <span id="time-display";>0:00 / 0:00</span>
-                        <div class="progress-wrapper">
-                            <input type="range" id="progress-bar" value="0" min="0" max="100">
-                        </div>
+            <div class="audio-player-container">
+                <div id="custom-audio-controls" style="display: none; margin-top: 3px;">
+                    <button id="play-pause-btn"><i class="fas fa-play"></i></button>
+                    <span id="time-display";>0:00 / 0:00</span>
+                    <div class="progress-wrapper">
+                        <input type="range" id="progress-bar" value="0" min="0" max="100">
                     </div>
                 </div>
-
-                <div id="location-status" style="margin-top: 10px; font-weight: bold;">
-                    Attempting to get location...
-                </div>
-
-                <input type="hidden" id="lat" value="0.0">
-                <input type="hidden" id="lon" value="0.0">
-                
-                <div id="hospital-map-section" style="display: none; padding: 20px; border-radius:10px; border: 2px solid var(--border-color); margin-top: 20px;">
-                    <div id="hospital-list-container">
-                        </div>
-                    
-                   <div id="mapid"></div>
-                </div>
-                    
             </div>
+
+            <div id="location-status" style="margin-top: 10px; font-weight: bold;">
+                Attempting to get location...
+            </div>
+
+            <input type="hidden" id="lat" value="0.0">
+            <input type="hidden" id="lon" value="0.0">
+            
+            <div id="hospital-map-section" style="display: none; padding: 20px; border-radius:10px; border: 2px solid var(--border-color); margin-top: 20px;">
+                <div id="hospital-list-container">
+                </div>
+                
+                <div id="mapid"></div>
+            </div>
+                
+        </div>
 
         
     <footer class="footer-nav">
@@ -1441,9 +1431,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
