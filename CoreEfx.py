@@ -789,11 +789,13 @@ login_template = """
         
         /* ... (rest of the CSS styles are the same) ... */
         
-        input { width: 100%; padding: 15px; margin: 12px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
+        input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
         .input-group { position: relative; width: 100%; }
         .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
-        input[type="username"], input[type="password"] { 
-            padding-left: 45px; padding-right:45px
+        /* Ensure the text doesn't flow under the eye icon on the right */
+        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
+            padding-left: 45px; 
+            padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
         }
         button {
             width: 100%;
@@ -945,7 +947,11 @@ signup_template = """
         }
         .input-group { position: relative; width: 100%; }
         .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
-        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { padding-left: 45px; }
+        /* Ensure the text doesn't flow under the eye icon on the right */
+        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
+            padding-left: 45px; 
+            padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
+        }}
         button {
             width: 100%;
             padding: 15px;
