@@ -781,21 +781,20 @@ login_template = """
             position: sticky;
             /* FORCE MINIMUM HEIGHT FOR CONSISTENCY */
            /* Set to match the taller Signup form */
-            /* DISTRIBUTE CONTENT EVENLY */
+            /* ✅ DISTRIBUTE CONTENT EVENLY */
             display: flex;
             flex-direction: column;
             justify-content: space-around;
         }
         
-        /* ... (rest of the CSS styles are the same) ... */
-        
         input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
+        .input-group { position: relative; width: 100%; }
+        .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
+        /* Ensure the text doesn't flow under the eye icon on the right */
         input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
             padding-left: 45px; 
             padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
         }
-        .input-group { position: relative; width: 100%; }
-        .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
         button {
             width: 100%;
             padding: 15px;
@@ -828,7 +827,6 @@ login_template = """
             padding: 0;
             margin: 0;
         }
-
         .toggle-password:hover { color: #28a428; background: none; border:none; }
         /* ✅ Dark Mode */
         @media (prefers-color-scheme: dark) {
@@ -926,7 +924,7 @@ signup_template = """
         h1 { color: #343a40; margin-bottom: 20px; text-align: center; }
         .icon { color: #008000; }
         
-        /* Standardize Look/Spacing with Flexbox */
+        /* 💡 FIX APPLIED HERE: Standardize Look/Spacing with Flexbox */
         form {
             position: sticky;
             background: none;
@@ -947,11 +945,7 @@ signup_template = """
         }
         .input-group { position: relative; width: 100%; }
         .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
-        /* Ensure the text doesn't flow under the eye icon on the right */
-        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
-            padding-left: 45px; 
-            padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
-        }}
+        
         button {
             width: 100%;
             padding: 15px;
@@ -1044,7 +1038,7 @@ signup_template = """
     <p>
         Already have an account? <a href="/login">Login</a>
     </p>
-     <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="/terms_of_service">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI  <a href="/privacy_policy">Privacy Policy</a></p>
+     <p> By clicking "Sign Up" button, i expressly agree to CoreEfx AI <a href="/terms_of_service">Terms of Service</a> and understand that my account information will be used according to CoreEfx AI <a href="/privacy_policy">Privacy Policy</a></p>
 </form>
 <script>
     function togglePassword(id, iconId) {
@@ -1063,7 +1057,6 @@ signup_template = """
 </script>
 </body>
 </html>
-
 """
 
 # HTML Template for the Web Interface
