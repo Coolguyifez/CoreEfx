@@ -702,9 +702,7 @@ welcome_template = """
 
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+         
             background: var(--light-bg);
 
             text-align: center;
@@ -1407,7 +1405,7 @@ main_template = """
             border-radius: none;
             box-shadow: 0 8px 20px var(--shadow-light);
             padding: 80px 20px;
-
+            overflow-y: auto;
             box-sizing: border-box;
             transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
 
