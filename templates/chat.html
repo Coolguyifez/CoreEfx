@@ -836,7 +836,7 @@
             
 
             <div class="results-section">
-                <div class="chat-area">  <!-- ✅ New wrapper -->    
+                <div class="chat-area" style="overflow-y:auto; -webkit-overflow-scrolling: touch; flex-grow: 1">  <!-- ✅ New wrapper -->    
                     {% if user_message %}
                         <div class="input-sympt">
                             <b>{{ user_message }}</b>
@@ -1441,6 +1441,7 @@
     </script>
 </body>
 </html>
+
 
 
 
