@@ -677,7 +677,7 @@ welcome_template = """
 
     <style>
         html, body {
-            overflow-y: hidden !important; /* Forcefully disable vertical scrolling */
+            
             height: 100vh;
             width: 100vw;
             margin: 0;
@@ -699,12 +699,11 @@ welcome_template = """
 
             margin: 0;
             padding: 0;
-
             display: flex;
             flex-direction: column;
-         
+            justify-content: center;
             background: var(--light-bg);
-
+            height:100vh
             text-align: center;
             transition: background var(--transition-speed), color var(--transition-speed);
         }
@@ -1074,7 +1073,6 @@ signup_template = """
 
   <style>
     html, body {
-            overflow-y: hidden !important; /* Forcefully disable vertical scrolling */
             height: 100vh;
             width: 100vw;
             margin: 0;
@@ -1337,7 +1335,6 @@ main_template = """
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         html, body {
-            overflow-y: hidden !important; /* Forcefully disable vertical scrolling */
             height: 100vh;
             width: 100vw;
             margin: 0;
@@ -1405,7 +1402,6 @@ main_template = """
             border-radius: none;
             box-shadow: 0 8px 20px var(--shadow-light);
             padding: 80px 20px;
-            overflow-y: auto;
             box-sizing: border-box;
             transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
 
