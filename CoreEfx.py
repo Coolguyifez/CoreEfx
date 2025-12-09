@@ -792,7 +792,9 @@ login_template = """
         input { width: 100%; padding: 15px; margin: 12px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
         .input-group { position: relative; width: 100%; }
         .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
-        input[type="username"], input[type="password"] { padding-left: 45px; }
+        input[type="username"], input[type="password"] { 
+            padding-left: 45px; padding-right:45px
+        }
         button {
             width: 100%;
             padding: 15px;
