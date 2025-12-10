@@ -688,8 +688,7 @@ welcome_template = """
         }
         body { 
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; 
-            margin: 0 auto; 
-            height: 100%; 
+            margin: 0 auto;  
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
