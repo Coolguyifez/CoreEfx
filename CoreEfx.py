@@ -711,7 +711,7 @@ welcome_template = """
             color: var(--light-text); 
             transition: color var(--transition-speed); 
             font-weight: 700;
-            margin-top: 100px;
+            margin-top: 250px;
         }
         h3 { 
             font-size: clamp(1.5rem, 8vw, 1.8rem); 
@@ -732,7 +732,7 @@ welcome_template = """
 
         /* Mobile View Adjustments (can be simplified now with clamp()) */
         @media (max-width: 480px) {
-            h1 { font-size: clamp(2.5rem, 12vw, 2.5rem); }
+            h1 { font-size: clamp(2.5rem, 12vw, 2.5rem); flex: 1; }
             h3{ font-size: 1.1rem; }
         }
     </style>
