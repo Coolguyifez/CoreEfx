@@ -675,7 +675,7 @@ welcome_template = """
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
-        html, body { height: 100vh; width: 100vw; margin: 0; padding: 0; }
+        html, body { width: 100vw; margin: 0; padding: 0; }
         :root { 
             --transition-speed: 0.3s; 
             --light-bg: #ffffff; 
