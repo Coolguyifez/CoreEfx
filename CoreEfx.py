@@ -65,6 +65,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150), nullable=False)
     username = db.Column(db.String(150), nullable=False)
+    gender = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
 
@@ -341,7 +342,20 @@ symptom_data = {
             "fatigue (body weak)",
             "nausea (body dey turn)",
             "vomiting (dey vomit)",
-            "muscle aches (body pain)"
+            "muscle aches (body pain)",
+            "feeling cold and hot",
+            "body dey burn",
+            "shivering",
+            "cold dey catch me",
+            "hotness for body",
+            "fever and cold",
+            "my body is vibrating",
+            "strong body heat",
+            "shaking fever",
+            "high temperature",
+            "drenching sweat",
+            "malaise",
+            "severe chills"
         ],
         "advice": "\nYou may have malaria. Please visit the health center quickly for a blood test and proper malaria treatment."
     },
@@ -353,7 +367,20 @@ symptom_data = {
             "diarrhea (stool dey run)",
             "constipation (no fit stool)",
             "weakness (body weak well well)",
-            "loss of appetite (no wan chop)"
+            "loss of appetite (no wan chop)",
+            "tummy dey pain",
+            "running stomach",
+            "no solid stool",
+            "belly full of wind",
+            "belly dey grumble",
+            "stomach dey pain me bad",
+            "food no dey sweet me",
+            "no fit chop anything",
+            "abdominal discomfort",
+            "poor appetite",
+            "loss of taste",
+            "prolonged fever",
+            "bloating"
         ],
         "advice": "\nThis may be typhoid fever. Drink only safe water and visit the nearest health center for a test and antibiotics."
     },
@@ -364,7 +391,19 @@ symptom_data = {
             "sore throat (throat dey pain)",
             "runny nose (catarrh dey come out)",
             "nasal congestion (nose block)",
-            "mild fever (small body hot)"
+            "mild fever (small body hot)",
+            "catarrh",
+            "throat dey scratch",
+            "wetin I dey swallow dey pain",
+            "I dey hawk phlegm",
+            "my throat dey wound me",
+            "nose dey leak water",
+            "my head dey heavy with catarrh",
+            "mucus discharge",
+            "phlegm",
+            "constant sneezing",
+            "throat irritation",
+            "stuffy nose"
         ],
         "advice": "\nThis looks like a common cold. Rest, drink plenty of fluids, and see a health worker if it worsens."
     },
@@ -375,7 +414,19 @@ symptom_data = {
             "body aches (body pain)",
             "headache (head dey pain)",
             "cough (dey cough)",
-            "fatigue (no strength)"
+            "fatigue (no strength)",
+            "body dey pain everywhere",
+            "big fever",
+            "serious body weakness",
+            "body weak die",
+            "fever too high o",
+            "ache all over",
+            "I dey feel very weak",
+            "severe body aches",
+            "exhaustion",
+            "general malaise",
+            "widespread pain",
+            "debilitating weakness"
         ],
         "advice": "\nThis could be influenza (flu). Rest, drink fluids, and visit a health worker if breathing is difficult."
     },
@@ -385,18 +436,42 @@ symptom_data = {
             "diarrhea (stool dey rush)",
             "vomiting (dey vomit)",
             "dehydration (mouth dry)",
-            "stomach cramps (belly twist)"
+            "stomach cramps (belly twist)",
+            "stooling too much",
+            "dey purge",
+            "dey pour water",
+            "I dey run to toilet always",
+            "stomach dey push me",
+            "dey vomit food",
+            "dey purge steady",
+            "frequent watery stools",
+            "stomach upset",
+            "abdominal cramps",
+            "loose motion",
+            "stomach rumbling"
         ],
-        "advice": "\nThis may be a diarrheal infection. Start oral rehydration solution immediately and see a health worker if it continues."
+        "advice": "\nThis may be a diarrheal infection. Start oral rehydration that is ORS or salt and sugar solution immediately to replace lost water. Avoid milky drinks for now, and see a health worker if it continues."
     },
 
     "urinary tract infection (UTI)": {
         "symptoms": [
             "pain when urinating (when you piss e dey pain)",
             "frequent urge to urinate (dey always wan piss)",
-            "lower stomach pain (lower belly dey pain)"
+            "lower stomach pain (lower belly dey pain)",
+            "hot piss",
+            "piss dey sting",
+            "small piss dey come",
+            "pissing dey burn me",
+            "dey piss small small",
+            "pain inside my private area",
+            "need to piss always",
+            "burning during urination",
+            "dysuria",
+            "pelvic pain",
+            "bladder irritation",
+            "blood in urine"
         ],
-        "advice": "\nThis looks like a urinary tract infection. Drink clean water and visit a health center for proper antibiotics."
+        "advice": "\nThis looks like a urinary tract infection. Drink plenty of clean water to wash your system and do not hold your pee. Visit a health center for proper antibiotics."
     },
 
     "skin infection (rash/measles/chickenpox)": {
@@ -405,9 +480,21 @@ symptom_data = {
             "itchy skin (skin dey scratch)",
             "blisters (skin get water blister)",
             "red spots (red mark for body)",
-            "fever (body hot)"
+            "fever (body hot)",
+            "red spots on skin",
+            "small small bumps",
+            "skin burning",
+            "smallpox dey my body",
+            "my skin dey red",
+            "I dey scratch every time",
+            "skin dey vex me",
+            "skin eruption",
+            "severe itching",
+            "vesicles",
+            "hives",
+            "dermatitis"
         ],
-        "advice": "\nThis may be a skin infection or measles. Avoid scratching, keep clean, and visit a health center for assessment."
+        "advice": "\nThis may be a skin infection or measles. Avoid scratching, keep it clean and dry. See a doctor for cream or medicine, especially if it hurts or is hot."
     },
 
     "dehydration/heat exhaustion": {
@@ -416,27 +503,63 @@ symptom_data = {
             "dry mouth (tongue dry)",
             "dizziness (head dey turn)",
             "weakness (no strength)",
-            "no urine (no dey piss)"
+            "no urine (no dey piss)",
+            "my head dey turn",
+            "feel faint",
+            "very thirsty",
+            "I feel like say I go fall down",
+            "mouth dry finish",
+            "I can't pee",
+            "body dey dry up",
+            "extreme thirst",
+            "light-headedness",
+            "dry tongue",
+            "oliguria",
+            "syncope"
         ],
-        "advice": "\nYou may be dehydrated. Drink clean water or oral rehydration solution. Seek care if severe."
+        "advice": "\nYou may be dehydrated. Go to a cool place and raise your legs. Drink clean water or oral rehydration solution. If you cannot drink, go to the hospital for a drip."
     },
 
     "headache": {
         "symptoms": [
             "headache (head dey pain)",
             "pressure in head",
-            "migraine"
+            "migraine",
+            "head heavy",
+            "dey beat my head",
+            "strong headache",
+            "head dey burst",
+            "my brain dey knock",
+            "pain for head no gree stop",
+            "strong pressure for inside head",
+            "throbbing pain",
+            "intense headache",
+            "unrelenting pain",
+            "cluster headache",
+            "tension headache"
         ],
-        "advice": "\nThis may be due to stress, minor infection, or malaria. Rest, stay hydrated, and seek care if it persists."
+        "advice": "\nThis may be due to stress, minor infection, or malaria. Rest in a dark or quiet room. Take paracetamol and stay hydrated. If it is too strong then seek care."
     },
 
     "body pain": {
         "symptoms": [
             "muscle pain",
             "joint pain",
-            "back pain"
+            "back pain",
+            "everywhere dey pain",
+            "bone pain",
+            "pain for back",
+            "my bone dey pain",
+            "pain for my waist",
+            "my hand dey weak",
+            "body dey pain me well well",
+            "general weakness",
+            "aching limbs",
+            "joint stiffness",
+            "musculoskeletal pain",
+            "soreness"
         ],
-        "advice": "\nThis may be due to fatigue, infection, or malaria. Rest and consult a doctor if it persists."
+        "advice": "\nThis may be due to fatigue, infection, malaria, or bodyache . Use a hot water bottle or cold compress. Take pain medicine. If it does not go away, you need a doctor's checkup."
     },
 
     "early pregnancy": {
@@ -445,9 +568,21 @@ symptom_data = {
             "nausea (body dey turn)",
             "vomiting (dey vomit for morning)",
             "breast tenderness (breast dey pain)",
-            "fatigue (no strength)"
+            "fatigue (no strength)",
+            "e don pass my time",
+            "morning sickness",
+            "cravings",
+            "period no come this month",
+            "I dey throw up in the morning",
+            "I feel tired quickly",
+            "breast dey heavy",
+            "amenorrhea",
+            "morning sickness",
+            "food aversions",
+            "tender breasts",
+            "gestation"
         ],
-        "advice": "\nThese could be early pregnancy signs. Visit a health center for confirmation and antenatal care."
+        "advice": "\nThese could be early pregnancy signs. Visit a health center for confirmation. And if so, eat healthy food and do not drink alcohol or smoke and start antenatal care."
     },
 
     "eye infection (Apollo/conjunctivitis)": {
@@ -456,9 +591,21 @@ symptom_data = {
             "itchy eye (eye dey scratch)",
             "watery eye (eye dey bring water)",
             "eye pain (eye dey pain)",
-            "sticky discharge (eye gum when you wake)"
+            "sticky discharge (eye gum when you wake)",
+            "eye dey tear up",
+            "eye full of pus",
+            "eye dey burn",
+            "my eye dey bring sand",
+            "eye red like fire",
+            "eye dey sticky",
+            "I feel sand sand inside my eye",
+            "purulent discharge",
+            "eye mattering",
+            "conjunctivitis",
+            "gritty feeling",
+            "burning eyes"
         ],
-        "advice": "\nThis may be conjunctivitis (Apollo). Avoid touching your eyes, wash your hands, and visit a health center for proper eye drops."
+        "advice": "\nThis may be Apollo (eye infection). Avoid touching your eyes, wash your hands, and visit a health center for proper eye drops."
     },
 
     "blurred vision/eye problem": {
@@ -466,17 +613,42 @@ symptom_data = {
             "blurred vision (no see clear)",
             "eye pain (eye dey pain)",
             "light sensitivity (eye no like light)",
-            "vision loss (eye dey blind small small)"
+            "vision loss (eye dey blind small small)",
+            "eye dey confuse me",
+            "heavy head",
+            "BP high",
+            "I dey see double",
+            "eye dey tear with light",
+            "my sight don weak",
+            "can't see far",
+            "visual impairment",
+            "seeing halos",
+            "double vision",
+            "photophobia",
+            "loss of sight"
         ],
-        "advice": "\nYour eyes need urgent check-up. Do not wait until it worsens. Visit a health center or eye clinic immediately."
+        "advice": "\nYour eyes need urgent check-up. Do not wait until it worsens, go see an ophthalmologist or an eye clinic immediately."
     },
+
     "pneumonia": {
         "symptoms": [
             "fast breathing (dey breathe fast)",
             "difficulty breathing (no fit breathe well)",
             "cough with mucus (cough dey bring phlegm)",
             "high fever (body hot well well)",
-            "chest pain (chest dey pain)"
+            "chest pain (chest dey pain)",
+            "short breath",
+            "hard to breathe",
+            "pain for chest",
+            "I dey struggle to breathe",
+            "chest dey make noise",
+            "coughing out yellow tin",
+            "breath no dey enter well",
+            "rales",
+            "productive cough",
+            "shortness of breath",
+            "pleuritic chest pain",
+            "laboured breathing"
         ],
         "advice": "\nThis could be pneumonia, especially in children or elderly. Go to a health center immediately."
     },
@@ -487,9 +659,20 @@ symptom_data = {
             "weight loss (body dey reduce)",
             "night sweats (body dey sweat for night)",
             "persistent diarrhea (stool no dey stop)",
-            "weakness (body weak)"
+            "weakness (body weak)",
+            "person dey slim down",
+            "sweat for night",
+            "long term weakness",
+            "I dey slim down fast",
+            "stomach dey run non-stop",
+            "hot body for weeks",
+            "unexplained weight loss",
+            "chronic diarrhea",
+            "prolonged fever",
+            "profuse night sweats",
+            "lymphadenopathy"
         ],
-        "advice": "\nThis may be HIV or another serious infection. Please visit a health center for proper testing and early treatment."
+        "advice": "\nThis may be HIV or another serious infection. Please visit a health center for proper testing and early treatment. Start your ARV (anti-retroviral drugs) fast and take it every day"
     },
 
     "tuberculosis (tb)": {
@@ -498,9 +681,21 @@ symptom_data = {
             "coughing blood (cough dey bring blood)",
             "weight loss (body dey reduce)",
             "night sweats (body dey sweat for night)",
-            "chest pain (chest dey pain)"
+            "chest pain (chest dey pain)",
+            "cough for long time",
+            "spit blood",
+            "perspire for night",
+            "cough wey no end",
+            "I cough blood",
+            "I dey perspire for night",
+            "chest pain when I cough",
+            "chronic cough",
+            "hemoptysis",
+            "drenching night sweats",
+            "cachexia",
+            "wasting syndrome"
         ],
-        "advice": "\nThis could be tuberculosis . It can spread to others. Go to an health center immediately for free testing and treatment."
+        "advice": "\nThis could be tuberculosis. It can spread to others. Go to an health center immediately for free testing and treatment."
     },
 
     "diabetes": {
@@ -509,9 +704,22 @@ symptom_data = {
             "excessive thirst (always dey thirsty)",
             "always hungry (too much hunger)",
             "weight loss (body dey slim down)",
-            "wounds no dey heal quick"
+            "wounds no dey heal quick",
+            "too much piss",
+            "dry throat always",
+            "sugar level high",
+            "piss too much",
+            "always thirsty",
+            "always want to eat",
+            "wound no dey close",
+            "sugar dey high",
+            "polyuria",
+            "polydipsia",
+            "polyphagia",
+            "unhealed sores",
+            "hyperglycemia"
         ],
-        "advice": "\nThis may be diabetes. Avoid too much sugar and visit a health center for a blood sugar test."
+        "advice": "\nThis may be diabetes. Watch your sugar intake. Eat good food and exercise a little. visit a health center for a blood sugar test. Take your medicine steadily."
     },
 
     "hypertension (high blood pressure)": {
@@ -520,9 +728,21 @@ symptom_data = {
             "dizziness (head dey turn)",
             "blurred vision (eye no see clear)",
             "chest pain (chest dey pain)",
-            "sometimes no symptoms at all"
+            "sometimes no symptoms at all",
+            "BP high",
+            "blood pressure is high"
+            "heavy head",
+            "eye dey confuse me",
+            "my head dey turn me",
+            "BP don high",
+            "I dey see black spot",
+            "occipital headache",
+            "vertigo",
+            "seeing spots",
+            "epistaxis",
+            "chest tightness"
         ],
-        "advice": "\nThis may be high blood pressure. Check it at a health center. Reduce salt intake and stress."
+        "advice": "\nThis may be high blood pressure, that is hypertension. Check it at a health center. Reduce salt intake and stress, take your BP medicine every day and check your BP steadily."
     },
 
     "heart disease": {
@@ -531,9 +751,20 @@ symptom_data = {
             "shortness of breath (no fit breathe well)",
             "swelling in legs (leg dey swell)",
             "tired easily (body weak quick quick)",
-            "fast or irregular heartbeat (heart dey beat fast)"
+            "fast or irregular heartbeat (heart dey beat fast)",
+            "heart dey beat quick",
+            "dey gasp for air",
+            "leg dey swell up",
+            "heart dey jump",
+            "I dey tire quick",
+            "pain for my chest like fire",
+            "chest tightness",
+            "palpitations",
+            "edema",
+            "arrhythmia",
+            "ankle swelling"
         ],
-        "advice": "\nThis may be a heart problem. Please go to a health center immediately for a check-up."
+        "advice": "\nThis may be a heart problem. Reduce salt intake, do not smoke, eat healthy food. Please go to a health center immediately, especially see a cardiologist for a check-up and proper care."
     },
 
     "malnutrition": {
@@ -542,10 +773,320 @@ symptom_data = {
             "swollen feet (leg dey swell from kwashiorkor)",
             "thin arms (hand dey thin)",
             "child no grow well",
-            "weakness (no strength)"
+            "weakness (no strength)",
+            "body thin",
+            "belly big",
+            "child dey small",
+            "child dey thin",
+            "head dey big for small body",
+            "body dey waste",
+            "no strength for child",
+            "wasting",
+            "stunted growth",
+            "marasmus",
+            "kwashiorkor",
+            "underweight"
         ],
-        "advice": "\nThis person may be malnourished. Provide balanced meals and visit a health center for nutrition support."
+        "advice": "\nIt may be due to malnutrition. Provide balanced meals that have proteins and vitamins. Visit a health center for more nutrition support."
     },
+
+    "stomach ulcer": {
+            "symptoms": [
+                "burning pain for stomach (pain for stomach like fire)",
+                "pain after eating (pain after you chop)",
+                "vomiting blood (dey vomit blood)",
+                "black stool (poo black)",
+                "feel full quick (belly full fast)",
+                "tummy dey burn",
+                "stomach dey worry me",
+                "stomach dey bleed",
+                "dark tarry stool",
+                "nausea",
+                "indigestion"
+            ],
+            "advice": "\n This could be stomach ulcer. See a doctor fast. Avoid spicy and oily food. Do not take pain medicine like ibuprofen without food."
+    },
+    "asthma": {
+            "symptoms": [
+                "shortness of breath (no fit breathe well)",
+                "wheezing (chest dey make noise like whistle)",
+                "tight chest (chest heavy)",
+                "cough (dey cough mostly for night)",
+                "hard to breathe (struggle to breathe)",
+                "short breath",
+                "chest dey hold me",
+                "breathing dey sound",
+                "cough for night",
+                "gasping for air",
+                "difficulty breathing",
+                "chest tightness"
+            ],
+            "advice": "\nThis could be asthma. Use your inhaler. Avoid smoke and dust. If breathing is very hard, go to the hospital right away."
+    },
+    "tonsillitis": {
+            "symptoms": [
+                "throat dey pain when I swallow",
+                "small fever",
+                "red for throat",
+                "neck dey swell",
+                "sore throat",
+                "painful swallowing",
+                "swollen tonsils",
+                "fever",
+                "lymph nodes swelling"
+            ],
+            "advice": "\nThis could be tonsillitiss. Drink warm water and use salt water to gargle. If the fever is high or you cannot swallow, see a doctor for antibiotics."
+    },
+
+    "hepatitis (viral)": {
+            "symptoms": [
+                "yellow eye and skin",
+                "dark piss",
+                "body weak",
+                "stomach pain for right side",
+                "fever",
+                "jaundice",
+                "yellow urine",
+                "fatigue",
+                "abdominal pain",
+                "nausea",
+                "loss of appetite"
+            ],
+            "advice": "\nYou may have hepatitis. Go to the hospital now for a blood test. Rest well and avoid alcohol and local herbs."
+    },
+    "kidney stones": {
+            "symptoms": [
+                "strong pain for back and side",
+                "pain dey enter front to private part",
+                "piss dey sting",
+                "blood for piss",
+                "severe flank pain",
+                "groin pain",
+                "painful urination",
+                "hematuria"
+            ],
+            "advice": "\nThis could be kidney Stones. Drink plenty of water and go to the hospital for proper pain relief and scan."
+    },
+    "anemia": {
+            "symptoms": [
+                "face white",
+                "body weak all the time",
+                "fast heart beat",
+                "shortness of breath",
+                "pale skin",
+                "fatigue",
+                "palpitations",
+                "dizziness",
+                "short breath"
+            ],
+            "advice": "\nYou may have anemia that is low blood. Eat food rich in iron and vitamins. See a doctor for a blood test and iron tablets."
+    },
+    "epilepsy/seizure": {
+            "symptoms": [
+                "body dey shake all over",
+                "no fit talk or respond",
+                "foam for mouth",
+                "person fall down suddenly",
+                "convulsion",
+                "shaking of limbs",
+                "unconsciousness",
+                "loss of control",
+                "frothing at mouth"
+            ],
+            "advice": "\nThis could be epilepsy or seizure. Do not put anything in the person's mouth. Place them on their side and see a doctor for daily medicine to stop the fit."
+    },
+    "menstrual pain (dysmenorrhea)": {
+            "symptoms": [
+                "bad pain for lower belly during period",
+                "back pain during period",
+                "pain for waist",
+                "period pain too much",
+                "cramping",
+                "pelvic pain",
+                "lower back ache"
+            ],
+            "advice": "\n You may have menstrual Pain. Use a hot water bottle on your belly. Take pain medicine like paracetamol. If the pain is too severe, see a doctor."
+    },
+    "preeclampsia": {
+            "symptoms": [
+                "BP high during pregnancy",
+                "headache no gree go",
+                "eye no clear",
+                "face and leg dey swell fast",
+                "hypertension in pregnancy",
+                "severe headache",
+                "blurred vision",
+                "sudden swelling (edema)"
+            ],
+            "advice": "\nYou may have preeclampsia. Go to the hospital emergency immediately. This is very serious for you and the baby."
+    },
+    "fracture/broken bone": {
+            "symptoms": [
+                "strong pain for hand or leg when e break",
+                "e no fit move the place",
+                "place dey look crooked",
+                "swelling and bruising",
+                "severe pain",
+                "inability to use limb",
+                "deformity"
+            ],
+            "advice": "\nThis could be a fractured or broken bone. Do not move the person. Use a stick or hard material to keep the place straight and go to the hospital immediately."
+    },
+    "severe allergic reaction (anaphylaxis)": {
+            "symptoms": [
+                "skin dey scratch and swell fast",
+                "throat tight, no fit breathe",
+                "tongue swell",
+                "fast heart beat",
+                "difficulty breathing",
+                "hives",
+                "swelling of lips/tongue/throat",
+                "wheezing",
+                "collapse"
+            ],
+            "advice": "\nYou may be suffering from a severe allergic reaction or also called anaphylaxis. Go to the nearest hospital emergency now. This is a life-threatening condition."
+    },
+    "schistosomiasis (bilharzia)": {
+            "symptoms": [
+                "blood for piss",
+                "stomach dey pain (lower part)",
+                "blood for stool",
+                "frequent urination",
+                "hematuria",
+                "abdominal pain",
+                "bloody stool",
+                "bladder pain"
+            ],
+            "advice": "\nThis could be schistosomiasis that is bilharzia. Go to the clinic for a test and proper medicine. Do not enter or swim in dirty water."
+    },
+    "gallstones": {
+            "symptoms": [
+                "sharp pain for upper right belly",
+                "pain after chop oily food",
+                "yellow eye",
+                "vomiting",
+                "severe right upper quadrant pain",
+                "pain radiating to back/shoulder",
+                "jaundice"
+            ],
+            "advice": "\nYou may have gallstones inside you. See a doctor for a scan to confirm. Avoid oily and fatty foods for now."
+    },
+    "dengue fever": {
+            "symptoms": [
+                "very bad headache",
+                "pain behind eye",
+                "joint and muscle pain too much",
+                "rash",
+                "high fever",
+                "severe bone pain (breakbone fever)",
+                "retro-orbital pain",
+                "skin rash"
+            ],
+            "advice": "\nYou may have dengue Fever. Rest well and take paracetamol only. Do not take ibuprofen. See a doctor if you start bleeding."
+    },
+    "stroke": {
+            "symptoms": [
+                "one side of face drop",
+                "one hand or leg no fit move",
+                "trouble talk",
+                "sudden onset of weakness",
+                "facial drooping",
+                "slurred speech",
+                "loss of balance",
+                "severe headache"
+            ],
+            "advice": "\nYou may be suffering from stroke. This is an emergency! Rush to the hospital now. Every minute counts."
+    },
+    "appendicitis": {
+            "symptoms": [
+                "pain start for navel and move to lower right belly",
+                "vomiting",
+                "fever",
+                "stomach pain for right corner",
+                "loss of appetite",
+                "periumbilical pain",
+                "right lower quadrant pain",
+                "rebound tenderness"
+            ],
+            "advice": "\nThis may have be appendicitis. Go to the hospital emergency now. Do not eat anything until a doctor sees you."
+    },
+    "lassa fever": {
+            "symptoms": [
+                "high fever wey no gree go",
+                "body pain",
+                "throat pain",
+                "face swell",
+                "bleeding from gums/nose",
+                "severe fever",
+                "facial swelling",
+                "sore throat",
+                "hemorrhage"
+            ],
+            "advice": "\nThis could be lassa fever. Go to the nearest health center immediately. This is an urgent, life-threatening infection."
+    },
+    "hemorrhoids (piles)": {
+            "symptoms": [
+                "pain and itching for anus (piles)",
+                "blood when you stool (small blood)",
+                "lump for outside anus",
+                "painful bowel movement",
+                "rectal bleeding",
+                "anal itching",
+                "prolapse"
+            ],
+            "advice": "\nYou may have hemorrhoid or pile. Eat lot of high-fiber food and drink lot of water. Do not strain when you poo. See a doctor if the pain is severe or the bleeding is heavy."
+    },
+    "gonorrhea (std)": {
+            "symptoms": [
+                "yellow or white discharge from private part",
+                "pain when you piss",
+                "testicles dey swell for men",
+                "vaginal/penile discharge",
+                "dysuria",
+                "pelvic inflammatory disease (PID)",
+                "epididymitis"
+            ],
+            "advice": "\nYou may have gonorrhea, an STD. See a doctor or clinic immediately for a test and treatment. Do not have sex until treatment is complete."
+    },
+    "syphilis (std)": {
+            "symptoms": [
+                "painless sore for private part",
+                "rash for hand and leg bottom",
+                "sore for mouth",
+                "painless chancre",
+                "non-itchy rash",
+                "fever",
+                "lymphadenopathy"
+            ],
+            "advice": "\nYou may have syphilis, an STD. See a doctor or clinic immediately for a blood test and penicillin treatment."
+    },
+    "hypoglycemia (low blood sugar)": {
+            "symptoms": [
+                "body dey shake",
+                "sweating",
+                "dizzy",
+                "confusion",
+                "feel like fainting",
+                "tremors",
+                "palpitations",
+                "anxiety",
+                "fainting"
+            ],
+            "advice": "It could be that your sugar level is low. This is also called hypoglycemia. Quickly eat something sweet like sugar, juice, honey. If you are a diabetic, check your sugar and adjust your medicine dosage prescribed by a medical personnel."
+    },
+    "glaucoma (eye pressure)": {
+            "symptoms": [
+                "eye pain strong",
+                "headache bad",
+                "eye no see clear fast",
+                "eye red",
+                "severe eye pain",
+                "sudden blurred vision",
+                "seeing halos",
+                "redness of eye"
+            ],
+            "advice": "You may have glaucoma, a high pressure on the eye. Go to the ophthalmologist immediately. High pressure can blind you fast."
+    }
 }
 
 
@@ -588,27 +1129,148 @@ def normalize_condition_name(name: str) -> str:
 
 
 medical_keywords = [
-    "fever", "body", "body hot", "body dey hot", "chills", "body dey shake", "sweating", "too much sweat",
-    "headache", "head dey pain", "fatigue", "body weak", "no strength", "nausea", "body dey turn",
-    "vomiting", "dey vomit", "muscle aches", "body pain", "stomach pain", "stomach cramp",
-    "belly twist"  "belly dey pain",
-    "diarrhea", "stool dey run", "stool dey rush", "constipation", "no fit stool", "weakness",
-    "body weak well well", "loss of appetite", "no wan chop", "cough", "dey cough", "sore throat",
-    "throat dey pain", "runny nose", "catarrh dey come out", "nasal congestion", "nose block",
-    "mild fever", "small body hot", "high fever", "body dey hot well well", "body aches",
-    "pressure in head", "migraine", "joint pain", "back pain", "waist dey pain", "missed period",
-    "menstruation no come", "breast tenderness", "breast dey pain", "red eye", "eye red", "itchy eye",
-    "eye dey scratch", "watery eye", "eye dey bring water", "eye pain", "eye dey pain", "sticky discharge",
-    "eye gum when you wake", "blurred vision", "no see clear", "light sensitivity", "eye no like light",
-    "vision loss", "eye dey blind small small", "fast breathing", "dey breathe fast", "difficulty breathing",
-    "no fit breathe well", "cough with mucus", "cough dey bring phlegm", "chest pain", "chest dey pain",
-    "chest dey pain or tight", "long lasting fever", "body hot for weeks", "weight loss", "body dey reduce",
-    "night sweats", "body dey sweat for night", "persistent diarrhea", "stool no dey stop", "frequent urination",
-    "dey piss too much", "excessive thirst", "always dey thirsty", "always hungry", "too much hunger",
-    "wounds no dey heal quick", "sometimes no symptoms at all", "shortness of breath", "swelling in legs",
-    "leg dey swell", "tired easily", "body weak quick quick", "fast heartbeat", "irregular heartbeat",
-    "heart dey beat fast", "swollen feet", "leg dey swell from kwashiorkor", "thin arms", "hand dey thin",
-    "child no grow well"
+    "BP don high", "BP high", "BP high during pregnancy", "I can't pee", "I cough blood",
+    "I dey feel very weak", "I dey hawk phlegm", "I dey perspire for night", "I dey run to toilet always",
+    "I dey scratch every time", "I dey see black spot", "I dey see double", "I dey slim down fast",
+    "I dey struggle to breathe", "I dey throw up in the morning", "I dey tire quick",
+    "I feel like say I go fall down", "I feel sand sand inside my eye", "I feel tired quickly",
+    "abdominal cramps", "abdominal discomfort", "abdominal mass", "abdominal pain", "ache all over",
+    "aching legs", "aching limbs", "acid reflux", "acute joint pain (toe)", "always hungry (too much hunger)",
+    "always thirsty", "always want to eat", "amenorrhea", "anal itching", "anhedonia", "ankle swelling",
+    "anxiety", "arrhythmia", "athlete's foot", "back pain", "back pain during period", "back stiffness",
+    "bad itching for night time", "bad pain for lower belly during period", "belly big", "belly dey grumble",
+    "belly full of wind", "big fever", "bleeding from gums/nose", "blisters",
+    "blisters (skin get water blister)", "bloating", "blood for piss", "blood for stool", "blood in urine",
+    "blood when you stool (small blood)", "bloody stool", "blurred vision", "blurred vision (eye no see clear)",
+    "blurred vision (no see clear)", "blurry", "body aches (body pain)", "body dey burn", "body dey shake all over",
+    "body dey dry up", "body dey pain everywhere", "body dey pain me well well", "body dey waste", "body thin",
+    "body weak", "body weak all the time", "body weak die", "body weak always", "bone pain", "breast dey heavy",
+    "breast tenderness (breast dey pain)", "breath no dey enter well", "breathing dey sound",
+    "burning during urination", "burning eyes", "burning pain for stomach (pain for stomach like fire)",
+    "burning sensation", "cachexia", "can't see far", "catarrh", "chest dey hold me", "chest dey make noise",
+    "chest pain (chest dey pain or tight)", "chest pain (chest dey pain)", "chest pain when I cough",
+    "chest tightness", "child dey small", "child dey thin", "child no grow well", "chills",
+    "chills (body dey shake)", "chronic cough", "chronic diarrhea", "circular rash", "cluster headache",
+    "cold dey catch me", "collapse", "confusion", "conjunctivitis", "constant sadness", "constant sneezing",
+    "constipation", "constipation (no fit stool)", "convulsion", "coryza (runny nose)", "cough",
+    "cough (dey cough mostly for night)", "cough (dey cough)", "cough for long time", "cough for night",
+    "cough wey last more than 2 weeks", "cough wey no end", "cough with mucus (cough dey bring phlegm)",
+    "cough, runny nose, red eyes", "coughing blood (cough dey bring blood)", "coughing out yellow tin",
+    "cramping", "cravings", "dark piss", "dark tarry stool", "debilitating weakness", "deformity",
+    "dehydration (mouth dry)", "dermatitis", "dey beat my head", "dey chop ice/dirt (pica)", "dey gasp for air",
+    "dey piss small small", "dey pour water", "dey purge", "dey purge steady", "dey vomit food", "diarrhea",
+    "diarrhea (stool dey run)", "diarrhea (stool dey rush)", "difficulty breathing",
+    "difficulty breathing (no fit breathe well)", "difficulty standing straight", "discharge", "dizziness",
+    "dizziness (head dey turn)", "double vision", "drenching night sweats", "drenching sweat",
+    "dry mouth (tongue dry)", "dry throat always", "dry tongue", "dyspareunia", "dyspnea on exertion",
+    "dysuria", "e don pass my time", "earache", "edema", "e no fit move the place", "enlarged, twisted veins",
+    "epigastric burning pain", "epistaxis", "everywhere dey pain", "excess body fat",
+    "excessive thirst (always dey thirsty)", "excessive thirst (mouth dey dry)", "exhaustion",
+    "extreme fatigue", "extreme thirst", "eye dey burn", "eye dey confuse me", "eye dey sticky",
+    "eye dey tear up", "eye dey tear with light", "eye full of pus", "eye mattering", "eye no clear",
+    "eye no see clear fast", "eye pain (eye dey pain)", "eye pain strong", "eye red", "eye red like fire",
+    "face and leg dey swell fast", "face swell", "face swell for side (like big cheek)", "face white",
+    "facial drooping", "facial swelling", "fainting", "fast breathing (dey breathe fast)", "fast heart beat",
+    "fast or irregular heartbeat (heart dey beat fast)", "fatigue", "fatigue (body weak)",
+    "fatigue (no strength)", "feel faint", "feel full quick (belly full fast)", "feeling cold and hot",
+    "fever", "fever (body hot / body dey hot/high temperature)", "fever (body hot)", "fever and cold",
+    "fever high", "fever too high o", "fever wey last many days(fever)", "food aversions",
+    "food no dey sweet me", "foam for mouth", "frequent urge to urinate (dey always wan piss)",
+    "frequent urination", "frequent urination (dey piss too much)", "frequent watery stools",
+    "frothing at mouth", "gallstones", "gasping for air", "general malaise", "general weakness",
+    "gestation", "glaucoma", "groin pain", "groin swelling", "gritty feeling", "hard to breathe",
+    "head dey big for small body", "head dey burst", "head heavy", "head hurts", "headache", "headache (head dey pain often)",
+    "headache (head dey pain)", "headache bad", "heart dey beat fast", "heart dey beat quick", "heart dey jump",
+    "heartburn", "hematuria", "hemoptysis", "hemorrhage", "heavy head", "high fever",
+    "high fever (body dey hot well well)", "high fever (body hot well well)", "high fever wey no gree go",
+    "high temperature", "hives", "hot body for weeks", "hot piss", "hotness for body", "hyperglycemia",
+    "hypertension", "hypertension in pregnancy", "hyperuricemia (high acid)", "hypersomnia",
+    "inability to use limb", "indigestion", "inguinal lump", "insomnia", "intense headache",
+    "intense nocturnal itching", "itchy eye (eye dey scratch)", "itchy ring-shaped rash",
+    "itchy skin (skin dey scratch)", "itchy rash (small water blister)", "jaundice", "jock itch",
+    "joint and muscle pain too much", "joint dey swell up", "joint pain", "joint red and hot",
+    "joint stiffness", "koplik spots (white spots in mouth)", "kwashiorkor", "laboured breathing",
+    "leg dey heavy and pain after standing", "leg dey swell for evening", "leg dey swell up", "leg heaviness",
+    "light sensitivity (eye no like light)", "light-headedness", "loss of appetite",
+    "loss of appetite (no wan chop)", "loss of balance", "loss of control",
+    "loss of interest in wetin you like", "loss of sight", "loss of taste", "loose motion",
+    "long lasting fever (body hot for weeks)", "long term weakness", "lower back ache",
+    "lower stomach pain (lower belly dey pain)", "lumbago", "lump dey disappear when you lie down",
+    "lump dey show for groin or belly", "lump for outside anus", "lymph nodes swelling", "lymphadenopathy",
+    "maculopapular rash", "malaise", "marasmus", "melena", "mild fever (small body hot)",
+    "missed period (menstruation no come)", "morning sickness", "mouth dry finish", "mucus discharge",
+    "muscle aches (body pain)", "muscle pain", "muscle stiff for back", "musculoskeletal pain",
+    "my body is vibrating", "my bone dey pain", "my brain dey knock", "my eye dey bring sand",
+    "my hand dey weak", "my head dey heavy with catarrh", "my head dey turn", "my head dey turn me",
+    "my sight don weak", "my skin dey red", "my throat dey wound me", "nasal congestion (nose block)",
+    "nausea", "nausea (body dey turn)", "neck dey swell", "neck no gree bend", "need to piss always",
+    "nervousness", "night sweats (body dey sweat for night)", "no fit chop anything",
+    "no fit talk or respond", "no solid stool", "no strength for child", "no urine (no dey piss)",
+    "no wan talk to anybody", "non-itchy rash", "nose dey leak water", "nuchal rigidity", "obesity",
+    "occipital headache", "oliguria", "one hand or leg no fit move", "one side of face drop",
+    "pain after chop oily food", "pain after eating (pain after you chop)", "pain and itching for anus (piles)",
+    "pain better after eating", "pain behind eye", "pain dey enter front to private part",
+    "pain dey shoot to leg", "pain during sex", "pain for back", "pain for chest", "pain for head no gree stop",
+    "pain for my chest like fire", "pain for my waist", "pain for upper belly like fire",
+    "pain for the lump when you cough", "pain for waist wey no gree go",
+    "pain for private part and between fingers", "pain inside my private area",
+    "pain radiating to back/shoulder", "pain start for navel and move to lower right belly",
+    "pain when you piss", "pain when you swallow", "pain when urinating (when you piss e dey pain)",
+    "pain worse when hungry", "painful bowel movement", "painful swallowing", "painless chancre",
+    "painless sore for private part", "pale skin", "palpitations", "papules and burrows",
+    "parotid gland swelling", "pelvic inflammatory disease (PID)", "pelvic pain", "peptic ulcer disease",
+    "period", "period no come this month", "period pain too much", "periumbilical pain",
+    "persistent diarrhea (stool no dey stop)", "person dey fall down suddenly", "person dey slim down",
+    "perspire for night", "phlegm", "photophobia", "pica (ice/dirt craving)", "piles", "piss dey sting",
+    "piss too much", "pissing dey burn me", "place dey look crooked", "pleuritic chest pain", "pneumonia",
+    "polyphagia", "polydipsia", "polyuria", "poor appetite", "pressure in head", "productive cough",
+    "profuse night sweats", "prolapse", "prolonged fever", "pruritic vesicular rash", "pruritus",
+    "purulent discharge", "rales", "rash", "rash (skin get small small spots)",
+    "rash for face and spread down", "rash for hand and leg bottom", "rash for private part",
+    "rash spread all over body", "rash in skin folds", "rebound tenderness", "rectal bleeding",
+    "red eye (eye red)", "red for throat", "red spots (red mark for body)", "red spots on skin",
+    "red, scaly skin patch", "redness of eye", "restlessness", "retro-orbital pain",
+    "right lower quadrant pain", "running stomach", "runny nose (catarrh dey come out)",
+    "sad all the time (no joy)", "sciatica", "severe allergic reaction (anaphylaxis)",
+    "severe back and side pain", "severe body aches", "severe bone pain (breakbone fever)",
+    "severe chills", "severe eye pain", "severe fever", "severe flank pain", "severe headache",
+    "severe itching", "severe pain", "severe right upper quadrant pain", "shaking fever",
+    "shaking of limbs", "sharp pain for upper right belly", "shivering", "shooting pain to leg",
+    "short breath", "shortness of breath", "shortness of breath (no fit breathe well)",
+    "shortness of breath when climbing stair", "skin burning", "skin dey vex me", "skin eruption",
+    "skin rash", "sleep too much or too little", "slurred speech", "small fever", "small piss dey come",
+    "small small bumps", "small small bumps or line on skin", "smallpox dey my body",
+    "social withdrawal", "sore for mouth", "sore throat", "sore throat (throat dey pain)", "sore tongue",
+    "soreness", "sometimes no symptoms at all", "spit blood", "sticky discharge (eye gum when you wake)",
+    "stiff neck", "stomach hurts", "stomach cramps (belly twist)", "stomach dey bleed", "stomach dey pain me bad",
+    "stomach dey pain (lower part)", "stomach dey push me", "stomach dey run non-stop",
+    "stomach dey worry me", "stomach pain", "stomach pain (belly dey pain)",
+    "stomach pain for right corner", "stomach pain for right side", "stomach pain bad",
+    "stomach rumbling", "stomach upset", "stooling too much", "strong body heat", "strong headache",
+    "strong pain for back and side", "strong pain for hand or leg when e break",
+    "strong pressure for inside head", "stunted growth", "stuffy nose",
+    "sudden bad pain for toe (big toe)", "sudden blurred vision", "sudden onset of weakness",
+    "sudden onset vomiting", "sudden swelling (edema)", "sugar dey high", "sugar level high",
+    "sweat for night", "sweating", "sweating (excessive)", "sweating (too much sweat)",
+    "swelling and bruising", "swelling in legs (leg dey swell)", "swelling of lips/tongue/throat",
+    "swelling and redness", "swollen feet (leg dey swell from kwashiorkor)", "swollen tonsils",
+    "syncope", "tender breasts", "tension headache", "testicles dey swell for men",
+    "thin arms (hand dey thin)", "thick white discharge", "throat dey pain when I swallow",
+    "throat dey scratch", "throat pain", "throat tight, no fit breathe", "throat irritation",
+    "throbbing pain", "tired easily (body weak quick quick)", "tongue smooth and sore", "tongue swell",
+    "too much piss", "too much weight gain", "tremors", "trouble sleeping", "trouble talk",
+    "tummy dey burn", "tummy dey pain", "unconsciousness", "underweight", "unexplained weight loss",
+    "unrelenting pain", "vaginal itching", "vaginal/penile discharge", "varicose veins",
+    "veins for leg dey look big and twisted (like rope)", "vertigo", "very bad headache",
+    "very thirsty", "vesicles", "visual impairment", "vision loss", "vision loss (eye dey blind small small)",
+    "vomiting", "vomiting (dey vomit for morning)", "vomiting (dey vomit)", "vomiting blood (dey vomit blood)",
+    "vomiting and diarrhea start quick after chop", "wasting", "wasting syndrome", "watery diarrhea",
+    "watery eye (eye dey bring water)", "weakness", "weakness (body weak well well)", "weakness (body weak)",
+    "weakness (no strength)", "weight loss (body dey reduce)", "weight loss (body dey slim down)",
+    "weight loss (body too slim)", "wetin I dey swallow dey pain", "wheezing",
+    "white thick discharge for private part (like cheese)", "widespread pain", "wound no dey close",
+    "wounds no dey heal quick", "yellow eye", "yellow eye and skin", "yellow urine",
+    "yellow or white discharge from private part"
 ]
 
 
@@ -620,16 +1282,9 @@ def has_medical_relevance(text):
 train_ml_model()
 
 
-# --- Example Usage (assuming you have your symptom_data loaded elsewhere) ---
-# user_input_example = "I have fever, chills and loss of appetite"
-# results = check_symptoms(user_input_example)
-# print(results)
-#
-# # Expected output with the provided symptom_data:
-# # ['chickenpox (varicella)', 'infectious mononucleosis (mono/kissing disease)', 'malaria']
-# # (Order might vary as sets don't maintain order)
 
-def find_nearby_hospitals(user_lat, user_lon, radius_km=200):
+
+def find_nearby_hospitals(user_lat, user_lon, radius_km=100):
     """
     Finds hospitals within a specified geographical radius from a given point.
     Returns a list of dictionaries with hospital name, city, lat, lon, and url.
@@ -795,6 +1450,11 @@ login_template = """
             padding-left: 45px; 
             padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
         }
+        input:-webkit-autofill {
+            /* Keep background white and text dark when autofilled in light mode */
+            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important; 
+            -webkit-text-fill-color: #343a40!important;  
+        }
         button {
             width: 100%;
             padding: 15px;
@@ -827,7 +1487,7 @@ login_template = """
             padding: 0;
             margin: 0;
         }
-        .toggle-password:hover { color: #28a428; background: none; border:none; }
+        .toggle-password:hover {  background: none; border:none; }
         /* ✅ Dark Mode */
         @media (prefers-color-scheme: dark) {
             body { background: #36393f; color: #eee; }
@@ -843,9 +1503,13 @@ login_template = """
             .icon { color:#e0e0e0;}
             a:hover { color:#2e8b43;}
             button:hover { background:#2e8b43;}
-            .toggle-password { color:#38b45a;}
-            .toggle-password:hover{ color:#2e8b43;}
-            .input-group .icon { color:#38b45a;}
+            .toggle-password { color:#e0e0e0;}
+            .input-group .icon { color:#e0e0e0;}
+            input:-webkit-autofill {
+                /* Keep background dark and text light when autofilled in dark mode */
+                -webkit-box-shadow: 0 0 0 1000px #2c2f33 inset !important; 
+                -webkit-text-fill-color: #eee !important;
+            }
         }
         /* ✅ Mobile view adjustments */
         @media (max-width: 1020px) {
@@ -938,10 +1602,33 @@ signup_template = """
             justify-content: space-around;
         }
         
+        select { 
+            width: 100%; 
+            padding: 15px; 
+            margin: 8px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 20px; 
+            font-size: 16px; 
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: white;
+            padding-left: 45px;
+            /* Custom dropdown arrow - light mode */
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23008000"><path d="M8 9 L10 11 L12 9 Z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1px center;
+            padding-right: 30px; 
+        }
+        
         input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
         input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
             padding-left: 45px; 
-            padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
+            padding-right: 45px; 
+        }
+        input:-webkit-autofill {
+            /* Keep background white and text dark when autofilled in light mode */
+            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important; 
+            -webkit-text-fill-color: #343a40!important;  
         }
         .input-group { position: relative; width: 100%; }
         .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
@@ -978,21 +1665,29 @@ signup_template = """
             padding: 0;
             margin: 0;
         }
-        .toggle-password:hover { color: #28a428; background: none; border:none; }
+        .toggle-password:hover { background: none; border:none; }
         /* ✅ Dark Mode */
         @media (prefers-color-scheme: dark) {
             body { background: #36393f; color: #eee; }
             input { background: #2c2f33; color: #eee; border: 1px solid #444; }
+            select {background-color: #2c2f33; border: 1px solid #444; color: #eee;
+                /* Custom dropdown arrow - dark mode */
+                background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="%23e0e0e0"><path d="M8 9 L10 11 L12 9 Z"/></svg>')
+            }
             input::placeholder { color: #aaa; }
             button { background: #38b45a; color: white; }
             a { color: #38b45a; }
             h1 { color:#e0e0e0;}
-            .icon { color:#e0e0e0;}
+            .icon{color:#e0e0e0;}
             a:hover { color:#2e8b43;}
             button:hover { background:#2e8b43;}
-            .toggle-password { color:#38b45a;}
-            .toggle-password:hover{ color:#2e8b43;}
-            .input-group .icon { color:#38b45a;}
+            .toggle-password { color:#e0e0e0;}
+            .input-group .icon { color:#e0e0e0;}
+            input:-webkit-autofill {
+                /* Keep background dark and text light when autofilled in dark mode */
+                -webkit-box-shadow: 0 0 0 1000px #2c2f33 inset !important; 
+                -webkit-text-fill-color: #eee !important;
+            }
         }
         /* ✅ Mobile view adjustments */
         @media (max-width: 1020px) {
@@ -1018,6 +1713,14 @@ signup_template = """
     <div class="input-group">
         <i class="fa fa-user icon"></i>
         <input type="username" name="username" placeholder="Username" required />
+    </div>
+    <div class="input-group">
+            <i class="fa fa-venus-mars icon"></i>
+            <select name="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
     </div>
 
     <div class="input-group">
@@ -2127,10 +2830,11 @@ def signup():
     if request.method == "POST":
         name = request.form["name"]
         username = request.form["username"]
+        gender = request.form["gender"]
         email = request.form["email"]
         password = request.form["password"]
         hashed = bcrypt.generate_password_hash(password).decode('utf-8')
-        user = User(username=username, name=name, email=email, password=hashed)
+        user = User(username=username, name=name, gender=gender, email=email, password=hashed)
         db.session.add(user)
         db.session.commit()
         return redirect(url_for("login"))
@@ -2201,8 +2905,8 @@ def chat():
             # --- START: ML & Keyword Matching Logic ---
             # NOTE: Your full ML logic to populate ranked_conditions and valid_conditions
             # MUST be present here. The snippet below assumes it is.
-            ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.0)
-            keyword_matches = check_symptoms(user_input, min_score_threshold=1, top_n=5)
+            ml_results = ml_predict_condition(user_input, top_n=3, threshold=0.0)
+            keyword_matches = check_symptoms(user_input, min_score_threshold=1, top_n=4)
 
             hybrid_results = {}
             for cond_name, prob in ml_results:
@@ -2223,7 +2927,7 @@ def chat():
             ranked_conditions.sort(key=lambda x: x[1], reverse=True)
 
             # This line successfully populates the initialized variable:
-            valid_conditions = [c for c, score in ranked_conditions if score >= 6][:5]
+            valid_conditions = [c for c, score in ranked_conditions if score >= 4][:3]
             # --- END: ML & Keyword Matching Logic ---
 
             if valid_conditions:
