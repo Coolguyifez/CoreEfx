@@ -1697,6 +1697,7 @@ signup_template = """
         }
         @media (max-width: 480px) {
             input, button { font-size: 14px; padding: 12px; }
+            select{ font-size: 14px;}
             h1 { font-size: 34px; }
         }
     </style>
