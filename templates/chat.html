@@ -262,11 +262,6 @@
           -webkit-overflow-scrolling: touch;
         }
 
-        body.keyboard-open {
-          position: fixed;
-          width: 100%;
-          overflow: hidden;
-        }
 
          .reply-me{
 
@@ -1413,13 +1408,26 @@
                     .bindPopup(`<b>${hospital.name}</b><br>${hospital.city.charAt(0).toUpperCase() + hospital.city.slice(1)}<br><a href="${hospital.url}" target="_blank">More Info</a>`);
             });
         }
+        
         // Enter key to send
-        document.getElementById("symptoms").addEventListener("keydown", function(e) {
-            if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                sendSymptoms();
-            }
-        });
+        const symptomsInput = document.getElementById("symptoms");
+
+        // Detect mobile devices
+        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+        if (symptomsInput) {
+            symptomsInput.addEventListener("keydown", function (e) {
+
+                // 💻 DESKTOP: Shift + Enter sends
+                if (!isMobile && e.key === "Enter" && e.shiftKey) {
+                    e.preventDefault();
+                    sendSymptoms();
+                }
+
+                // 📱 MOBILE: Enter = new line (do nothing)
+                // 📱 Send button handles sending
+            });
+        }
 
          // All DOM-related initializations go here
         document.addEventListener('DOMContentLoaded', () => {
@@ -1449,4 +1457,5 @@
     </script>
 </body>
 </html>
+
 
