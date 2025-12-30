@@ -2906,8 +2906,8 @@ def chat():
             # --- START: ML & Keyword Matching Logic ---
             # NOTE: Your full ML logic to populate ranked_conditions and valid_conditions
             # MUST be present here. The snippet below assumes it is.
-            ml_results = ml_predict_condition(user_input, top_n=3, threshold=0.0)
-            keyword_matches = check_symptoms(user_input, min_score_threshold=1, top_n=4)
+            ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.0)
+            keyword_matches = check_symptoms(user_input, min_score_threshold=1, top_n=6)
 
             hybrid_results = {}
             for cond_name, prob in ml_results:
@@ -2928,7 +2928,7 @@ def chat():
             ranked_conditions.sort(key=lambda x: x[1], reverse=True)
 
             # This line successfully populates the initialized variable:
-            valid_conditions = [c for c, score in ranked_conditions if score >= 4][:3]
+            valid_conditions = [c for c, score in ranked_conditions if score >= 20][:2]
             # --- END: ML & Keyword Matching Logic ---
 
             if valid_conditions:
