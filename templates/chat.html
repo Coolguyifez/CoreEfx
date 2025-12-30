@@ -256,6 +256,16 @@
           flex-direction: column;
           align-items: flex-start;
           gap: 12px;
+          flex: 1;
+          overflow-y: auto;
+          overscroll-behavior: contain;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        body.keyboard-open {
+          position: fixed;
+          width: 100%;
+          overflow: hidden;
         }
 
          .reply-me{
@@ -1358,10 +1368,10 @@
             `;
             
             let buttonHTML = showRetryButton 
-                ? `<button onclick="this.parentNode.remove(); getLocation();" style="
-                    background-color: var(--primary-color); color: white; border: none; padding: 8px 15px;
-                    border-radius: 4px; cursor: pointer; margin-top: 10px; margin-right: 10px;
-                ">Try Again</button>`
+                ? `&nbsp<button onclick="this.parentNode.remove(); getLocation();" style="
+                    background-color: var(--primary-color); color: white; border: none; padding: 8px 10px;
+                    border-radius: 4px; cursor: pointer; margin: auto;
+                ">Try Again</button>&nbsp;`
                 : '';
 
             buttonHTML += `<button onclick="this.parentNode.remove()" style="
@@ -1404,8 +1414,8 @@
             });
         }
         // Enter key to send
-        document.getElementById("symptoms").addEventListener("keypress", function(e) {
-            if (e.key === "Enter") {
+        document.getElementById("symptoms").addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 sendSymptoms();
             }
@@ -1415,15 +1425,23 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM content loaded for initial setup.");
 
-           
-
-
 
             // Get location on page load for initial setup, even if not displayed immediately
             getLocation();
 
-            // Ensure the correct tab is active on initial load (defaults to 'home') - if dynamically setting
-            // openTab(null, 'home'); // Call this if you want to explicitly ensure 'home' is active
+            // ✅ STEP 3: Detect mobile keyboard open/close
+            const textarea = document.getElementById("symptoms");
+
+            if (textarea) {
+                textarea.addEventListener("focus", () => {
+                    document.body.classList.add("keyboard-open");
+                });
+
+                textarea.addEventListener("blur", () => {
+                    document.body.classList.remove("keyboard-open");
+                });
+            }
+
         });
         
 
@@ -1431,3 +1449,4 @@
     </script>
 </body>
 </html>
+
