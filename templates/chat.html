@@ -830,7 +830,7 @@
         
 
 
-        <div class="intro-welcome"><b>What symptoms are you experiencing today?...</b></div>
+        <div id="delayed-welcome-container"></div>
 
 
 
@@ -908,8 +908,7 @@
 
     <script>
         let map;
-
-
+        
         document.querySelectorAll('textarea').forEach(textarea => {
             textarea.addEventListener('input', function() {
                 const maxHeight = 120; // Matches the CSS max-height: 120px
@@ -1479,6 +1478,17 @@
                     document.body.classList.remove("keyboard-open");
                 });
             }
+            setTimeout(() => {
+                const container = document.getElementById('delayed-welcome-container');
+                
+                // Create the message element
+                const welcomeDiv = document.createElement('div');
+                welcomeDiv.className = 'intro-welcome';
+                welcomeDiv.innerHTML = '<b>What symptoms are you experiencing today?...</b>';
+                
+                // Inject it into the page
+                container.appendChild(welcomeDiv);
+            }, 1500); // 1.5 second delay 
             
         });
         
@@ -1487,6 +1497,7 @@
     </script>
 </body>
 </html>
+
 
 
 
