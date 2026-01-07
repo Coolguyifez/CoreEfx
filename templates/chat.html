@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
     <title>CoreEfx AI Chat</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -49,7 +49,7 @@
             height: 100%;
             background-color: var(--background-white);
             color: var(--text-dark);
-            line-height: 1.6;
+            line-height: normal;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             transition: background-color var(--transition-speed), color var(--transition-speed); /* Smooth transition for theme change */
@@ -141,6 +141,7 @@
         }
 
         .input-with-icon {
+            position: sticky;
             display: flex;
             align-items: flex-end; /* Aligns items to the bottom, useful for multi-line textarea */
             gap: 10px; /* Spacing between text area and icon group */
@@ -657,14 +658,13 @@
           left: 0;
           right: 0;
           width: 100%;
-          margin: 0 auto;
           background: var(--background-white); /* no border here */
-          z-index: 100;
-          display: block;
           z-index: 1010;
-        
-          
-        }
+          transform: translateZ(0);
+          -webkit-transform: translateZ(0);
+          /* Prevents unwanted shifting on iOS */
+          padding-bottom: env(safe-area-inset-bottom);
+          }
         
         /* The actual container inside */
         .footer-container {
@@ -684,10 +684,16 @@
             background-color: none;
             background: none;
             text-decoration: none;
+            
             color: var(--text-dark);
             margin-left: 4px; 
             
         } 
+        
+        .chat-back{
+            font-size: 1.2em;
+        }
+
 
 
     .audio-player-container {
@@ -786,7 +792,7 @@
         <!-- New app-header for mobile alignment -->
         <header class="app-header">
            
-            <h2><a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left"></i></a> &nbsp; &nbsp;<i class="fa-solid fa-user fa-icon-large icon"></i> &nbsp;{{ current_user.username }}</h2>
+            <h2>&nbsp;&nbsp;&nbsp;<a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left chat-back"></i></a> &nbsp; &nbsp;<i class="fa-solid fa-user fa-icon-large icon"></i> &nbsp;{{ current_user.username }}</h2>
             <!-- ✅ NEW NAVBAR -->
             <nav class="navbar">
               <button class="nav-toggle" id="navToggle">
@@ -1437,24 +1443,43 @@
          // All DOM-related initializations go here
         document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM content loaded for initial setup.");
+            // --- ADD THE NEW KEYBOARD FIX HERE ---
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', () => {
+                    const footer = document.querySelector('.footer-nav');
+                    const viewportHeight = window.visualViewport.height;
+                    const windowHeight = window.innerHeight;
+                    const offset = windowHeight - viewportHeight;
 
-
+                    if (offset > 0) {
+                        // Keyboard is open: push footer up
+                        footer.style.bottom = `${offset}px`;
+                    } else {
+                        // Keyboard is closed: reset to bottom
+                        footer.style.bottom = '0px';
+                    }
+                    // Keeps the newest messages in view
+                    window.scrollTo(0, document.body.scrollHeight);
+                });
+            }
+           
             // Get location on page load for initial setup, even if not displayed immediately
             getLocation();
 
             // ✅ STEP 3: Detect mobile keyboard open/close
             const textarea = document.getElementById("symptoms");
-
             if (textarea) {
                 textarea.addEventListener("focus", () => {
                     document.body.classList.add("keyboard-open");
+                    // Optional: Extra nudge for iOS
+                    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 300);
                 });
 
                 textarea.addEventListener("blur", () => {
                     document.body.classList.remove("keyboard-open");
                 });
             }
-
+            
         });
         
 
@@ -1462,6 +1487,7 @@
     </script>
 </body>
 </html>
+
 
 
 
