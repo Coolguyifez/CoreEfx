@@ -2953,7 +2953,7 @@ def chat():
                 user_lon = float(lon_str)
 
                 if user_lat == 0.0 and user_lon == 0.0:
-                    result.append("\nWarning: Location data appears to be unavailable or invalid (0, 0).")
+                    result.append("\nWarning: Location data appears to be unavailable")
                 else:
                     # Search logic (using the list hospitals_list)
                     hospitals_list = find_nearby_hospitals(user_lat, user_lon, radius_km=15)
@@ -2966,7 +2966,7 @@ def chat():
             except ValueError:
                 result.append("\nWarning: Could not process location data due to a format error.")
         else:
-            result.append("\nWarning: Location access was not granted or coordinates were missing.")
+            result.append("\nWarning: Location access was not granted")
 
         # --- Save Report (Must be here) ---
         new_report = SymptomReport(
