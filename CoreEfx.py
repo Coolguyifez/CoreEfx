@@ -1912,7 +1912,7 @@ main_template = """
              color: var(--accent-color);
         }
         .tab-button i:hover{
-            color: var(--hover-accent);
+            color: var(--accent-color);
         }
         
         .tab-button span {
