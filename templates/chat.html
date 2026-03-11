@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CoreEfx AI Chat</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
+    
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <style>
         :root {
-            /* Light Mode Colors */
             --primary-color: #007bff; /* A professional blue */
             --secondary-color: #6c757d; /* Muted grey */
             --accent-color: #008000; /* Success green */
@@ -25,7 +26,6 @@
             --transition-speed: 0.5s;
         }
 
-        /* Dark Mode Colors */
         body.dark-mode {
             --primary-color: #6aabff; /* Lighter blue for dark mode */
             --secondary-color: #a0a8b1; /* Lighter grey for dark mode */
@@ -38,1473 +38,572 @@
             --border-color: #4a4d52; /* Darker border */
             --shadow-light: rgba(0, 0, 0, 0.3); /* More pronounced shadow */
         }
-        html {
-            scroll-behavior: smooth;
-        }
+
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-            margin: 0 auto;
-            padding: 80px 20px;
-            height: 100%;
-            background-color: var(--background-white);
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
+            background-color: #e9ecef;
             color: var(--text-dark);
-            line-height: normal;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            transition: background-color var(--transition-speed), color var(--transition-speed); /* Smooth transition for theme change */
-           /* background-image: url("{{ url_for('static', filename='') }}"); /* Replace background.png with your image filename */
-            background-size: cover; /* Common: make image cover the entire body, cropping if necessary */
-            background-repeat: no-repeat; /* Prevent image from repeating */
-            background-attachment: fixed; /* Keep background fixed when scrolling */
-            background-position: center center; /* Center the background image */
-    
+            transition: background-color var(--transition-speed);
+            display: flex;
+            justify-content: center;
         }
 
-        h3, h4 {
-             /* A more prominent font for headings */
-            /*color: #008000;*/
-            text-align: center;
-            margin-bottom: 25px;
-            font-weight: 700; /* Bolder headings */
-            transition: color var(--transition-speed); /* Smooth transition */
-        }
-
-
-        h2 {
-
-            font-size: 2em;
-            margin-bottom: 10px;
-            color: var(--text-dark);
-            left: 1px !important;
-           gap: 0px;
-            transition: color var(--transition-speed); /* Smooth transition */
-        }
-
-
-        .icon {
-            color: var(--accent-color);
-        }
-
-        body.dark-mode  .icon{
-            color: var(--text-dark);
-        }
-
-
-        h3 {
-            font-size: 1.8em;
-            margin-top: 30px;
-            color: var(--accent-color);
-        }
-
-        h4 {
-            font-size: 1.4em;
-            margin-top: 25px;
-            color: var(--accent-color);
-        }
-
-
-        .intro-welcome {
-            flex: 1;
-            align-self: flex-start;
-            background-color: var(--background-light);
-            color: var(--text-dark);
-            padding: 15px 16px;
-            border-radius: 0 30px 30px 30px ;
-            max-width: 40%;
-            text-align: left;
-            font-weight: 500;
-            word-wrap: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            font-size: 1em;
-            transition: color var(--transition-speed); /* Smooth transition */
-            margin-top: 50px;
-            margin-bottom:-47px;
-        }
-
-
-
-        /* App Header for Desktop (default) */
-        .app-header {
-            display: flex; /* Hidden by default on desktop */
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+        .main-container {
             width: 100%;
+            max-width: 900px;
+            min-height: 100vh;
+            background-color: var(--background-white);
+            position: relative;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            padding: 70px 0 110px 0;
+            box-sizing: border-box;
+        }
+
+        .app-header {
+            display: flex;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 60px;
             justify-content: space-between;
             align-items: center;
             background-color: var(--background-light);
-            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.12);
-            z-index:1010;
-            position: fixed;
-            padding: 5px 1px;
-        }
-
-        .input-with-icon {
-            position: sticky;
-            display: flex;
-            align-items: flex-end; /* Aligns items to the bottom, useful for multi-line textarea */
-            gap: 10px; /* Spacing between text area and icon group */
-            
-        }
-
-        .input-with-icon textarea::-webkit-scrollbar {
-          display: none;
-        }
-
-
-       /* --- TEXT AREA (The Flexible Element) --- */
-        .symptom-input {
-            flex-grow: 1; /* CRITICAL: Makes the text area take all remaining space */
-            max-height:120px;
-            min-height: 40px; /* Prevent text area from getting too tall */
-            padding: 10px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 20px;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-            resize: none; /* Disable manual resizing by user */
-            font-size: 1em;
-            line-height: 1.4;
+            box-shadow: 0 2px 5px var(--shadow-light);
+            z-index: 1010;
+            padding: 0 15px;
             box-sizing: border-box;
-            overflow-y: auto;
-            background: var(--background-light);
-            color: var(--text-dark);
-            width: auto;
-            margin: auto o;
         }
 
-        .symptom-input[rows="0"] {
-            height: 40px; 
-        }
-        
-        /* Auto-expand height based on content (requires JS integration, but this sets the base) */
-        
-        .symptom-input:focus-within{
-            border-color: var(--accent-color) !important;
-            box-shadow: 0 0 0 0.2rem rgb(0, 256, 55, 0.1);
-            outline: none;
-            background: var(--background-light);
-            color: var(--text-dark);
-        }
-
-
-
-
-        .icon-group {
-            flex-shrink: 0; /* CRITICAL: Prevents the button group from shrinking */
-            display: flex;
-            gap: 8px; /* Spacing between the microphone and send buttons */
-            align-items: flex-end;
-           
-        }
-
-
-       /* 🎙 Mic stays fixed at the right, vertically centered */
-        .mic-btn, .circle-btn {
-            flex-shrink: 0; /* Ensures buttons don't shrink */
-            width: 40px;
-            height: 40px;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1em;
-            line-height: 1;
+        .header-user {
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: background-color 0.2s;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
         }
 
-        .mic-btn {
-            background: var(--accent-color); /* Muted color for mic */
-            color: white;
-        }
-    
-        .mic-btn:hover {
-            transform: scale(1.05);
+        .header-user a { color: var(--text-dark); text-decoration: none; }
+
+        .nav-menu {
+            display: none;
+            position: absolute;
+            top: 55px;
+            right: 15px;
+            background: var(--background-light);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            min-width: 180px;
+            overflow: hidden;
         }
 
-        .circle-btn {
-            background-color: var(--accent-color);
+        .nav-menu.show { display: block; }
+
+        .nav-menu button, .nav-menu a {
+            width: 100%;
+            padding: 12px 15px;
             border: none;
-            color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 22px;
+            background: none;
+            text-align: left;
+            color: var(--text-dark);
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        .circle-btn:hover {
-          
-          transform: scale(1.05);
+            gap: 10px;
         }
 
-        
-
-        .results-section { /* Renamed feedback-section to feedback-form-section for clarity */
-            margin-top: 40px;
-            padding-top: 20px;
-
-        }
+        .nav-menu button:hover { background: var(--border-color); }
 
         .chat-area {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 12px;
-          flex: 1;
-          overflow-y: auto;
-          overscroll-behavior: contain;
-          -webkit-overflow-scrolling: touch;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            box-sizing: border-box;
         }
 
-
-         .reply-me{
-
+        .reply-me, .intro-welcome, .typing-indicator {
             align-self: flex-start;
             background-color: var(--background-light);
-            color: var(--text-dark);
-            padding: 15px 16px;
-            border-radius: 0px 30px 30px 30px;
-            max-width: 40%;
-            text-align: left;
-            word-wrap: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            font-size: 1em;
-            font-weight: 500;
-            
-            
-         }
-         .input-sympt{
+            padding: 12px 16px;
+            border-radius: 0 20px 20px 20px;
+            max-width: 75%;
+            box-shadow: 0 2px 4px var(--shadow-light);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .input-sympt {
             align-self: flex-end;
             background-color: var(--accent-color);
             color: white;
-            padding: 15px 16px;
-            border-radius: 30px 0 30px 30px;
-            max-width: 40%;
-            text-align: left;
-            word-wrap: break-word;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-            font-size: 1em;
-            font-weight: 500;
-            
-         }
-
-         @keyframes fadeIn {
-              from {opacity:0; transform: translateY(10px);}
-              to {opacity:1; transform: translateY(0);}
-         }
-
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+            padding: 12px 16px;
+            border-radius: 20px 20px 0 20px;
+            max-width: 75%;
+            box-shadow: 0 2px 4px var(--shadow-light);
         }
 
-        li {
-            background-color: var(--background-light);
-            padding: 18px 20px;
-            margin-bottom: 12px;
+        .triage-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 5px;
+        }
+
+        .triage-options button {
+            padding: 10px;
+            border: 1px solid var(--accent-color);
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            background: transparent;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .triage-options button:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        #custom-audio-controls {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            background: var(--background-light);
+            border-radius: 30px;
+            box-shadow: 0 2px 5px var(--shadow-light);
+            margin: 10px 20px;
+        }
+
+        #progress-bar {
+            flex-grow: 1;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+        }
+
+        .footer-nav {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background: var(--background-white);
+            padding: 15px 0;
+            box-shadow: 0 -2px 10px var(--shadow-light);
+            z-index: 1000;
+        }
+
+        .input-container {
+            width: 100%;
+            padding: 0 15px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            box-sizing: border-box;
+        }
+
+        .symptom-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--background-light);
+            color: var(--text-dark);
+            resize: none;
+            max-height: 150px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .symptom-input:focus { border-color: var(--accent-color); }
+
+        .circle-btn, .mic-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: var(--accent-color);
+            color: white;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 1.05em;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
-        }
-
-        li a {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color var(--transition-speed);
-        }
-
-        li a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
-
-        body.dark-mode li a:hover {
-            color: #8bbdff; /* Lighter hover for dark mode links */
-        }
-
-
-        p {
-            margin-top: 20px;
-            color: var(--text-muted);
-            text-align: center;
-            font-size: 0.95em;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            transition: color var(--transition-speed); /* Smooth transition */
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
         }
 
         #mapid {
-            height: 450px;
+            height: 300px;
             width: 100%;
-            margin: 30px auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: none;
+            border-radius: 12px;
+            margin-top: 15px;
+            z-index: 1;
         }
 
-
-        /* ✅ NAVBAR STYLES */
-        .navbar {
-          background: none !important;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          padding: 0;
-          box-shadow: none;
-          position: relative;
-          z-index: 1000;
-          background-color: none !important;
-          right: 20px;
-
-
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .nav-toggle {
-          background: none; 
-          border: none; 
-          color: var(--text-dark); 
-          font-size: 1.5em; 
-          cursor: pointer; 
-          display: flex; 
-          align-items: center; 
-          font-weight: bold; 
+        .typing-dot {
+            width: 6px; height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            display: inline-block;
+            animation: bounce 1.3s infinite;
         }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
 
-        .nav-toggle:hover {
-          transform: scale(1.05);
+        @media (max-width: 900px) {
+            body { background-color: var(--background-white); }
+            .main-container { border-radius: 0; box-shadow: none; max-width: 100%; }
+            .app-header, .footer-nav { position: fixed; }
         }
-
-
-        .nav-menu {
-          flex-grow: 1;
-          display: none;
-          flex-direction: column;
-          position: absolute;
-          top: 30px;
-          right: -18px;
-          background: var(--background-light);
-          border-radius: 10px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-          padding: 10px 0;
-          min-width: 210px;
-          z-index: 1010;
-        }
-
-        .nav-menu a, .nav-menu button {
-          text-align: Center;
-          text-decoration: none;
-          background: none;
-          border: none;
-          width: 100%;
-          padding: 10px 2px;
-          font-size: 1em;
-          color: var(--text-dark);
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-
-        .nav-menu a:hover, .nav-menu button:hover {
-          background: var(--background-white);
-          border-radius: 15px;
-          
-        }
-
-        .nav-menu.show {
-          display: flex;
-
-        }
-
-        /* Dropdown submenu inside navbar */
-        .dropdown {
-          position: relative;
-          width: 100%;
-        }
-
-        .dropdown-content {
-          display: none;
-          flex-direction: column;
-          background: var(--background-light);
-          border-radius: 15px;
-          margin-left: 6px;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .logout-btn {
-          display: inline-block !important; 
-          margin-top: 10px;
-          border-radius: 20px;
-
-        }
-        .mobile-logout{
-          display: none !important;
-        }
-
-        .dropdown-content button {
-          padding: 8px 20px;
-
-        }
-
-        .dropdown.show .dropdown-content {
-          display: flex;
-        }
-
-        
-
-         /* Responsive adjustments */
-        @media (max-width: 1020px) {
-
-            h2 {
-                font-size: 1.3em;
-                text-align:left;
-            }
-
-            h3 {
-                font-size: 1.5em;
-            }
-
-            h4 {
-                font-size: 1.2em;
-            }
-
-            #custom-audio-controls {
-                gap: 12px;
-                padding: 9px 12px;
-                width: 70% !important;
-            }
-            
-            #time-display {
-                font-size: 0.9em;
-                min-width: 80px;
-            }
-
-            .progress-wrapper {
-                margin: 0 -8px 0 -8px; 
-            }
-
-
-            .mic-btn,
-            .circle-btn {
-                font-size: 18px;
-            }
-
-            .mic-btn{
-                display: none;
-            }
-
-
-            .reply-me{
-               max-width: 50%;
-               font-size: 0.95em;
-               padding: 12px 14px;
-
-            }
-            .input-sympt{
-                max-width: 50%;
-                font-size: 0.95em;
-                padding: 12px 14px;
-             }
-            .intro-welcome{
-                max-width: 50%;
-                font-size: 0.95em;
-                padding: 12px 14px;
-                margin-top: 30px;
-
-            }
-           
-            .nav-menu a:hover, .nav-menu button:hover {
-                background: none;
-                
-            }
-
-
-            li {
-                padding: 15px;
-                font-size: 1em;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            li a {
-                margin-top: 5px;
-            }
-
-            /* Mobile-specific header layout */
-            .app-header {
-                display: flex; /* Activate flexbox for mobile */
-                justify-content: space-between; /* Space out hamburger and settings */
-                align-items: center; /* Vertically align them */
-                padding: 10px 0; /* Adjust padding for mobile header */
-                margin-bottom: 15px;
-            }
-
-
-            .logout-btn {
-                display: none !important;
-            }
-
-
-            .mobile-logout {
-                display: flex !important;
-
-            }
-
-            
-        }
-        
-        
-
-        @media (max-width: 480px) {
-            
-            h2 {
-                font-size: 1.1em;
-                text-align: left;
-
-            }
-           
-            .mic-btn,
-            .circle-btn {
-                font-size: 17px;
-            }
-
-            .reply-me{
-                max-width: 65%;
-                font-size: 0.9em;
-                padding: 10px 12px;
-            }
-            .input-sympt{
-                max-width: 65%;
-                font-size: 0.9em;
-                padding: 10px 12px;
-            }
-            .intro-welcome{
-                max-width: 65%;
-                font-size: 0.9em;
-                padding: 10px 12px;
-                margin-top: 20px;
-            }
-
-            #custom-audio-controls {
-               gap: 6px;
-                padding: 6px 8px; /* Further reduce padding */
-                width: 100% !important;
-            
-            }
-
-            #play-pause-btn {
-                padding: 7px 9px; /* Reduce button size */
-                font-size: 0.8em;
-            }
-
-            #time-display {
-                font-size: 0.7em; /* Smallest font size */
-                min-width: 60px; /* Minimum width for time display */
-            }
-            
-            /* Reduce the size of the slider thumb for better mobile touch */
-            #progress-bar::-webkit-slider-thumb {
-                width: 12px;
-                height: 12px;
-                margin-top: -2px;
-            }
-
-            /*Compensate for the thumb overhang. 
-            Half of the 12px thumb width is 6px. We push the progress bar 
-            6px to the left to keep the thumb on the track. */
-            #progress-bar {
-                margin-right: -6px; 
-            }
-
-            .progress-wrapper {
-                margin: 0 -6px 0 -6px; 
-            }
-
-            .logout-btn {
-                display: none !important;
-            }
-            .mobile-logout {
-                display: flex !important;
-
-            }
-            #mapid {
-                height: 300px;
-            }
-
-            .footer-container {
-                 width: 100% !important; 
-            }
-
-        }
-
-
-       /* Footer container */
-        .footer-nav {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          width: 100%;
-          background: var(--background-white); /* no border here */
-          z-index: 1010;
-          transform: translateZ(0);
-          -webkit-transform: translateZ(0);
-          /* Prevents unwanted shifting on iOS */
-          padding-bottom: env(safe-area-inset-bottom);
-          }
-        
-        /* The actual container inside */
-        .footer-container {
-            width: 90%; 
-            justify-self: center !important;
-            padding: 15px 20px; 
-            box-sizing: border-box;
-        }
-        
-        
-        /* Make sure content isn’t hidden behind footer */
-        .container {
-          padding-bottom: 100px;
-        } 
-
-        h2, a{
-            background-color: none;
-            background: none;
-            text-decoration: none;
-            
-            color: var(--text-dark);
-            margin-left: 4px; 
-            
-        } 
-        
-        .chat-back{
-            font-size: 1.2em;
-        }
-
-
-
-    .audio-player-container {
-        /* Matches the margins and alignment of the .reply-me message */
-        align-self: flex-start; 
-        max-width: 80%; 
-        width: 100%; /* Allows flex-start alignment to work across the chat width */
-        margin: 3px 0;
-        display: flex; /* Helps ensure the controls are aligned left */
-        justify-content: flex-start;
-    }
-
-    #custom-audio-controls {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 12px 15px;
-        background-color: var(--background-light);
-        border-radius: 30px 30px 30px 30px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        width: 60%;
-    }
-
-    .progress-wrapper {
-        flex-grow: 1; /* Wrapper takes up space */
-        /*Apply half the thumb width as margin to contain the range input */
-        margin: 0 -8px 0 -8px; 
-    }
-
-    #play-pause-btn {
-        background-color: var(--accent-color);
-        color: white;
-        border: none;
-        padding: 10px 12px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        font-size: 1.1em;
-        line-height: 1; /* Center icon */
-        flex-shrink: 0;
-    }
-
-    
-    #time-display {
-        flex-shrink: 0; 
-        min-width: 90px;
-        font-size: 1em;
-        color: var(--text-dark);
-        text-align: right; 
-    }
-    
-    #progress-bar {
-        width: 100%; /* Now fills its new container */
-        -webkit-appearance: none;
-        appearance: none;
-        height: 8px;
-        background: #ddd; 
-        border-radius: 4px;
-        cursor: pointer
-    }
-
-    /* Styling for the progress bar thumb (the little circle/dot) */
-    #progress-bar::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 16px;
-        height: 16px;
-        background: var(--accent-color);
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 0 5px rgba(0,0,0,0.2);
-        margin-top: -4px; /* Center the thumb vertically */
-    }
-
-    /* Styling for the progress bar track (the part the thumb moves on) */
-    #progress-bar::-webkit-slider-runnable-track {
-        height: 8px;
-        background:var(--text-muted);
-        border-radius: 4px;
-       
-    }
-
-    .rotate{
-       
-        transform:rotate(60deg);   /* rotates to the right → */
-        font-size: 17px;
-        align-self: center;
-    }
-        
-       
     </style>
 </head>
 <body>
-    <div>
 
-        <!-- New app-header for mobile alignment -->
+    <div class="main-container">
         <header class="app-header">
-           
-            <h2>&nbsp;&nbsp;&nbsp;<a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left chat-back"></i></a> &nbsp; &nbsp;<i class="fa-solid fa-user fa-icon-large icon"></i> &nbsp;{{ current_user.username }}</h2>
-            <!-- ✅ NEW NAVBAR -->
-            <nav class="navbar">
-              <button class="nav-toggle" id="navToggle">
+            <div class="header-user">
+                <a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left"></i></a>
+                <i class="fa-solid fa-circle-user icon"></i>
+                <span>{{ current_user.username }}</span>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle" style="background:none; border:none; font-size:1.5rem; color:var(--text-dark);">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
-              </button>
+            </button>
 
-              <div class="nav-menu" id="navMenu">
-                <div class="dropdown">
-                  <button class="dropdown-btn"><i class="fa fa-gear"></i> Settings ▾</button>
-                  <div class="dropdown-content">
-                    <button class="theme-toggle" onclick="toggleTheme(); toggleNavMenu();">
-                      <i class="fa fa-moon"></i>
-                      <span>Dark Mode</span>
-                    </button>
-                    <button class="theme-toggle" onclick="toggleTheme(); toggleNavMenu();">
-                        <i class="fa fa-desktop"></i>
-                        <span>System Mode</span>
-                    </button>
-
-                    <button class="mobile-logout" onclick="window.location='{{ url_for('logout') }}'">
-                      <i class="fa fa-sign-out-alt"></i> 
-                      <span>Logout</span>
-                    </button> 
-                  </div>
-                </div>
-                <button class="logout-btn" onclick="window.location='{{ url_for('logout') }}'">
-                    <i class="fa fa-sign-out-alt"></i> 
-                    <span>Logout</span>
+            <div class="nav-menu" id="navMenu">
+                <button onclick="toggleTheme()">
+                    <i class="fa-solid fa-circle-half-stroke"></i> Toggle Theme
                 </button>
-              </div>
-            </nav>
-
+                <a href="{{ url_for('logout') }}">
+                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                </a>
+            </div>
         </header>
 
-        
-
-
-        <div id="delayed-welcome-container"></div>
-
-
-
-        
-
-        <div class="results-section">
-            <div class="chat-area">  <!-- ✅ New wrapper -->    
-                {% if user_message %}
-                    <div class="input-sympt">
-                        <b>{{ user_message }}</b>
-                    </div>     
-                {% endif %}
-
-                {% if result %}
-
-                    {% for item in result %}
-                    <div class="reply-me">
-                        <b>{{ item }}</b>
-                    </div>
-                    {% endfor %}
-                {% endif %}
-            </div>   
-
-            <audio id="adviceAudio" src=""></audio>
-
-            <div class="audio-player-container">
-                <div id="custom-audio-controls" style="display: none; margin-top: 3px;">
-                    <button id="play-pause-btn"><i class="fas fa-play"></i></button>
-                    <span id="time-display";>0:00 / 0:00</span>
-                    <div class="progress-wrapper">
-                        <input type="range" id="progress-bar" value="0" min="0" max="100">
-                    </div>
-                </div>
+        <main class="chat-area" id="chatArea">
+            <div id="location-status" style="font-size: 0.8rem; text-align: center; color: var(--text-muted); margin-bottom: 10px;">
+                Initializing sensors...
             </div>
+        </main>
 
-            <div id="location-status" style="margin-top: 10px; font-weight: bold;">
-                Attempting to get location...
+        <section class="results-extra" style="width: 100%; padding: 0 20px; box-sizing: border-box;">
+            <div id="custom-audio-controls">
+                <button id="play-pause-btn" style="background:none; border:none; color:var(--accent-color); font-size:1.5rem;">
+                    <i class="fas fa-play"></i>
+                </button>
+                <input type="range" id="progress-bar" value="0">
+                <span id="time-display" style="font-size: 0.8rem; min-width: 70px;">0:00 / 0:00</span>
             </div>
+            <audio id="adviceAudio"></audio>
 
-            <input type="hidden" id="lat" value="0.0">
-            <input type="hidden" id="lon" value="0.0">
-            
-            <div id="hospital-map-section" style="display: none; padding: 20px; border-radius:10px; border: 2px solid var(--border-color); margin-top: 20px;">
-                <div id="hospital-list-container">
-                </div>
-                
+            <div id="hospital-map-section" style="display:none; margin-bottom: 20px;">
+                <div id="hospital-list-container"></div>
                 <div id="mapid"></div>
             </div>
-                
-        </div>
+        </section>
 
-        
-    <footer class="footer-nav">
-        <div class="footer-container">
-            <form onsubmit="return false;">
-
-
-                <div class="input-with-icon">
-                    <textarea type="text" id="symptoms" name="symptoms" rows="1"  required class="symptom-input" placeholder="e.g I have headache... "></textarea>
-                    <div class ="icon-group">
-                        <button type="button" class="mic-btn" onclick="startDictation('symptoms')"><i class="fa-solid fa-microphone"></i></button>
-                        <button type="button" class="circle-btn" onclick="sendSymptoms()">➤</button>
-                    </div>
-                </div>
-
-                <input type="hidden" name="lat" id="lat">
-                <input type="hidden" name="lon" id="lon">
-            </form>
-        </div>
-    </footer>    
+        <footer class="footer-nav">
+            <div class="input-container">
+                <textarea id="symptoms" rows="1" placeholder="Describe symptoms..." class="symptom-input"></textarea>
+                <button class="mic-btn" onclick="startDictation()"><i class="fa-solid fa-microphone"></i></button>
+                <button class="circle-btn" onclick="handleSend()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </footer>
     </div>
+
+    <input type="hidden" id="lat" value="0.0">
+    <input type="hidden" id="lon" value="0.0">
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-
-
     <script>
         let map;
-        
-        document.querySelectorAll('textarea').forEach(textarea => {
-            textarea.addEventListener('input', function() {
-                const maxHeight = 120; // Matches the CSS max-height: 120px
+        const chatArea = document.getElementById('chatArea');
+        const symptomInput = document.getElementById('symptoms');
+        let triageStep = 0;
+        let isProcessing = false; 
+        let storedSymptoms = "";
+        let triageAnswers = { patient: null, gender: null, age: null, severity: null, diagnosis: null };
 
+        const triageQuestions = [
+            { id: "patient", q: "Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
+            { id: "gender", q: "What is the gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
+            { id: "age", q: "Age group?", opt: [{l:"0-12", v:"child"}, {l:"13-19", v:"teen"}, {l:"20-59", v:"adult"}, {l:"60+", v:"elderly"}] },
+            { id: "severity", q: "Severity level?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
+            { id: "diagnosis", q: "Last diagnosed?", opt: [{l:"Never", v:"never"}, {l:"Recently", v:"recent"}, {l:"Long ago", v:"long"}] }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initLocation();
+            initTheme();
+            appendMessage("<b>What symptoms are you experiencing today?</b>", 'reply-me');
+
+            symptomInput.addEventListener('input', function() {
                 this.style.height = 'auto';
-                
-                const newHeight = Math.min(this.scrollHeight, maxHeight);
-                this.style.height = newHeight + 'px';
-
-                // Ensure overflow is only visible when max height is hit
-                if (this.scrollHeight > maxHeight) {
-                    this.style.overflowY = 'auto'; 
-                } else {
-                    this.style.overflowY = 'hidden'; // Important for clean expansion
-                }
+                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
             });
         });
 
-        // --- HELPER FUNCTION: FORMAT TIME (MOVED TO GLOBAL SCOPE) ---
-        function formatTime(seconds) {
-            if (isNaN(seconds) || seconds < 0) return '0:00';
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = Math.floor(seconds % 60);
-            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
-        }
-        
-        // NEW JAVASCRIPT FUNCTION FOR MOBILE NAV TOGGLE -- MOVED HERE
-        const navToggle = document.getElementById('navToggle');
-        const navMenu = document.getElementById('navMenu');
-        const dropdownBtn = document.querySelector('.dropdown-btn');
-        const dropdown = document.querySelector('.dropdown');
-
-        navToggle.addEventListener('click', () => {
-          navMenu.classList.toggle('show');
-        });
-
-        dropdownBtn.addEventListener('click', (e) => {
-           e.stopPropagation();
-           dropdown.classList.toggle('show');
-        });
-
-        document.addEventListener('click', (event) => {
-          if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
-            navMenu.classList.remove('show');
-            dropdown.classList.remove('show');
-          }
-        });
-
-        function toggleNavMenu() {
-          navMenu.classList.remove('show');
-          dropdown.classList.remove('show');
+        // ✅ AUTOMATIC REFRESH: Clears everything for a new session
+        function clearPreviousSession() {
+            chatArea.innerHTML = '';
+            document.getElementById('hospital-map-section').style.display = 'none';
+            document.getElementById('custom-audio-controls').style.display = 'none';
+            const audio = document.getElementById('adviceAudio');
+            audio.pause();
+            audio.src = '';
+            triageStep = 0;
+            isProcessing = false;
+            triageAnswers = { patient: null, gender: null, age: null, severity: null, diagnosis: null };
         }
 
-
-
-
-        // Theme Toggle Functionality -- MOVED HERE (or keep inside DOMContentLoaded if it strictly depends on DOM being ready)
-
-
-        // THEME CONTROL
-        const body = document.body;
-        const themeBtn = document.querySelector('.theme-toggle i');
-        const themeText = document.querySelector('.theme-toggle span');
-
-        let systemModeActive = true;
-        const systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        // Apply selected theme
-        function applyTheme(mode) {
-          body.classList.remove('dark-mode');
-
-          if (mode === 'dark') {
-            body.classList.add('dark-mode');
-            themeBtn.className = 'fa fa-sun';
-            themeText.textContent = 'Light Mode';
-          } else if (mode === 'light') {
-            themeBtn.className = 'fa fa-moon';
-            themeText.textContent = 'Dark Mode';
-          } else {
-            // System Mode UI indicator
-            themeBtn.className = 'fa fa-desktop';
-            themeText.textContent = 'System Mode';
-          }
-        }
-
-        // Force manual theme
-        function setTheme(mode) {
-          localStorage.setItem('theme', mode);
-          applyTheme(mode);
-          systemModeActive = false;
-          systemQuery.removeEventListener('change', handleSystemChange);
-        }
-
-        // Switch between dark/light/system manually
-        function toggleTheme() {
-          const currentMode = localStorage.getItem('theme') || 'system';
-
-          if (currentMode === 'light') {
-            setTheme('dark');
-          } else if (currentMode === 'dark') {
-            setSystemMode(); // Switch to system mode next
-          } else {
-            setTheme('light');
-          }
-        }
-
-        // Follow system automatically
-        function setSystemMode() {
-          localStorage.setItem('theme', 'system');
-          applyTheme('system');
-          systemModeActive = true;
-
-          // Apply system’s current theme immediately
-          applyTheme(systemQuery.matches ? 'dark' : 'light');
-
-          // Update dynamically if system theme changes
-          systemQuery.addEventListener('change', handleSystemChange);
-        }
-
-        function handleSystemChange(e) {
-          if (systemModeActive) {
-            applyTheme(e.matches ? 'dark' : 'light');
-          }
-        }
-
-        // On page load
-        document.addEventListener('DOMContentLoaded', () => {
-          const saved = localStorage.getItem('theme') || 'system';
-
-          if (saved === 'dark') {
-            applyTheme('dark');
-          } else if (saved === 'light') {
-            applyTheme('light');
-          } else {
-            setSystemMode();
-          }
-        });
-
-        function playAdvice() {
-            let audio = document.getElementById("adviceAudio");
-            audio.play();
-        }
-
-        // ✅ NEW: Voice Input (Speech-to-Text)
-        function startDictation(targetId) {
-          if ('webkitSpeechRecognition' in window) {
-            let recognition = new webkitSpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = "en-US";
-            recognition.start();
-
-            recognition.onresult = function (e) {
-              const transcript = e.results[0][0].transcript;
-              document.getElementById(targetId).value = transcript;
-              recognition.stop();
-            };
-
-            recognition.onerror = function (event) {
-              console.warn("Speech recognition error:", event.error);
-              recognition.stop();
-            };
-          } else {
-            alert("Your browser doesn't support voice input. Try Chrome.");
-          }
-        }
-
-        function sendSymptoms() {
-            const symptomsInput = document.getElementById("symptoms");
-            const text = symptomsInput.value.trim();
-            
-            const lat = document.getElementById("lat").value;
-            const lon = document.getElementById("lon").value;
-            
-            const chatArea = document.querySelector('.chat-area');
-            const hospitalSection = document.getElementById("hospital-map-section");
-            const mapDiv = document.getElementById("mapid");
-            const hospitalListContainer = document.getElementById("hospital-list-container");
-
-           // Audio Player Elements
-            const audioPlayer = document.getElementById("adviceAudio");
-            const customControls = document.getElementById("custom-audio-controls");
-            const playPauseBtn = document.getElementById("play-pause-btn");
-            const timeDisplay = document.getElementById("time-display");
-            const progressBar = document.getElementById("progress-bar");
-
+        function handleSend() {
+            const text = symptomInput.value.trim();
             if (!text) return;
 
-            // 1. Display User Message Immediately
-            const userMessageHTML = `<div class="input-sympt"><b>${text}</b></div>`;
-            chatArea.innerHTML += userMessageHTML;
-            chatArea.scrollTop = chatArea.scrollHeight; 
+            // Prevent interruption mid-triage
+            if (isProcessing && triageStep > 0) return;
 
-            // 2. Hide previous hospital results
-            hospitalSection.style.display = 'none';
-            mapDiv.style.display = 'none';
-            hospitalListContainer.style.display = 'none';
-            hospitalListContainer.innerHTML = '';
-            customControls.style.display  = 'none'; // Hide audio player initially/reset
+            // ✅ TRIGGER AUTO REFRESH: If chatArea has messages but we're starting a new flow
+            if (chatArea.children.length > 0 && triageStep === 0) {
+                clearPreviousSession();
+            }
 
-            // 3. Clear and disable input while processing
-            symptomsInput.value = 'Typing...';
-            symptomsInput.style.height = 'auto'; 
-            symptomsInput.disabled = true;
+            isProcessing = true;
+            storedSymptoms = text;
+            appendMessage(`<b>${text}</b>`, 'input-sympt');
+            symptomInput.value = "";
+            symptomInput.style.height = 'auto';
+            symptomInput.disabled = true;
 
-            // 4. Send data to the correct route
-            fetch("/chat", { // Ensure this targets the correct Flask route
-                method: "POST",
-                
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    symptoms: text,
-                    lat: lat,
-                    lon: lon
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("AJAX Result:", data);
-
-                // 5. Append AI Response (Diagnosis)
-                let aiResponseHTML = '';
-                if (data.result && data.result.length > 0) {
-                    // Join the array of results into a single string for display
-                    aiResponseHTML = `<div class="reply-me"><b>${data.result.join('<br><br>')}</b></div>`;
-                    chatArea.innerHTML += aiResponseHTML;
-                } else {
-                    chatArea.innerHTML += '<div class="reply-me"><b>Sorry, I could not process your request.</b></div>';
-                }
-                chatArea.scrollTop = chatArea.scrollHeight; // Scroll down after reply
-
-                // 6. Handle Audio (Custom Player Logic)
-                if (data.audio_file) {
-                    audioPlayer.src = data.audio_file;
-                    customControls.style.display = 'flex'; // Make custom controls visible
-
-                    // --- AUDIO EVENT LISTENERS ---
-                    
-                    // Set total duration when metadata is loaded
-                    audioPlayer.onloadedmetadata = () => {
-                        progressBar.max = Math.floor(audioPlayer.duration);
-                        const totalDuration = formatTime(audioPlayer.duration);
-                        timeDisplay.textContent = `0:00 / ${totalDuration}`;
-                    };
-                    
-                    // Update time and progress bar while playing
-                    audioPlayer.ontimeupdate = () => {
-                        const currentTime = formatTime(audioPlayer.currentTime);
-                        const totalDuration = formatTime(audioPlayer.duration);
-                        timeDisplay.textContent = `${currentTime} / ${totalDuration}`;
-                        // Only update slider if the user isn't actively dragging it
-                        if (!audioPlayer.seeking) {
-                            progressBar.value = audioPlayer.currentTime;
-                        }
-                    };
-                    
-                    // Reset button when audio finishes
-                    audioPlayer.onended = () => {
-                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                        progressBar.value = 0;
-                        audioPlayer.currentTime = 0;
-                    };
-
-                    // --- CUSTOM CONTROL LISTENERS ---
-
-                    // Play/Pause Button Toggle
-                    playPauseBtn.onclick = () => {
-                        if (audioPlayer.paused) {
-                            audioPlayer.play();
-                            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                        } else {
-                            audioPlayer.pause();
-                            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-                        }
-                    };
-
-                    // Progress Bar Scrubbing
-                    progressBar.oninput = () => {
-                        // Update current time display while dragging the slider
-                        const currentTime = formatTime(progressBar.value);
-                        const totalDuration = formatTime(audioPlayer.duration);
-                        timeDisplay.textContent = `${currentTime} / ${totalDuration}`;
-                    };
-
-                    progressBar.onchange = () => {
-                        // Jump to the new position when the user releases the slider
-                        audioPlayer.currentTime = progressBar.value;
-                    };
-
-                    // Try to play immediately (may be blocked by browser)
-                    audioPlayer.play().then(() => {
-                        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-                    }).catch(error => {
-                        console.warn("Autoplay was prevented. User must click play.", error);
-                        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; // Ensure play icon is shown
-                    });
-
-                } else {
-                    customControls.style.display = 'none'; // Ensure it's hidden if no audio is returned
-                }
-
-                // 7. Handle Hospitals (Show list and map only if data is present)
-                if (data.hospitals && data.hospitals.length > 0) {
-                    // 7A. Build the Hospital List DYNAMICALLY
-                    let hospitalListHTML = '<h4>Here are nearby hospitals that may help, based on your location:</h4><ul style="list-style: none; padding: 0;">';
-                    
-                    data.hospitals.forEach(hospital => {
-                        const cityTitle = hospital.city.charAt(0).toUpperCase() + hospital.city.slice(2);
-                            
-                        const moreInfoLink = hospital.url 
-                            ? `<a href="${hospital.url}" target="_blank" style="color: var(--accent-color);">More Info</a>` 
-                            : '';
-
-                        hospitalListHTML += `
-                            <li style="margin-bottom: 5px; padding: 5px; border-radius:10px; border: 1px solid var(--border-color);">
-                                <b>${hospital.name} 
-                                (${cityTitle})</b>
-                                <b>${moreInfoLink}</b>
-                            </li>
-                            <br>
-                        `;
-                    });
-                    hospitalListHTML += '</ul>';
-                    
-                    hospitalListContainer.innerHTML = hospitalListHTML;
-                    
-                    // 7B. SHOW the containers
-                    hospitalSection.style.display = 'block';
-                    mapDiv.style.display = 'block';
-                    hospitalListContainer.style.display = 'block';
-
-                    // 7C. Initialize the map
-                    const userLat = parseFloat(lat);
-                    const userLon = parseFloat(lon);
-                    initializeMap(userLat, userLon, data.hospitals); 
-                    
-                    if (map) { 
-                        map.invalidateSize(); // Important for Leaflet when switching from display:none to block
-                    }
-                } else {
-                    // Hide the map and list if no hospitals are found
-                    hospitalSection.style.display = 'none';
-                    mapDiv.style.display = 'none';
-                    hospitalListContainer.innerHTML = '';
-                    hospitalListContainer.style.display = 'none';
-                }
-
-                // 8. Reset Input Field
-                symptomsInput.disabled = false;
-                symptomsInput.value = '';
-                symptomsInput.style.height = 'auto'; 
-            })
-            .catch(error => {
-                console.error("Error during AJAX:", error);
-                chatArea.innerHTML += '<div class="reply-me"><b>A network error occurred. Please check if your mobile network is turned on.</b></div>';
-                symptomsInput.disabled = false;
-                symptomsInput.value = text; 
-            });
+            askTriage();
         }
 
-
-
-        // Geolocation functions (keep these outside DOMContentLoaded as they are callable by themselves)
-       function getLocation() {
-        // Ensure the status message is visible when we start the attempt
-            const statusDiv = document.getElementById("location-status");
-            if (statusDiv) {
-                statusDiv.textContent = "Attempting to get location...";
-                statusDiv.style.color = 'var(--text-dark)';
-                statusDiv.style.opacity = '1';
-                statusDiv.style.display = 'block';
-            }
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError, {
-                    enableHighAccuracy: true,
-                    timeout: 10000, 
-                    maximumAge: 0
-                });
-            } else {
-                if (statusDiv) {
-                    statusDiv.textContent = "Geolocation is not supported by your browser.";
-                    statusDiv.style.color = 'red';
-                }
-                document.getElementById("lat").value = "0.0";
-                document.getElementById("lon").value = "0.0";
-            }
-        }
-
-       function showPosition(position) {
-            console.log("Location obtained successfully!");
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            
-            // 1. Update hidden fields
-            document.getElementById("lat").value = lat;
-            document.getElementById("lon").value = lon;
-            
-            // 2. Update status indicator to success message
-            const statusDiv = document.getElementById("location-status");
-            if (statusDiv) {
-                statusDiv.textContent = `✅ Location acquired!`;
-                statusDiv.style.color = 'var(--accent-color)';
-                statusDiv.style.opacity = '1'; 
-                statusDiv.style.display = 'block';
-                
-                // 3. Set a timeout to fade out/hide the message after 3 seconds
-                setTimeout(() => {
-                    statusDiv.style.opacity = '0'; // Start fade out
-                    setTimeout(() => {
-                        statusDiv.style.display = 'none'; // Completely hide element
-                    }, 500); // Wait for fade transition
-                }, 3000); // 3 seconds visible
-            }
-        }
-        
-        function showError(error) {
-            console.error("Geolocation error object:", error);
-            let errorMessage = "An unknown geolocation error occurred.";
-            let showRetryButton = false; 
-            const statusDiv = document.getElementById("location-status");
-
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    errorMessage = "Please **allow location access** in your browser settings to find nearby hospitals. You may need to click 'Try Again' or manually change site settings.";
-                    showRetryButton = true;
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    errorMessage = "Location information is unavailable. This may be due to network issues or your device's settings.";
-                    break;
-                case error.TIMEOUT:
-                    errorMessage = "The request to get user location timed out. Please check your internet connection or try again.";
-                    showRetryButton = true;
-                    break;
-                default:
-                    errorMessage = "An unknown error occurred while getting your location.";
-            }
-            
-            // Set coordinates to default (0, 0) if access failed
-            document.getElementById("lat").value = "0.0";
-            document.getElementById("lon").value = "0.0";
-            
-            if (statusDiv) {
-                // Keep error message visible
-                statusDiv.textContent = `❌ Location Error: ${errorMessage}`;
-                statusDiv.style.color = 'red';
-                statusDiv.style.opacity = '1';
-                statusDiv.style.display = 'block';
-            }
-
-            // Display custom message box for geolocation errors
-            const messageBox = document.createElement('div');
-            messageBox.style.cssText = `
-                position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;
-                border-radius: 5px; padding: 20px; z-index: 9999; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                font-family: Arial, sans-serif; text-align: center; max-width: 80%;
-            `;
-            
-            let buttonHTML = showRetryButton 
-                ? `&nbsp<button onclick="this.parentNode.remove(); getLocation();" style="
-                    background-color: var(--primary-color); color: white; border: none; padding: 8px 10px;
-                    border-radius: 4px; cursor: pointer; margin: auto;
-                ">Try Again</button>&nbsp;`
-                : '';
-
-            buttonHTML += `<button onclick="this.parentNode.remove()" style="
-                background-color: var(--secondary-color); color: white; border: none; padding: 8px 15px;
-                border-radius: 4px; cursor: pointer; margin-top: 10px;
-            ">Dismiss</button>`;
-
-            messageBox.innerHTML = `
-                <p style="font-size: 1.1em; font-weight: bold;">🛑 Location Service Error</p>
-                <p style="font-size: 0.9em;">${errorMessage}</p>
-                ${buttonHTML}
-            `;
-            document.body.appendChild(messageBox);
-        }
-
-        function initializeMap(userLat, userLon, hospitalsData) {
-            if (map && map.remove) {
-                map.remove();
-            }
-
-            const mapDiv = document.getElementById('mapid');
-            if (!mapDiv) {
-                console.error("Map container #mapid not found. Cannot initialize map.");
+        function askTriage() {
+            if (triageStep >= triageQuestions.length) {
+                submitFinal();
                 return;
             }
 
-            map = L.map('mapid').setView([userLat, userLon], 12);
+            const current = triageQuestions[triageStep];
+            showTyping();
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 100,
-                //attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([userLat, userLon]).addTo(map)
-                .bindPopup("<b>Your Approximate Location</b>").openPopup();
-
-            hospitalsData.forEach(function(hospital) {
-                L.marker([hospital.lat, hospital.lon]).addTo(map)
-                    .bindPopup(`<b>${hospital.name}</b><br>${hospital.city.charAt(0).toUpperCase() + hospital.city.slice(1)}<br><a href="${hospital.url}" target="_blank">More Info</a>`);
-            });
-        }
-        
-        // Enter key to send
-        const symptomsInput = document.getElementById("symptoms");
-
-        // Detect mobile devices
-        const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-        if (symptomsInput) {
-            symptomsInput.addEventListener("keydown", function (e) {
-
-                // 💻 DESKTOP: Shift + Enter sends
-                if (!isMobile && e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    sendSymptoms();
-                }
-
-                // 💻 DESKTOP: Shift + Enter = new line
-                if (!isMobile && e.key === "Enter" && e.shiftKey) {
-                    // allow default behavior (new line)
-                }
-
-                // 📱 MOBILE: Enter = new line (do nothing)
-                // 📱 Send button handles sending
-            });
-        }
-
-         // All DOM-related initializations go here
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOM content loaded for initial setup.");
-            // --- ADD THE NEW KEYBOARD FIX HERE ---
-            if (window.visualViewport) {
-                window.visualViewport.addEventListener('resize', () => {
-                    const footer = document.querySelector('.footer-nav');
-                    const viewportHeight = window.visualViewport.height;
-                    const windowHeight = window.innerHeight;
-                    const offset = windowHeight - viewportHeight;
-
-                    if (offset > 0) {
-                        // Keyboard is open: push footer up
-                        footer.style.bottom = `${offset}px`;
-                    } else {
-                        // Keyboard is closed: reset to bottom
-                        footer.style.bottom = '0px';
-                    }
-                    // Keeps the newest messages in view
-                    window.scrollTo(0, document.body.scrollHeight);
-                });
-            }
-           
-            // Get location on page load for initial setup, even if not displayed immediately
-            getLocation();
-
-            // ✅ STEP 3: Detect mobile keyboard open/close
-            const textarea = document.getElementById("symptoms");
-            if (textarea) {
-                textarea.addEventListener("focus", () => {
-                    document.body.classList.add("keyboard-open");
-                    // Optional: Extra nudge for iOS
-                    setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 300);
-                });
-
-                textarea.addEventListener("blur", () => {
-                    document.body.classList.remove("keyboard-open");
-                });
-            }
             setTimeout(() => {
-                const container = document.getElementById('delayed-welcome-container');
+                removeTyping();
+                appendMessage(`<b>${current.q}</b>`, 'reply-me');
                 
-                // Create the message element
-                const welcomeDiv = document.createElement('div');
-                welcomeDiv.className = 'intro-welcome';
-                welcomeDiv.innerHTML = '<b>What symptoms are you experiencing today?...</b>';
+                const optContainer = document.createElement('div');
+                optContainer.className = 'triage-options';
+                current.opt.forEach(o => {
+                    const btn = document.createElement('button');
+                    btn.innerText = o.l;
+                    btn.onclick = () => selectTriage(current.id, o.v, o.l, optContainer);
+                    optContainer.appendChild(btn);
+                });
+                chatArea.appendChild(optContainer);
+                chatArea.scrollTop = chatArea.scrollHeight;
+            }, 800);
+        }
+
+        function selectTriage(id, val, label, container) {
+            triageAnswers[id] = val;
+            container.remove();
+            appendMessage(`<b>${label}</b>`, 'input-sympt');
+            triageStep++;
+            askTriage();
+        }
+
+        function submitFinal() {
+            showTyping();
+            const payload = {
+                symptoms: storedSymptoms,
+                ...triageAnswers,
+                lat: document.getElementById('lat').value,
+                lon: document.getElementById('lon').value
+            };
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                removeTyping();
+                symptomInput.disabled = false;
+                isProcessing = false; 
+                triageStep = 0; 
                 
-                // Inject it into the page
-                container.appendChild(welcomeDiv);
-            }, 1500); // 1.5 second delay 
+                if (data.result) appendMessage(`<b>${data.result.join('<br><br>')}</b>`, 'reply-me');
+                if (data.audio_file) setupAudio(data.audio_file);
+                if (data.hospitals) setupHospitals(data.hospitals, data.severity);
+            })
+            .catch(err => {
+                removeTyping();
+                appendMessage("<b>Connection error.</b>", 'reply-me');
+                symptomInput.disabled = false;
+                isProcessing = false;
+            });
+        }
+
+        function setupAudio(url) {
+            const audio = document.getElementById('adviceAudio');
+            const controls = document.getElementById('custom-audio-controls');
+            const playBtn = document.getElementById('play-pause-btn');
+            const progress = document.getElementById('progress-bar');
+            const timeDisp = document.getElementById('time-display');
+
+            audio.src = url;
+            controls.style.display = 'flex';
+
+            audio.onloadedmetadata = () => {
+                progress.max = Math.floor(audio.duration);
+                timeDisp.innerText = `0:00 / ${formatTime(audio.duration)}`;
+            };
+
+            audio.ontimeupdate = () => {
+                progress.value = Math.floor(audio.currentTime);
+                timeDisp.innerText = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+            };
+
+            playBtn.onclick = () => {
+                if (audio.paused) {
+                    audio.play();
+                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                }
+            };
+        }
+
+        // ✅ IMPROVED HOSPITAL DESIGN: Links, Phone, and UI
+        function setupHospitals(hospitals, severity) {
+            const container = document.getElementById('hospital-map-section');
+            const list = document.getElementById('hospital-list-container');
             
+            if (!hospitals || hospitals.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Emergency Facilities' : 'Nearby Hospitals'}:</h4>`;
+            
+            hospitals.forEach(h => {
+                html += `
+                    <div style="background: var(--background-light); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid var(--accent-color);">
+                        <div style="font-weight: bold; font-size: 1.1rem;">${h.name}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
+                            <i class="bi bi-geo-alt"></i> ${h.city}
+                        </div>
+                        <div style="display: flex; gap: 15px;">
+                            <a href="tel:${h.phone}" style="text-decoration:none; color:var(--accent-color); font-weight:600; font-size:0.9rem;">
+                                <i class="bi bi-telephone-fill"></i> ${h.phone || 'Call'}
+                            </a>
+                            <a href="${h.url}" target="_blank" style="text-decoration:none; color:var(--primary-color); font-weight:600; font-size:0.9rem;">
+                                <i class="bi bi-info-circle-fill"></i> Website
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            list.innerHTML = html;
+            initMap(hospitals);
+        }
+
+        // ✅ IMPROVED MAP: Loops through hospitals and adds markers
+        function initMap(hospitals) {
+            const lat = parseFloat(document.getElementById('lat').value);
+            const lon = parseFloat(document.getElementById('lon').value);
+            
+            if (map) map.remove();
+            map = L.map('mapid').setView([lat, lon], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // User marker
+            L.marker([lat, lon]).addTo(map).bindPopup("<b>You are here</b>").openPopup();
+
+            // Hospital markers
+            hospitals.forEach(h => {
+                if (h.lat && h.lon) {
+                    L.marker([h.lat, h.lon]).addTo(map).bindPopup(`<b>${h.name}</b><br>${h.city}`);
+                }
+            });
+        }
+
+        function formatTime(secs) {
+            const m = Math.floor(secs / 60);
+            const s = Math.floor(secs % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function startDictation() {
+            if (!('webkitSpeechRecognition' in window)) return alert("Speech not supported");
+            const rec = new webkitSpeechRecognition();
+            rec.onresult = (e) => { symptomInput.value = e.results[0][0].transcript; };
+            rec.start();
+        }
+
+        function appendMessage(content, className) {
+            const div = document.createElement('div');
+            div.className = className;
+            div.innerHTML = content;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+            return div;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'typing-indicator';
+            div.id = 'typingIndicator';
+            div.innerHTML = '<span class="typing-dot"></span> <span class="typing-dot"></span> <span class="typing-dot"></span>';
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function removeTyping() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        function initLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    pos => {
+                        document.getElementById('lat').value = pos.coords.latitude;
+                        document.getElementById('lon').value = pos.coords.longitude;
+                        const status = document.getElementById('location-status');
+                        if (status) status.remove();
+                    },
+                    err => { 
+                        const status = document.getElementById('location-status');
+                        if (status) status.innerText = "⚠️ Location services disabled";
+                    }
+                );
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') document.body.classList.add('dark-mode');
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+            document.getElementById('navMenu').classList.remove('show');
+        }
+
+        document.getElementById('navToggle').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('show');
         });
-        
-
-
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-

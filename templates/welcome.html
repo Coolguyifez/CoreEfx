@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <title>Welcome to CoreEfx AI</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        :root { 
+            --transition-speed: 0.3s; 
+            --light-bg: #ffffff; 
+            --dark-accent-color: #38b45a; 
+            --accent-color:#008000;
+            --light-text: #343a40; 
+            --muted-light-text:#6c757d; 
+            --muted-dark-text: #b0b0b0; 
+            --dark-bg: #1a1a1b; /* Slightly deeper dark for contrast */
+            --dark-text: #e0e0e0; 
+        }
+
+        html, body { 
+            height: 100vh; 
+            width: 100vw; 
+            margin: 0; 
+            padding: 0; 
+            overflow: hidden;
+        }
+
+        body { 
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            background-color: var(--light-bg); 
+            color: var(--light-text); 
+            transition: background-color var(--transition-speed), color var(--transition-speed); 
+        }
+
+        /* Splash Content Container */
+        .splash-content {
+            padding: 20px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        h1 { 
+            font-size: clamp(2.5rem, 12vw, 3.5rem); 
+            margin-bottom: 0.5rem; 
+            color: var(--light-text); 
+            font-weight: 700;
+        }
+
+        h3 { 
+            font-size: clamp(1.1rem, 5vw, 1.8rem); 
+            margin-top: 0; 
+            color: var(--muted-light-text); 
+            font-weight: 500;
+        }
+
+        .icon { 
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        /* Loading Bar Styles */
+        .loader-container {
+            width: 60%;
+            max-width: 250px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            margin: 30px auto 10px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .loader-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-color);
+            border-radius: 10px;
+            animation: progress 7.5s linear forwards;
+        }
+
+        .status-text {
+            font-size: 0.85rem;
+            color: var(--muted-light-text);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        /* Dark Mode Overrides */
+        @media (prefers-color-scheme: dark) {
+            body { background-color: var(--dark-bg); color: var(--dark-text); }
+            h1 { color: var(--dark-text); }
+            .icon{color: var(--dark-accent-color);}
+            h3, .status-text { color: var(--muted-dark-text); }
+            .loader-container { background: rgba(255, 255, 255, 0.1); }
+            .loader-fill { background: var(--dark-accent-color)}; /* Brighter green for dark mode */ 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="splash-content">
+        <i class="fa-solid fa-brain fa-3x icon"></i>
+        <h1>CoreEfx AI</h1>
+        <h3>Check Symptoms, Stay Healthy</h3>
+        
+        <div class="loader-container">
+            <div class="loader-fill"></div>
+        </div>
+        <p class="status-text">Starting...</p>
+    </div>
+
+    <script>
+        // Redirect logic: use the variable passed from Flask
+        // Default to login if the variable is missing
+        const destination = "{{ next_url if next_url else url_for('login') }}";
+        
+        // Wait for 8 seconds before transitioning to the next screen
+        setTimeout(() => {
+            // Optional: Fade out effect before leaving
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(() => {
+                window.location.href = destination;
+            }, 500);
+        }, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CoreEfx AI Login</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        html { box-sizing: border-box; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            background:#ffffff;
+            margin: 0 auto;
+            padding: 20px ;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 { color: #343a40; margin-bottom: 20px; text-align: center; }
+        .icon { color: #008000; }
+
+        /* 💡 FIX APPLIED HERE: Standardize Size and Look */
+        form {
+            background: none;
+            padding: 40px 10px;
+            width: 100%;
+            max-width: 450px;
+            position: sticky;
+            /* FORCE MINIMUM HEIGHT FOR CONSISTENCY */
+           /* Set to match the taller Signup form */
+            /*  DISTRIBUTE CONTENT EVENLY */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        /* Error Message Style */
+        .flash-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        input { width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #ccc; border-radius: 20px; font-size: 16px; }
+        .input-group { position: relative; width: 100%; }
+        .input-group .icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #008000; }
+        /* Ensure the text doesn't flow under the eye icon on the right */
+        input[type="text"], input[type="username"], input[type="email"], input[type="password"] { 
+            padding-left: 45px; 
+            padding-right: 45px; /* <-- ADD THIS LINE for the eye icon */
+        }
+        input:-webkit-autofill {
+            /* Keep background white and text dark when autofilled in light mode */
+            -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important; 
+            -webkit-text-fill-color: #343a40!important;  
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: #008000;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+        button:hover { background: #006400; }
+        a { color: #008000; text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
+        a:hover { color: #006400; }
+        p { text-align: center; font-size: 14px; }
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            color: #008000;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+        .toggle-password:hover {  background: none; border:none; }
+        /* ✅ Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            body { background: #1a1a1b; color: #eee; }
+            input { background: #2c2f33; color: #eee; border: 1px solid #444; }
+            input[type="username"], input[type="password"] { 
+                padding-left: 45px; 
+                padding-right: 45px;/* <-- ADD THIS LINE for the eye icon */
+            }
+            input::placeholder { color: #aaa; }
+            button { background: #38b45a; color: white; }
+            a { color: #38b45a; }
+            h1 { color:#e0e0e0;}
+            .icon { color:#e0e0e0;}
+            a:hover { color:#2e8b43;}
+            button:hover { background:#2e8b43;}
+            .toggle-password { color:#e0e0e0;}
+            .input-group .icon { color:#e0e0e0;}
+            input:-webkit-autofill {
+                /* Keep background dark and text light when autofilled in dark mode */
+                -webkit-box-shadow: 0 0 0 1000px #2c2f33 inset !important; 
+                -webkit-text-fill-color: #eee !important;
+            }
+        }
+        /* ✅ Mobile view adjustments */
+        @media (max-width: 1020px) {
+            input, button { font-size: 15px; padding: 12px; }
+            h1 { font-size: 36px; margin-bottom: 30px; }
+            .toggle-password{ right: 10px; left: auto; }
+
+        }
+        @media (max-width: 480px) {
+            input, button { font-size: 14px; padding: 12px; }
+            h1 { font-size: 34px; }
+        }
+    </style>
+</head>
+<body>
+<form method="POST">
+    <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="flash-error">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <div class="input-group">
+        <i class="fa fa-user icon"></i>
+        <input type="username" name="username" placeholder="Username" required />
+    </div>
+    <div class="input-group">
+        <i class="fa fa-lock icon"></i>
+        <input type="password" id="password" name="password" placeholder="Password" required />
+        <div type="button" class="toggle-password" onclick="togglePassword()">
+            <i class="fa-solid fa-eye" id="eye-icon"></i>
+        </div>
+    </div>
+    <p style="margin-top: 10px;">
+        <a href="/forgot-password">Forgot Password?</a>
+    </p>
+    <button type="submit">Login</button>
+    <p>
+        Don't have an account? <a href="/signup">Sign Up</a>
+    </p>
+</form>
+<script>
+    function togglePassword() {
+        const password = document.getElementById("password");
+        const icon = document.getElementById("eye-icon");
+        if (password.type === "password") {
+            password.type = "text";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        } else {
+            password.type = "password";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        }
+    }
+</script>
+</body>
+</html>
