@@ -39,7 +39,7 @@ except OSError:
 
 # Configure SQLite database.
 # The database file 'symptoms.db' will be created in the same directory as this script.
-db_path = ""
+db_path = "postgresql://auto:c3LRIMEx9HRBiA6dVZb0zs493hnPWeKT@dpg-d6osu1d6ubrc73bpa0s0-a.oregon-postgres.render.com/core_db_ljk2"
 app.secret_key = "super_secret_key"
 app.config['SQLALCHEMY_DATABASE_URI'] = db_path
 # This setting is to suppress a warning from SQLAlchemy; it's recommended to set it to False.
