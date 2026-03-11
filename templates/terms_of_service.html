@@ -1,141 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>CoreEfx AI Health Advisor</title>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
- <style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CoreEfx AI Health Advisor</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
         :root {
-            /* Light Mode Colors - Copy these from your main CSS */
-            --primary-color: #007bff; /* A professional blue */
-            --secondary-color: #6c757d; /* Muted grey */
-            --accent-color: #008000; /* Success green */
-            --background-light: #f8f9fa;
-            --background-white: #ffffff;
-            --text-dark: #343a40;
-            --text-muted: #6c757d;
-            --border-color: #e2e6ea;
-            --shadow-light: rgba(0, 0, 0, 0.08);
-            --transition-speed: 0.3s;
+            --brand-primary: #008000;
+            --brand-danger: #dc3545;
+            --brand-warning: #ffc107;
+            --text-main: #1a1f36;
+            --text-secondary: #4f566b;
+            --bg-body: #ffffff;
+            --bg-sidebar: #f7f9fc;
+            --border-light: #e3e8ee;
         }
+
+        * { box-sizing: border-box; }
 
         body {
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: var(--background-white);
-            color: var(--text-dark);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
+            padding: 0;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.7;
         }
 
-        @media (max-width: 1020px) {
-            body {
-            padding: 15px; /* Reduce overall padding on smaller screens */
-            }
-            h1 {
-                font-size: 1.8em; /* Smaller heading for mobile */
-            }
-            h2 {
-                font-size: 1.6em; /* Smaller subheading for mobile */
-            }
-            h3{
-                font-size:1.4em;
-            }
-            p, ul, li {
-                font-size: 1.2em; /* Slightly smaller text for body content */
-            }
-            .back{
-                font-size: 0.9em;
-                
-            }
-            
+        header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 5%;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 10px; /* Even smaller padding on very small screens */
-            }
-            h1 {
-                font-size: 1.4em;
-                text-align: none;
-                margin-left: 50px;
-                margin-top: 30px;
-            }
-            h2 {
-                font-size: 1.2em;
-            }
-            h3{
-                font-size: 1.1em;
-            }
-            p, ul, li {
-                font-size: 1em;
-            }
-            .back{
-                font-size: 0.5em;
-                bottom: 20px;
-                
-            }
+        .header-logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        h1, h2, h3{
-            color: var(--accent-color); /* Use CSS variable */
-            margin-bottom: 20px;
-            transition: color var(--transition-speed);
+        .icon{
+            color: var(--brand-primary);
         }
 
-        h1{
-            
-            text-align: center;
-        }
-
-       
-
-        p {
-            margin-bottom: 15px;
-            margin-bottom: 15px;
-            color: var(--text-dark); /* Ensure text color respects theme */
-            transition: color var(--transition-speed);            
-        }
-
-        b{
-            color: var(--accent-color);
-        }
-        ul {
-            list-style-type: ;
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
-        li {
-            margin-bottom: 8px;
-            color: var(--text-dark); /* Ensure list item text color respects theme */
-            transition: color var(--transition-speed);
-        }
-
-        .back, a{
+        .back-btn {
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 1.3em;
-            color: var(--accent-color);
-            bottom: none;
-            top: 20px;
-            flex-grow:1;
-            position: absolute;
-            
+            font-size: 0.9rem;
+            font-weight: 500;
         }
-        
 
-  </style>
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+            padding: 60px 5%;
+        }
+
+        aside {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        aside h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 10px 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            border-left: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover { color: var(--brand-primary); }
+
+        .content-section { max-width: 800px; }
+
+        .hero-title { margin-bottom: 40px; }
+        h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        .effective-date { color: var(--text-secondary); font-size: 0.95rem; }
+
+        h2 { 
+            font-size: 1.75rem; 
+            margin-top: 50px; 
+            margin-bottom: 20px; 
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .disclaimer-card {
+            background: #fff5f5;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 30px 0;
+            border: 1px solid #feb2b2;
+            border-left: 5px solid var(--brand-danger);
+        }
+
+        .disclaimer-card h3 { color: var(--brand-danger); margin-top: 0; }
+
+        .info-card {
+            background: var(--bg-sidebar);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+            border-left: 4px solid var(--brand-primary);
+        }
+
+        ul { padding-left: 20px; }
+        li { margin-bottom: 12px; color: var(--text-secondary); }
+
+        @media (max-width: 900px) {
+            .page-wrapper { grid-template-columns: 1fr; }
+            aside { display: none; }
+        }
+    </style>
 </head>
 <body>
-  <div class="back"><a href="/home"><i class="fa-sharp fa-solid fa-arrow-left"></i></a></div>
-  <div><h1><b>Terms of Service</b></h1></div>
-  <p>By using CoreEfx AI, you agree to our terms and conditions, including the responsible use of our platform...</p></div>
+
+    <header>
+        <div class="header-logo">
+            <i class="fas fa-brain icon"></i> CoreEfx AI
+        </div>
+        <a href="/home" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+    </header>
+
+    <div class="page-wrapper">
+        <aside>
+            <h4>Legal Navigation</h4>
+            <a href="#acceptance" class="toc-link">1. Acceptance of Terms</a>
+            <a href="#medical-disclaimer" class="toc-link">2. Medical Disclaimer</a>
+            <a href="#usage-rules" class="toc-link">3. User Conduct</a>
+            <a href="#accounts" class="toc-link">4. Account Responsibility</a>
+            <a href="#limitation" class="toc-link">5. Limitation of Liability</a>
+            <a href="#termination" class="toc-link">6. Termination</a>
+        </aside>
+
+        <main class="content-section">
+            <div class="hero-title">
+                <h1>Terms of Service</h1>
+                <p class="effective-date">Last Revised: <strong>March 11, 2026</strong></p>
+            </div>
+
+            <section id="acceptance">
+                <h2>1. Acceptance of Terms</h2>
+                <p>By accessing or using the <strong>CoreEfx AI Health Advisor</strong> application, you agree to be bound by these Terms of Service. If you do not agree to all of these terms, do not use this application.</p>
+            </section>
+
+            <section id="medical-disclaimer" class="disclaimer-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> 2. CRITICAL MEDICAL DISCLAIMER</h3>
+                <p><strong>CoreEfx AI is an informational tool, not a doctor.</strong></p>
+                <ul>
+                    <li>The content provided is for <strong>educational and informational purposes only</strong>.</li>
+                    <li>The AI's suggestions do not constitute medical advice, diagnosis, or treatment.</li>
+                    <li><strong>Emergency Use:</strong> Do not use this app in a life-threatening emergency. Contact your local emergency services (e.g., 112 in Nigeria) immediately.</li>
+                    <li>Always seek the advice of a qualified healthcare provider with any questions you may have regarding a medical condition.</li>
+                </ul>
+            </section>
+
+            <section id="usage-rules">
+                <h2>3. User Conduct & Guidelines</h2>
+                <p>To maintain a safe environment for all users, you agree not to:</p>
+                <ul>
+                    <li>Provide intentionally false or misleading health information.</li>
+                    <li>Attempt to reverse-engineer the AI health lemmatization models.</li>
+                    <li>Use the platform to distribute spam or malicious software.</li>
+                    <li>Use the "Nearby Hospital" feature to harass or misrepresent medical facilities.</li>
+                </ul>
+            </section>
+
+            <section id="accounts">
+                <h2>4. Account Responsibility</h2>
+                <div class="info-card">
+                    <strong>Security Alert:</strong> You are responsible for maintaining the confidentiality of your CoreEfx login credentials. CoreEfx AI cannot and will not be liable for any loss or damage arising from your failure to protect your password.
+                </div>
+                <p>Users must be at least 12 years of age to create an account. Minor users should use the platform only under parental supervision.</p>
+            </section>
+
+            <section id="limitation">
+                <h2>5. Limitation of Liability</h2>
+                <p>To the maximum extent permitted by applicable law, <strong>CoreEfx AI</strong> shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, resulting from:</p>
+                <ul>
+                    <li>Your use or inability to use the health advisor service.</li>
+                    <li>Any medical decisions made based on AI-generated suggestions.</li>
+                    <li>Unauthorized access to your health reports or personal data.</li>
+                </ul>
+            </section>
+
+            <section id="termination">
+                <h2>6. Termination of Service</h2>
+                <p>We reserve the right to suspend or terminate your access to CoreEfx AI at our sole discretion, without notice, for conduct that we believe violates these Terms or is harmful to other users, us, or third parties (including medical partners).</p>
+            </section>
+
+            <section style="margin-top: 50px; padding: 20px; border-top: 1px solid var(--border-light);">
+                <p style="font-size: 0.85rem; color: var(--text-secondary);">
+                    Questions regarding these Terms? Contact us at <strong>ikukaiwee@gmail.com</strong>.
+                </p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('.toc-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
- 
