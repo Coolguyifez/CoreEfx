@@ -28,8 +28,8 @@
             --secondary-color: #a0a8b1; /* Lighter grey for dark mode */
             --accent-color: #38b45a; /* Slightly lighter green for dark mode */
             --hover-accent: #2e8b43; /* hover green for dark mode */
-            --background-light: #2c2f33; /* Darker background */
-            --background-white: #36393f; /* Even darker background for cards/containers */
+            --background-light:#2c2f33; ; /* Darker background */
+            --background-white: #1a1a1b;/* Even darker background for cards/containers */
             --text-dark: #e0e0e0; /* Light text */
             --text-muted: #b0b0b0; /* Lighter muted text */
             --border-color: #4a4d52; /* Darker border */
@@ -78,6 +78,22 @@
         body.dark-mode  .icon{
             color: var(--text-dark);
         }
+
+        .app-header {
+           display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--background-white);
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 3000;
+        }
+
 
 
         .sidebar-nav {
@@ -154,8 +170,8 @@
         .tabs { 
             display: flex; 
             justify-content: space-around; 
-            padding: 15px 10px;
-            width: 80%; 
+            padding: 10px 0.5px;
+            width: 79%; 
             background: var(--background-light); /* The actual visible color */
             border: 1px solid var(--border-color);
             border-radius: 100px;
