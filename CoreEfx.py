@@ -82,7 +82,7 @@ class SymptomReport(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Time when the report was created
     severity = db.Column(db.String(20))  # Low, Moderate, High
     recipient = db.Column(db.String(50))  # "Myself" or "Someone else"
-    age = db.Column(db.Integer)
+    age = db.Column(db.String(50))
     gender = db.Column(db.String(20))
     audio_url = db.Column(db.String(255))
     # 🔑 Link report to user
