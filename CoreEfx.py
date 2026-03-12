@@ -1949,18 +1949,35 @@ def chat():
 @app.route("/home", methods=["GET", "POST"])
 @login_required
 def home():
-    # Initialize variables for the template
-    result = []
-    audio_file = ""
-    user_input = ""
-    feedback_message = ""
+    # 1. Handle Feedback Submission (POST)
+    if request.method == "POST":
+        feedback_content = request.form.get("feedback_message")
 
-    # 1. Fetch History Reports for the user
+        if feedback_content:
+            try:
+                new_feedback = Feedback(
+                    message=feedback_content,
+                    user_id=current_user.id,
+                    timestamp=datetime.utcnow()
+                )
+                db.session.add(new_feedback)
+                db.session.commit()
+
+                # We return JSON instead of render_template to keep the user on the feedback tab
+                return jsonify({"status": "success", "message": "Thank you for your feedback!"}), 200
+            except Exception as e:
+                db.session.rollback()
+                return jsonify({"status": "error", "message": f"Database error: {str(e)}"}), 500
+        else:
+            return jsonify({"status": "error", "message": "Feedback message cannot be empty."}), 400
+
+    # 2. Handle Page Load (GET)
+    # Fetch History Reports
     history_reports = SymptomReport.query.filter_by(user_id=current_user.id).order_by(
         SymptomReport.timestamp.desc()
     ).all()
 
-    # 2. Fetch all hospitals for the initial map display
+    # Fetch Hospitals
     all_hospitals = Hospital.query.all()
     hospitals = [
         {
@@ -1974,34 +1991,10 @@ def home():
         for h in all_hospitals
     ]
 
-    # 3. Handle Feedback Submission (Form Post)
-    if request.method == "POST":
-        feedback_content = request.form.get("feedback_message")
-        if feedback_content:
-            try:
-                new_feedback = Feedback(
-                    message=feedback_content,
-                    user_id=current_user.id if current_user.is_authenticated else None,
-                    timestamp=datetime.utcnow()
-                )
-                db.session.add(new_feedback)
-                db.session.commit()
-                flash("Thank you for your feedback!", "success")
-            except Exception as e:
-                db.session.rollback()
-                print(f"Feedback Error: {e}")
-        else:
-            flash("Feedback message cannot be empty.", "warning")
-
-    # 4. Render the external home.html file
     return render_template('home.html',
-                           result=result,
                            hospitals=hospitals,
                            history_reports=history_reports,
-                           feedback_message=feedback_message,
-                           audio_file=audio_file,
-                           current_user=current_user,
-                           user_message=user_input)
+                           current_user=current_user)
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
