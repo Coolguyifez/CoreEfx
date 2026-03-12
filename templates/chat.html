@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>CoreEfx AI Health Advisor</title>
+    <title>CoreEfx AI Chat</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -13,10 +13,10 @@
 
     <style>
         :root {
-            --primary-color: #007bff; /* A professional blue */
-            --secondary-color: #6c757d; /* Muted grey */
-            --accent-color: #008000; /* Success green */
-            --hover-accent: #28a428; /* green for hover */
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --accent-color: #008000;
+            --hover-accent: #28a428;
             --background-light: #f8f9fa;
             --background-white: #ffffff;
             --text-dark: #343a40;
@@ -24,105 +24,114 @@
             --border-color: #e2e6ea;
             --shadow-light: rgba(0, 0, 0, 0.08);
             --transition-speed: 0.5s;
+            --sidebar-width: 0px; /* Default for mobile */
         }
 
         body.dark-mode {
-            --primary-color: #6aabff; /* Lighter blue for dark mode */
-            --secondary-color: #a0a8b1; /* Lighter grey for dark mode */
-            --accent-color: #38b45a; /* Slightly lighter green for dark mode */
-            --hover-accent: #2e8b43; /* hover green for dark mode */
-            --background-light: #2c2f33; /* Darker background */
-            --background-white: #36393f; /* Even darker background for cards/containers */
-            --text-dark: #e0e0e0; /* Light text */
-            --text-muted: #b0b0b0; /* Lighter muted text */
-            --border-color: #4a4d52; /* Darker border */
-            --shadow-light: rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+            --primary-color: #6aabff;
+            --secondary-color: #a0a8b1;
+            --accent-color: #38b45a;
+            --hover-accent: #2e8b43;
+            --background-light: #2c2f33;
+            --background-white: #36393f;
+            --text-dark: #e0e0e0;
+            --text-muted: #b0b0b0;
+            --border-color: #4a4d52;
+            --shadow-light: rgba(0, 0, 0, 0.3);
         }
-
 
         body {
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
-            background-color: #e9ecef;
+            background-color: var(--background-white);
             color: var(--text-dark);
             transition: background-color var(--transition-speed);
+        }
+
+        /* --- SHARED SIDEBAR FROM HOME --- */
+        .desktop-sidebar {
+            display: none;
+            position: fixed;
+            left: 0; top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            width: 260px;
+            background-color: var(--background-light);
+            border-right: 1px solid var(--border-color);
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 2000;
+        }
+
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 40px;
             display: flex;
-            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
 
-        .main-container {
+        .icon { color: var(--accent-color); }
+        body.dark-mode .icon { color: var(--text-dark); }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .side-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-dark);
+            border-radius: 10px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
             width: 100%;
-            max-width: 900px;
-            min-height: 100vh;
-            background-color: var(--background-white);
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
-            padding: 70px 0 110px 0;
-            box-sizing: border-box;
+            font-size: 1rem;
+            text-align: left;
         }
 
+        .side-link:hover, .side-link.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* --- CONTENT ALIGNMENT FIX --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 80px 20px 140px 20px;
+            transition: margin-left 0.3s ease;
+            max-width: 900px; /* Centering chat on large screens */
+            margin-right: auto;
+        }
+
+        /* --- MOBILE NAV --- */
         .app-header {
-            display: flex;
-            position: absolute;
+           display: flex;
+            position: fixed;
             top: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
             height: 60px;
             justify-content: space-between;
             align-items: center;
-            background-color: var(--background-light);
-            box-shadow: 0 2px 5px var(--shadow-light);
-            z-index: 1010;
-            padding: 0 15px;
-            box-sizing: border-box;
+            background-color: var(--background-white);
+            padding: 0 20px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 3000;
         }
 
-        .header-user {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .header-user a { color: var(--text-dark); text-decoration: none; }
-
-        .nav-menu {
-            display: none;
-            position: absolute;
-            top: 55px;
-            right: 15px;
-            background: var(--background-light);
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            min-width: 180px;
-            overflow: hidden;
-        }
-
-        .nav-menu.show { display: block; }
-
-        .nav-menu button, .nav-menu a {
-            width: 100%;
-            padding: 12px 15px;
-            border: none;
-            background: none;
-            text-align: left;
-            color: var(--text-dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-menu button:hover { background: var(--border-color); }
-
-        .chat-area {
-            width: 100%;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            box-sizing: border-box;
-        }
+        /* --- CHAT AREA --- */
+        .chat-area { display: flex; flex-direction: column; gap: 15px; }
 
         .reply-me, .intro-welcome, .typing-indicator {
             align-self: flex-start;
@@ -134,15 +143,50 @@
             animation: fadeIn 0.3s ease;
         }
 
+
         .input-sympt {
             align-self: flex-end;
             background-color: var(--accent-color);
             color: white;
             padding: 12px 16px;
             border-radius: 20px 20px 0 20px;
-            max-width: 75%;
-            box-shadow: 0 2px 4px var(--shadow-light);
+            max-width: 80%;
         }
+
+        /* --- STICKY INPUT BAR --- */
+        .chat-input-fixed {
+            position: fixed;
+            bottom: 0;
+            left: var(--sidebar-width);
+            right: 0;
+            background: var(--background-white);
+            padding: 15px 20px;
+            border-top: 1px solid transparent;
+            z-index: 1000;
+            transition: left 0.3s ease;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .symptom-input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            background: var(--background-light);
+            color: var(--text-dark);
+            resize: none;
+            max-height: 120px;
+            font-size: 1rem;
+            outline: none;
+        }
+
 
         .triage-options {
             display: flex;
@@ -166,7 +210,7 @@
             color: white;
         }
 
-        #custom-audio-controls {
+         #custom-audio-controls {
             display: none;
             align-items: center;
             gap: 12px;
@@ -183,137 +227,140 @@
             cursor: pointer;
         }
 
-        .footer-nav {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            background: var(--background-white);
-            padding: 15px 0;
-            box-shadow: 0 -2px 10px var(--shadow-light);
-            z-index: 1000;
-        }
+        .icon_i{
 
-        .input-container {
-            width: 100%;
-            padding: 0 15px;
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-            box-sizing: border-box;
-        }
-
-        .symptom-input {
-            flex-grow: 1;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 25px;
-            background: var(--background-light);
             color: var(--text-dark);
-            resize: none;
-            max-height: 150px;
-            font-size: 1rem;
-            outline: none;
         }
 
-        .symptom-input:focus { border-color: var(--accent-color); }
+        
+
+
+
+
 
         .circle-btn, .mic-btn {
-            width: 45px;
-            height: 45px;
+            width: 45px; height: 45px;
             border-radius: 50%;
             border: none;
             background: var(--accent-color);
             color: white;
+            font-size: 1rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        #mapid {
-            height: 300px;
-            width: 100%;
-            border-radius: 12px;
-            margin-top: 15px;
-            z-index: 1;
+        #mapid { height: 350px; width: 100%; border-radius: 12px; margin-top: 15px; }
+
+        .nav-menu { position: absolute; top: 50px; right: 20px; background: var(--background-light); display: none; flex-direction: column; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-menu.show { display: flex; }
+
+        @media (min-width: 700px) {
+            :root { --sidebar-width: 300px; }
+            .desktop-sidebar { display: flex; }
+            .app-header { display: none; }
+            .main-content { padding: 40px 60px 140px 60px; margin-left: var(--sidebar-width); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        /* Navbar ellipsis menu for mobile settings */
+        .nav-menu { position: absolute; top: 50px; right: 20px; background: var(--background-light); display: none; flex-direction: column; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-menu.show { display: flex; }
+        .nav-menu a, .nav-menu button { padding: 10px; text-decoration: none; color: var(--text-dark); border: none; background: none; cursor: pointer; text-align: left; }
 
-        .typing-dot {
-            width: 6px; height: 6px;
-            background: var(--text-muted);
-            border-radius: 50%;
-            display: inline-block;
-            animation: bounce 1.3s infinite;
-        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .typing-dot { width: 6px; height: 6px; background: var(--text-muted); border-radius: 50%; display: inline-block; animation: bounce 1.3s infinite; }
         @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-
-        @media (max-width: 900px) {
-            body { background-color: var(--background-white); }
-            .main-container { border-radius: 0; box-shadow: none; max-width: 100%; }
-            .app-header, .footer-nav { position: fixed; }
-        }
     </style>
 </head>
-<body>
+<body id="body">
 
-    <div class="main-container">
-        <header class="app-header">
-            <div class="header-user">
-                <a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left"></i></a>
-                <i class="fa-solid fa-circle-user icon"></i>
-                <span>{{ current_user.username }}</span>
+    <aside class="desktop-sidebar">
+        <div class="sidebar-logo">
+             {{ current_user.username }}
+        </div>
+        <nav class="sidebar-nav">
+            <a href="{{ url_for('home') }}" class="side-link">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <hr style="width:100%; border:0; border-top:1px solid var(--border-color); margin: 20px 0;">
+            <a href="/privacy_policy" class="side-link"><i class="fas fa-lock"></i> Privacy Policy</a>
+            <a href="/terms_of_service" class="side-link"><i class="fas fa-file-alt"></i> Terms of Service</a>
+            <button class="side-link" onclick="toggleTheme()"><i class="fas fa-moon"></i> Appearance</button>
+            <button class="side-link" onclick="window.location='{{ url_for('logout') }}'">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+            <div style="font-size: 15px; padding: 15px; color: var(--text-dark); margin-top: auto;">
+                <i class="fa-solid fa-circle-user"></i> <b>{{ current_user.username }}</b>
             </div>
-            
-            <button class="nav-toggle" id="navToggle" style="background:none; border:none; font-size:1.5rem; color:var(--text-dark);">
+        </nav>
+    </aside>
+
+    
+        <header class="app-header">
+            <div class="header-user"><h2>
+                <a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left icon_i"></i></a>
+                &nbsp;<i class="fa-solid fa-circle-user icon"></i>
+                <span style="font-weight: 540;"><b>{{ current_user.username }}</b></span>
+                </h2>
+            </div>
+
+        
+            <button id="navToggle" style="background:none; border:none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; padding: 5px 10px;">
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
 
             <div class="nav-menu" id="navMenu">
-                <button onclick="toggleTheme()">
-                    <i class="fa-solid fa-circle-half-stroke"></i> Toggle Theme
-                </button>
-                <a href="{{ url_for('logout') }}">
-                    <i class="fa-solid fa-sign-out-alt"></i> Logout
+                <div style="padding: 10px 15px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-color); letter-spacing: 1px;">
+                    Settings
+                </div>
+                
+                
+                
+                <a href="/privacy_policy">
+                    <i class="fa fa-lock"></i> Privacy Policy
                 </a>
+                
+                <a href="/terms_of_service">
+                    <i class="fa fa-file-alt"></i> Terms of Service
+                </a>
+
+                
+                <button onclick="window.location='{{ url_for('logout') }}'" style="font-weight: 600;">
+                    <i class="fa fa-sign-out-alt"></i> Logout
+                </button>
             </div>
         </header>
 
-        <main class="chat-area" id="chatArea">
-            <div id="location-status" style="font-size: 0.8rem; text-align: center; color: var(--text-muted); margin-bottom: 10px;">
-                Initializing sensors...
-            </div>
-        </main>
+    <main class="main-content">
+        
+        <div id="location-status" style="font-size: 0.8rem; text-align: center; color: var(--text-muted); margin-bottom: 20px;">
+            Initializing sensors...
+        </div>
 
-        <section class="results-extra" style="width: 100%; padding: 0 20px; box-sizing: border-box;">
-            <div id="custom-audio-controls">
-                <button id="play-pause-btn" style="background:none; border:none; color:var(--accent-color); font-size:1.5rem;">
-                    <i class="fas fa-play"></i>
-                </button>
-                <input type="range" id="progress-bar" value="0">
-                <span id="time-display" style="font-size: 0.8rem; min-width: 70px;">0:00 / 0:00</span>
+        <div class="chat-area" id="chatArea">
             </div>
-            <audio id="adviceAudio"></audio>
 
-            <div id="hospital-map-section" style="display:none; margin-bottom: 20px;">
+        <section id="results-extra" style="margin-top: 20px;">
+            <div id="custom-audio-controls" style="display:none; align-items: center; gap: 12px; padding: 15px; background: var(--background-light); border-radius: 30px; margin-bottom: 20px;">
+                <button id="play-pause-btn" style="background:none; border:none; color:var(--accent-color); font-size:1.5rem;"><i class="fas fa-play"></i></button>
+                <input type="range" id="progress-bar" value="0" style="flex-grow:1;">
+                <span id="time-display" style="font-size: 0.8rem;">0:00 / 0:00</span>
+                <audio id="adviceAudio"></audio>
+            </div>
+
+            <div id="hospital-map-section" style="display:none;">
                 <div id="hospital-list-container"></div>
                 <div id="mapid"></div>
             </div>
         </section>
+    </main>
 
-        <footer class="footer-nav">
-            <div class="input-container">
-                <textarea id="symptoms" rows="1" placeholder="Describe symptoms..." class="symptom-input"></textarea>
-                <button class="mic-btn" onclick="startDictation()"><i class="fa-solid fa-microphone"></i></button>
-                <button class="circle-btn" onclick="handleSend()"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </footer>
+    <div class="chat-input-fixed">
+        <div class="input-container">
+            <textarea id="symptoms" rows="1" placeholder="Describe symptoms..." class="symptom-input"></textarea>
+            <button class="mic-btn" onclick="startDictation()"><i class="fa-solid fa-microphone"></i></button>
+            <button class="circle-btn" onclick="handleSend()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
     </div>
 
     <input type="hidden" id="lat" value="0.0">
@@ -330,11 +377,11 @@
         let triageAnswers = { patient: null, gender: null, age: null, severity: null, diagnosis: null };
 
         const triageQuestions = [
-            { id: "patient", q: "Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
-            { id: "gender", q: "What is the gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
-            { id: "age", q: "Age group?", opt: [{l:"0-12", v:"child"}, {l:"13-19", v:"teen"}, {l:"20-59", v:"adult"}, {l:"60+", v:"elderly"}] },
-            { id: "severity", q: "Severity level?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
-            { id: "diagnosis", q: "Last diagnosed?", opt: [{l:"Never", v:"never"}, {l:"Recently", v:"recent"}, {l:"Long ago", v:"long"}] }
+            { id: "patient", q: "If i may, Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
+            { id: "gender", q: "Please What gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
+            { id: "age", q: "What Age group?", opt: [{l:"0-12", v:"child"}, {l:"13-19", v:"teen"}, {l:"20-59", v:"adult"}, {l:"60+", v:"elderly"}] },
+            { id: "severity", q: "what's the Severity level?(How much does it hurt?)", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
+            { id: "diagnosis", q: "When last did you notice this?", opt: [{l:"Never", v:"never"}, {l:"Recently", v:"recent"}, {l:"Long ago", v:"long"}] }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -492,7 +539,7 @@
             }
 
             container.style.display = 'block';
-            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Emergency Facilities' : 'Nearby Hospitals'}:</h4>`;
+            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Emergency Facilities Plus Hospitals Near You, Hurry and choose' : 'Just Incase These Are Nearby Hospitals'}:</h4>`;
             
             hospitals.forEach(h => {
                 html += `
@@ -544,9 +591,29 @@
         }
 
         function startDictation() {
-            if (!('webkitSpeechRecognition' in window)) return alert("Speech not supported");
-            const rec = new webkitSpeechRecognition();
-            rec.onresult = (e) => { symptomInput.value = e.results[0][0].transcript; };
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!SpeechRecognition) {
+                return alert("Speech recognition is not supported in this browser. Please try Google Chrome.");
+            }
+
+            const rec = new SpeechRecognition();
+            rec.lang = 'en-US'; // Set the language
+
+            rec.onstart = () => {
+                console.log("Voice recognition started. Speak into the microphone.");
+            };
+
+            rec.onresult = (e) => {
+                const transcript = e.results[0][0].transcript;
+                document.getElementById('symptoms').value = transcript;
+            };
+
+            rec.onerror = (e) => {
+                console.error("Speech recognition error:", e.error);
+                alert("Error occurred in recognition: " + e.error);
+            };
+
             rec.start();
         }
 
@@ -605,7 +672,6 @@
             document.getElementById('navMenu').classList.toggle('show');
         });
     </script>
+
 </body>
 </html>
-
-
