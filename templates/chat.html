@@ -40,6 +40,14 @@
             --shadow-light: rgba(0, 0, 0, 0.3);
         }
 
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent the entire page from 'bouncing' */
+            position: fixed; /* Extra lock for iOS */
+            width: 100%;
+        }
+
         body {
             font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
@@ -108,10 +116,13 @@
         /* --- CONTENT ALIGNMENT FIX --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            padding: 80px 20px 140px 20px;
-            transition: margin-left 0.3s ease;
-            max-width: 900px; /* Centering chat on large screens */
-            margin-right: auto;
+            padding: 70px 20px 100px 20px;
+            height: 100%; 
+            overflow-y: auto; /* This becomes your primary scroll area */
+            -webkit-overflow-scrolling: touch;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
         }
 
         /* --- MOBILE NAV --- */
@@ -160,11 +171,11 @@
             left: var(--sidebar-width);
             right: 0;
             background: var(--background-white);
-            padding: 15px 20px;
+            padding: 10px 20px;
             border-top: 1px solid transparent;
-            padding-bottom: calc(15px + env(safe-area-inset-bottom));
-            z-index: 1000;
-            transition: left 0.3s ease;
+            padding-bottom: calc(10px + env(safe-area-inset-bottom));
+            z-index: 4000;
+            transition: bottom 0.3s ease;
         }
 
         .input-container {
@@ -388,25 +399,46 @@
             initTheme();
             appendMessage("<b>What symptoms are you experiencing today?</b>", 'reply-me');
 
+            // Auto-expand textarea
             symptomInput.addEventListener('input', function() {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 150) + 'px';
             });
 
+            // Handle Enter Key
             symptomInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
-                    // Prevent default "Enter" behavior (new line) and send message
                     e.preventDefault();
                     handleSend();
                 }
-                // If Shift + Enter is pressed, it will naturally create a new line
             });
 
-            // NEW: Fix mobile scroll when typing
+            // FIXED MOBILE SCROLL LOGIC
+            if (window.visualViewport) {
+                window.visualViewport.addEventListener('resize', () => {
+                    const inputFixedBar = document.querySelector('.chat-input-fixed');
+                    const viewport = window.visualViewport;
+                    
+                    // Calculate how much the keyboard is covering
+                    const offset = window.innerHeight - viewport.height;
+                    
+                    if (offset > 0) {
+                        // Keyboard is OPEN: Push the input bar up by the keyboard height
+                        inputFixedBar.style.bottom = `${offset}px`;
+                        // Ensure the chat area scrolls to see the last message
+                        chatArea.scrollTop = chatArea.scrollHeight;
+                    } else {
+                        // Keyboard is CLOSED
+                        inputFixedBar.style.bottom = '0px';
+                    }
+                });
+            }
+
+            // Replace your focus listener with this one
             symptomInput.addEventListener('focus', () => {
+                // Use scrollIntoView on the chatArea instead of window.scrollTo
                 setTimeout(() => {
-                    window.scrollTo(0, document.body.scrollHeight);
-                    chatArea.scrollTop = chatArea.scrollHeight;
+                    chatArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
                 }, 300);
             });
         });
