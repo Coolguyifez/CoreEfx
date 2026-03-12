@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>CoreEfx AI Health Advisor </title>
+    <title>CoreEfx AI Chat</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
             --accent-color: #38b45a;
             --hover-accent: #2e8b43;
             --background-light: #2c2f33;
-            --background-white: #36393f;
+            --background-white: #1a1a1b;
             --text-dark: #e0e0e0;
             --text-muted: #b0b0b0;
             --border-color: #4a4d52;
@@ -162,6 +162,7 @@
             background: var(--background-white);
             padding: 15px 20px;
             border-top: 1px solid transparent;
+            padding-bottom: calc(15px + env(safe-area-inset-bottom));
             z-index: 1000;
             transition: left 0.3s ease;
         }
@@ -378,7 +379,7 @@
             { id: "patient", q: "If i may, Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
             { id: "gender", q: "Please What gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
             { id: "age", q: "What Age group?", opt: [{l:"0-12", v:"child"}, {l:"13-19", v:"teen"}, {l:"20-59", v:"adult"}, {l:"60+", v:"elderly"}] },
-            { id: "severity", q: "what's the Severity level?(How much does it hurt?)", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
+            { id: "severity", q: "How would your rate the serverity of this symptom?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
             { id: "diagnosis", q: "When last did you notice this?", opt: [{l:"Never", v:"never"}, {l:"Recently", v:"recent"}, {l:"Long ago", v:"long"}] }
         ];
 
@@ -390,6 +391,23 @@
             symptomInput.addEventListener('input', function() {
                 this.style.height = 'auto';
                 this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+            });
+
+            symptomInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    // Prevent default "Enter" behavior (new line) and send message
+                    e.preventDefault();
+                    handleSend();
+                }
+                // If Shift + Enter is pressed, it will naturally create a new line
+            });
+
+            // NEW: Fix mobile scroll when typing
+            symptomInput.addEventListener('focus', () => {
+                setTimeout(() => {
+                    window.scrollTo(0, document.body.scrollHeight);
+                    chatArea.scrollTop = chatArea.scrollHeight;
+                }, 300);
             });
         });
 
@@ -673,4 +691,3 @@
 
 </body>
 </html>
-
