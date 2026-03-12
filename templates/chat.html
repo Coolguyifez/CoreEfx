@@ -41,21 +41,19 @@
         }
 
         html, body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
             height: 100%;
             margin: 0;
-            overflow: hidden; /* Prevent the entire page from 'bouncing' */
-            position: fixed; /* Extra lock for iOS */
+            padding: 0;
+            overflow: hidden; 
+            position: fixed; 
             width: 100%;
             display: flex;
             flex-direction: column;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            margin: 0;
             background-color: var(--background-white);
             color: var(--text-dark);
             transition: background-color var(--transition-speed);
+            -webkit-overflow-scrolling: touch;
         }
 
         /* --- SHARED SIDEBAR FROM HOME --- */
@@ -117,11 +115,10 @@
 
         /* --- CONTENT ALIGNMENT FIX --- */
         .main-content {
-           flex: 1;
+            flex: 1;
             margin-left: var(--sidebar-width);
             padding: 70px 20px 100px 20px;
-            height: 100%; 
-            overflow-y: auto; /* This becomes your primary scroll area */
+            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             display: flex;
             flex-direction: column;
@@ -145,7 +142,7 @@
         }
 
         /* --- CHAT AREA --- */
-        .chat-area { display: flex; flex-direction: column; gap: 15px; }
+        .chat-area { display: flex; flex-direction: column; gap: 15px; width: 100%;}
 
         .reply-me, .intro-welcome, .typing-indicator {
             align-self: flex-start;
@@ -164,6 +161,7 @@
             color: white;
             padding: 12px 16px;
             border-radius: 20px 20px 0 20px;
+            box-shadow: 0 2px 4px var(--shadow-light);
             max-width: 80%;
         }
 
@@ -178,7 +176,6 @@
             padding-bottom: calc(10px + env(safe-area-inset-bottom));
             z-index: 4000;
             border-top: 1px solid transparent;
-            transition: none;
         }
 
         .input-container {
@@ -190,6 +187,7 @@
         }
 
         .symptom-input {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
             flex-grow: 1;
             padding: 12px 15px;
             border: 2px solid var(--border-color);
@@ -232,7 +230,9 @@
             background: var(--accent-color);
             color: white;
         }
-                #custom-audio-controls {
+
+
+         #custom-audio-controls {
             display: none;
             align-items: center;
             gap: 12px;
@@ -273,8 +273,6 @@
 
         #mapid { height: 350px; width: 100%; border-radius: 12px; margin-top: 15px; }
 
-        .nav-menu { position: absolute; top: 50px; right: 20px; background: var(--background-light); display: none; flex-direction: column; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .nav-menu.show { display: flex; }
 
         @media (min-width: 700px) {
             :root { --sidebar-width: 300px; }
@@ -308,7 +306,9 @@
             <hr style="width:100%; border:0; border-top:1px solid var(--border-color); margin: 20px 0;">
             <a href="/privacy_policy" class="side-link"><i class="fas fa-lock"></i> Privacy Policy</a>
             <a href="/terms_of_service" class="side-link"><i class="fas fa-file-alt"></i> Terms of Service</a>
-            <button class="side-link" onclick="toggleTheme()"><i class="fas fa-moon"></i> Appearance</button>
+            <button class="side-link" onclick="setTheme('light')"><i class="fa fa-sun"></i> Light Mode</button>
+            <button class="side-link" onclick="setTheme('dark')"><i class="fa fa-moon"></i> Dark Mode</button>
+            <button class="side-link" onclick="setSystemMode()"><i class="fa fa-desktop"></i> System Mode</button>
             <button class="side-link" onclick="window.location='{{ url_for('logout') }}'">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
@@ -316,40 +316,42 @@
     </aside>
 
     
-        <header class="app-header">
-            <div class="header-user"><h3>
-                <a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left icon_i"></i></a>
-                &nbsp;<i class="fa-solid fa-circle-user icon"></i>
-                <span style="font-weight: 600;">{{ current_user.username }}</span>
-                </h3>
+    <header class="app-header">
+        <div class="header-user"><h3>
+            <a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left icon_i"></i></a>
+            &nbsp;<i class="fa-solid fa-circle-user icon"></i>
+            <span style="font-weight: 600;">{{ current_user.username }}</span>
+            </h3>
+        </div>
+
+    
+        <button id="navToggle" style="background:none; border:none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; padding: 5px 10px;">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+
+        <div class="nav-menu" id="navMenu">
+            <div style="padding: 10px 15px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-color); letter-spacing: 1px;">
+                Settings
             </div>
 
-        
-            <button id="navToggle" style="background:none; border:none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; padding: 5px 10px;">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+           <button onclick="setTheme('light')"><i class="fa fa-sun"></i> Light</button>
+           <button onclick="setTheme('dark')"><i class="fa fa-moon"></i> Dark</button>
+           <button onclick="setSystemMode()"><i class="fa fa-desktop"></i> System</button>    
+            
+            <a href="/privacy_policy">
+                <i class="fa fa-lock"></i> Privacy Policy
+            </a>
+            
+            <a href="/terms_of_service">
+                <i class="fa fa-file-alt"></i> Terms of Service
+            </a>
+
+            
+            <button onclick="window.location='{{ url_for('logout') }}'" style="font-weight: 600; padding: 12px 30px;">
+                <i class="fa fa-sign-out-alt"></i> Logout
             </button>
-
-            <div class="nav-menu" id="navMenu">
-                <div style="padding: 10px 15px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-color); letter-spacing: 1px;">
-                    Settings
-                </div>
-                
-                
-                
-                <a href="/privacy_policy">
-                    <i class="fa fa-lock"></i> Privacy Policy
-                </a>
-                
-                <a href="/terms_of_service">
-                    <i class="fa fa-file-alt"></i> Terms of Service
-                </a>
-
-                
-                <button onclick="window.location='{{ url_for('logout') }}'" style="font-weight: 600; padding: 12px 30px;">
-                    <i class="fa fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </header>
+        </div>
+    </header>
 
     <main class="main-content">
         
@@ -391,77 +393,111 @@
         let map;
         const chatArea = document.getElementById('chatArea');
         const symptomInput = document.getElementById('symptoms');
+        const mainContent = document.querySelector('.main-content');
+        const inputFixedBar = document.querySelector('.chat-input-fixed');
         let triageStep = 0;
         let isProcessing = false; 
         let storedSymptoms = "";
         let triageAnswers = { patient: null, gender: null, age: null, severity: null, diagnosis: null };
 
         const triageQuestions = [
-            { id: "patient", q: "If i may, Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
-            { id: "gender", q: "Please What gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
-            { id: "age", q: "What Age group?", opt: [{l:"0-12", v:"child"}, {l:"13-19", v:"teen"}, {l:"20-59", v:"adult"}, {l:"60+", v:"elderly"}] },
-            { id: "severity", q: "How would your rate the serverity of this symptom?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
-            { id: "diagnosis", q: "When last did you notice this?", opt: [{l:"Never", v:"never"}, {l:"Recently", v:"recent"}, {l:"Long ago", v:"long"}] }
+            { id: "patient", q: "Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
+            { id: "gender", q: "What is the gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
+            { id: "age", q: "What is the age group?", opt: [{l:"0-12", v:"child"}, {l:"13-19", v:"teen"}, {l:"20-59", v:"adult"}, {l:"60+", v:"elderly"}] },
+            { id: "severity", q: "How severe is the symptom?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
+            { id: "diagnosis", q: "When was this noticed?", opt: [{l:"Never", v:"never"}, {l:"Recently", v:"recent"}, {l:"Long ago", v:"long"}] }
         ];
+
+        /*Theme logic (light, dark, and system)*/
+        const systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+        /**
+         * Directly applies the dark-mode class to the body
+         */
+        function applyTheme(mode) {
+            const navMenu = document.getElementById('navMenu');
+            if (navMenu) navMenu.classList.remove('show'); // Auto-close menu
+
+            if (mode === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else if (mode === 'light') {
+                document.body.classList.remove('dark-mode');
+            } else if (mode === 'system') {
+                if (systemQuery.matches) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }
+        }
+
+        /**
+         * Sets a specific mode and stops listening to system changes
+         */
+        function setTheme(mode) {
+            localStorage.setItem('theme', mode);
+            applyTheme(mode);
+            systemQuery.removeEventListener('change', handleSystemChange);
+        }
+
+        /**
+         * Sets mode to system and starts listening for OS changes
+         */
+        function setSystemMode() {
+            localStorage.setItem('theme', 'system');
+            applyTheme('system');
+            systemQuery.addEventListener('change', handleSystemChange);
+        }
+
+        /**
+         * Callback for the system color scheme listener
+         */
+        function handleSystemChange() {
+            if (localStorage.getItem('theme') === 'system') {
+                applyTheme('system');
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             initLocation();
             initTheme();
             appendMessage("<b>What symptoms are you experiencing today?</b>", 'reply-me');
 
-            // Auto-expand textarea
-            symptomInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = Math.min(this.scrollHeight, 150) + 'px';
-            });
-
-            // Handle Enter Key
-            symptomInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend();
-                }
-            });
-
-            // FIXED MOBILE SCROLL LOGIC
+            // --- KEYBOARD & VIEWPORT LOGIC ---
             if (window.visualViewport) {
                 window.visualViewport.addEventListener('resize', () => {
-                    const inputFixedBar = document.querySelector('.chat-input-fixed');
-                    const viewport = window.visualViewport;
-                    
-                    // Calculate height of the keyboard
-                    const offset = window.innerHeight - viewport.height;
-                    
+                    const offset = window.innerHeight - window.visualViewport.height;
                     if (offset > 0) {
-                        // Keyboard is OPEN
-                        // We use 'bottom' to pin it, but we also counteract the 
-                        // scroll offset Chrome adds to the body.
                         inputFixedBar.style.bottom = `${offset}px`;
-                        
-                        // CRITICAL: Force the body back to top so Chrome doesn't 'pan' the page
-                        window.scrollTo(0, 0);
-                        
-                        // Scroll the chat messages to the bottom
-                        chatArea.scrollTop = chatArea.scrollHeight;
+                        setTimeout(() => { mainContent.scrollTop = mainContent.scrollHeight; }, 100);
                     } else {
-                        // Keyboard is CLOSED
                         inputFixedBar.style.bottom = '0px';
                     }
-                });
-
-                // Add this to prevent 'jitter' when typing
-                window.visualViewport.addEventListener('scroll', () => {
-                    if (window.scrollY !== 0) window.scrollTo(0, 0);
+                    window.scrollTo(0, 0);
                 });
             }
 
-            // Replace your focus listener with this one
             symptomInput.addEventListener('focus', () => {
-                // Use scrollIntoView on the chatArea instead of window.scrollTo
-                setTimeout(() => {
-                    chatArea.scrollIntoView({ behavior: 'smooth', block: 'end' });
-                }, 300);
+                setTimeout(() => { window.scrollTo(0, 0); document.body.scrollTop = 0; }, 50);
             });
+
+            symptomInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            symptomInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+            });
+
+            function initTheme() {
+            const saved = localStorage.getItem('theme') || 'system';
+            if (saved === 'system') {
+                setSystemMode();
+            } else {
+                applyTheme(saved);
+            }
+        }
         });
 
         // ✅ AUTOMATIC REFRESH: Clears everything for a new session
@@ -479,14 +515,12 @@
 
         function handleSend() {
             const text = symptomInput.value.trim();
-            if (!text) return;
+            if (!text || isProcessing) return;
 
-            // Prevent interruption mid-triage
-            if (isProcessing && triageStep > 0) return;
-
-            // ✅ TRIGGER AUTO REFRESH: If chatArea has messages but we're starting a new flow
             if (chatArea.children.length > 0 && triageStep === 0) {
-                clearPreviousSession();
+                chatArea.innerHTML = '';
+                document.getElementById('hospital-map-section').style.display = 'none';
+                document.getElementById('custom-audio-controls').style.display = 'none';
             }
 
             isProcessing = true;
@@ -517,21 +551,20 @@
                 current.opt.forEach(o => {
                     const btn = document.createElement('button');
                     btn.innerText = o.l;
-                    btn.onclick = () => selectTriage(current.id, o.v, o.l, optContainer);
+                    btn.onclick = () => {
+                        triageAnswers[current.id] = o.v;
+                        optContainer.remove();
+                        appendMessage(`<b>${o.l}</b>`, 'input-sympt');
+                        triageStep++;
+                        askTriage();
+                    };
                     optContainer.appendChild(btn);
                 });
                 chatArea.appendChild(optContainer);
-                chatArea.scrollTop = chatArea.scrollHeight;
-            }, 800);
+                mainContent.scrollTop = mainContent.scrollHeight;
+            }, 1000);
         }
 
-        function selectTriage(id, val, label, container) {
-            triageAnswers[id] = val;
-            container.remove();
-            appendMessage(`<b>${label}</b>`, 'input-sympt');
-            triageStep++;
-            askTriage();
-        }
 
         function submitFinal() {
             showTyping();
@@ -608,7 +641,7 @@
             }
 
             container.style.display = 'block';
-            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Emergency Facilities Plus Hospitals Near You, Hurry and choose' : 'Just Incase These Are Nearby Hospitals'}:</h4>`;
+            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Emergency Facilities Plus Hospitals Near You, Hurry And Go To One Of Them Before It Is to Late' : 'Just Incase These Are Nearby Hospitals Around You'}:</h4>`;
             
             hospitals.forEach(h => {
                 html += `
@@ -724,17 +757,6 @@
                     }
                 );
             }
-        }
-
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            if (savedTheme === 'dark') document.body.classList.add('dark-mode');
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-            document.getElementById('navMenu').classList.remove('show');
         }
 
         document.getElementById('navToggle').addEventListener('click', () => {
