@@ -276,6 +276,7 @@
 
     <aside class="desktop-sidebar">
         <div class="sidebar-logo">
+            <i class="fa-solid fa-circle-user icon"></i>
              {{ current_user.username }}
         </div>
         <nav class="sidebar-nav">
@@ -288,17 +289,17 @@
             <button class="side-link" onclick="toggleTheme()"><i class="fas fa-moon"></i> Appearance</button>
             <button class="side-link" onclick="window.location='{{ url_for('logout') }}'">
                 <i class="fas fa-sign-out-alt"></i> Logout
-            </button
+            </button>
         </nav>
     </aside>
 
     
         <header class="app-header">
-            <div class="header-user"><h2>
+            <div class="header-user"><h3>
                 <a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left icon_i"></i></a>
                 &nbsp;<i class="fa-solid fa-circle-user icon"></i>
-                <span style="font-weight: 540;"><b>{{ current_user.username }}</b></span>
-                </h2>
+                <span style="font-weight: 600;">{{ current_user.username }}</span>
+                </h3>
             </div>
 
         
@@ -672,5 +673,3 @@
 
 </body>
 </html>
-
-
