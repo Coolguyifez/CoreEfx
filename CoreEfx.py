@@ -103,6 +103,7 @@ class Feedback(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each feedback entry
     message = db.Column(db.String(1000))  # The feedback message content
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -1980,7 +1981,7 @@ def home():
             try:
                 new_feedback = Feedback(
                     message=feedback_content,
-                    user_id=current_user.id, # If your Feedback model supports user_id
+                    user_id=current_user.id if current_user.is_authenticated else None,
                     timestamp=datetime.utcnow()
                 )
                 db.session.add(new_feedback)
