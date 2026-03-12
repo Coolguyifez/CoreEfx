@@ -46,6 +46,8 @@
             overflow: hidden; /* Prevent the entire page from 'bouncing' */
             position: fixed; /* Extra lock for iOS */
             width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         body {
@@ -115,6 +117,7 @@
 
         /* --- CONTENT ALIGNMENT FIX --- */
         .main-content {
+           flex: 1;
             margin-left: var(--sidebar-width);
             padding: 70px 20px 100px 20px;
             height: 100%; 
@@ -166,16 +169,16 @@
 
         /* --- STICKY INPUT BAR --- */
         .chat-input-fixed {
-            position: fixed;
+           position: fixed;
             bottom: 0;
             left: var(--sidebar-width);
             right: 0;
             background: var(--background-white);
             padding: 10px 20px;
-            border-top: 1px solid transparent;
             padding-bottom: calc(10px + env(safe-area-inset-bottom));
             z-index: 4000;
-            transition: bottom 0.3s ease;
+            border-top: 1px solid transparent;
+            transition: none;
         }
 
         .input-container {
@@ -203,26 +206,33 @@
         .triage-options {
             display: flex;
             flex-direction: column;
+            align-items: flex-start; 
             gap: 8px;
             margin-top: 5px;
         }
 
         .triage-options button {
-            padding: 10px;
+            max-width: 75%; 
+            padding: 10px 16px;
             border: 1px solid var(--accent-color);
-            border-radius: 8px;
+            border-radius: 12px;
             background: transparent;
             color: var(--accent-color);
             cursor: pointer;
             transition: 0.2s;
+            font-weight: 600;
+            font-size: 0.9rem;
+            
+            /* These properties ensure the button shrinks to fit its text */
+            width: fit-content;
+            text-align: left;
         }
 
         .triage-options button:hover {
             background: var(--accent-color);
             color: white;
         }
-
-         #custom-audio-controls {
+                #custom-audio-controls {
             display: none;
             align-items: center;
             gap: 12px;
@@ -419,18 +429,29 @@
                     const inputFixedBar = document.querySelector('.chat-input-fixed');
                     const viewport = window.visualViewport;
                     
-                    // Calculate how much the keyboard is covering
+                    // Calculate height of the keyboard
                     const offset = window.innerHeight - viewport.height;
                     
                     if (offset > 0) {
-                        // Keyboard is OPEN: Push the input bar up by the keyboard height
+                        // Keyboard is OPEN
+                        // We use 'bottom' to pin it, but we also counteract the 
+                        // scroll offset Chrome adds to the body.
                         inputFixedBar.style.bottom = `${offset}px`;
-                        // Ensure the chat area scrolls to see the last message
+                        
+                        // CRITICAL: Force the body back to top so Chrome doesn't 'pan' the page
+                        window.scrollTo(0, 0);
+                        
+                        // Scroll the chat messages to the bottom
                         chatArea.scrollTop = chatArea.scrollHeight;
                     } else {
                         // Keyboard is CLOSED
                         inputFixedBar.style.bottom = '0px';
                     }
+                });
+
+                // Add this to prevent 'jitter' when typing
+                window.visualViewport.addEventListener('scroll', () => {
+                    if (window.scrollY !== 0) window.scrollTo(0, 0);
                 });
             }
 
