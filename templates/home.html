@@ -6,11 +6,9 @@
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
-            /* Light Mode Colors */
             --primary-color: #007bff; /* A professional blue */
             --secondary-color: #6c757d; /* Muted grey */
             --accent-color: #008000; /* Success green */
@@ -22,9 +20,9 @@
             --border-color: #e2e6ea;
             --shadow-light: rgba(0, 0, 0, 0.08);
             --transition-speed: 0.5s;
+            --sidebar-width: 0px; /* Default for mobile */
         }
 
-        /* Dark Mode Colors */
         body.dark-mode {
             --primary-color: #6aabff; /* Lighter blue for dark mode */
             --secondary-color: #a0a8b1; /* Lighter grey for dark mode */
@@ -37,994 +35,330 @@
             --border-color: #4a4d52; /* Darker border */
             --shadow-light: rgba(0, 0, 0, 0.3); /* More pronounced shadow */
         }
-        html {
-            scroll-behavior: smooth;
-        }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-            margin: 0 auto;
-            padding: 80px 20px;
-            height: 100%;
+            font-family: system-ui, -apple-system, sans-serif;
+            margin: 0;
             background-color: var(--background-white);
             color: var(--text-dark);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            transition: background-color var(--transition-speed), color var(--transition-speed); /* Smooth transition for theme change */
-           /* background-image: url("{{ url_for('static', filename='') }}"); /* Replace background.png with your image filename */
-            background-size: cover; /* Common: make image cover the entire body, cropping if necessary */
-            background-repeat: no-repeat; /* Prevent image from repeating */
-            background-attachment: fixed; /* Keep background fixed when scrolling */
-            background-position: center center; /* Center the background image */*/
-    /* ------------------------------------------- */
-
+            transition: background-color var(--transition-speed);
         }
 
-        h3, h4 {
-             /* A more prominent font for headings */
-            text-align: center;
-            margin-top: 25px;
-            font-weight: 700; /* Bolder headings */
-            transition: color var(--transition-speed); /* Smooth transition */
+        /* --- DESKTOP SIDEBAR (Hidden by default on mobile) --- */
+        .desktop-sidebar {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            width: 260px;
+            background-color: var(--background-light);
+            border-right: 1px solid var(--border-color);
+            flex-direction: column;
+            padding: 30px 20px;
+            z-index: 2000;
         }
 
-
-        h2 {
-
-            font-size: 2em;
-            margin-bottom: 10px;
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
             color: var(--text-dark);
-            margin-left: 25px;
-            transition: color var(--transition-speed); /* Smooth transition */
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .icon {
-            color: var(--accent-color);
+
+        .icon{
+
+            color:var(--accent-color)
         }
+
         body.dark-mode  .icon{
             color: var(--text-dark);
         }
 
 
-        h3 {
-            font-size: 1.8em;
-            margin-top: 30px;
-            color: var(--accent-color);
-        }
-
-        h4 {
-            font-size: 1.4em;
-            margin-top: 25px;
-            color: var(--accent-color);
-        }
-
-
-        .intro-welcome{
-            align-item: centre;
-            color: var(--text-dark);
-            padding: 15px 18px;
-            text-align: centre;
-            font-weight: 500;
-            word-wrap: break-word;
-            font-size: 2em;
-            transition: color var(--transition-speed); /* Smooth transition */
-            margin-top: 40px;
-        }
-        .intro-text { text-align: center; color: var(--text-muted); margin-bottom: 10px; font-size: 1.1em;  transition: color var(--transition-speed); /* Smooth transition */ }
-
-        /* Tab Navigation Styles */
-        .tabs {
+        .sidebar-nav {
             display: flex;
-            justify-content: space-around;   /* ensures perfect spacing */
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .side-link {
+            display: flex;
             align-items: center;
-            width: 100%;
-            padding: 9px 0;
-        }
-        
-        .tab-button {
-            background: none;
-            border: none;
-            flex: 1;                         /* each button same width */
-            text-align: center;
-            padding: 5px 0;
+            gap: 15px;
+            padding: 12px 15px;
+            text-decoration: none;
             color: var(--text-dark);
-        }
-        
-        .tab-button i {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 3px;
-        }
-        
-        .tab-button.active{
-            font-weight: 1000;
-        }
-        
-        .tab-button.active i{
-             color: var(--accent-color);
-        }
-        .tab-button i:hover{
-            color: var(--hover-accent);
-        }
-        
-        .tab-button span {
-            font-size: 14px;
-        }
-
-
-        /* App Header for Desktop (default) */
-        .app-header {
-            display: flex; /* Hidden by default on desktop */
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            border-radius: 10px;
+            transition: 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
             width: 100%;
+            font-size: 1rem;
+            text-align: left;
+        }
+
+        .side-link:hover, .side-link.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* --- CONTENT WRAPPER --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 80px 20px 100px 20px; /* Bottom padding for mobile footer */
+            transition: margin-left 0.3s ease;
+        }
+
+        /* --- MOBILE HEADER & FOOTER (Visible by default) --- */
+        .app-header {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
             justify-content: space-between;
             align-items: center;
             background-color: var(--background-white);
-            z-index:1000;
-            position: fixed;
-            padding: 5px 1px;
-        }
-        
-         /* Tab Content Styles */
-        .tab-content {
-            display: none; /* Hidden by default */
-            padding-top: 20px; /* Space from tabs */
-        }
-
-        .tab-content.active {
-            display: block; /* Shown when active */
-        }
-
-
-        form {
-            padding: 0;
-            border-radius: 8px;
-            box-shadow: none;
-            background-color: transparent;
-            margin-top: 120px; 
-            top: 150px;
-        }
-
-        .icon-group {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-left: 8px;
-        }
-
-        
-        /* feedback */
-
-        .input-feed-icon {
-
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-between;
-            background-color: var(--background-light);
-            border: 1px solid var(--border-color);
-            border-radius: 25px;
-            padding: 8px 10px;
-            box-shadow: none;
-            width: 95%;
-
-            margin-bottom:none;
-            transition: all 0.3s ease;
-            z-index: 999; 
-        }
-        .input-feed-icon:focus-within{
-             border-color: var(--accent-color) !important;
-            box-shadow: 0 0 0 0.2rem rgb(0, 256, 55, 0.1);
-            outline: none;
-            background:var(--background-light);
-            
-        }
-
-        .input-feed-icon textarea::-webkit-scrollbar {
-          display: none;
-        }
-
-
-        .input-feed-icon textarea{
-          flex: 1;
-          border: none;
-          outline: none;
-          resize: none;
-          font-size: 1em;
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
-          color: var(--text-dark);
-          background: transparent;
-          padding: 8px;
-          line-height: 1.4;
-          overflow-y: auto;
-          min-height: 40px;
-          max-height: 160px;
-          -ms-overflow-style: none;  /* IE, Edge */
-          scrollbar-width: none;     /* Firefox */
-        }
-        .input-feed-icon textarea:focus-within{
-             color: var(--text-dark);
-        }
-        
-
-        .icon-feed {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          margin-left: 8px;
-        }
-
-
-
-        /* 🎙 Mic stays fixed at the right, vertically centered */
-        .mic-btn {
-            background: none;
-            border: none;
-            color: var(--accent-color);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-
-        }
-
-        .mic-btn:hover {
-          color: var(--hover-accent); 
-        }
-
-
-        .circle-btn {
-            background-color: var(--accent-color);
-            border: none;
-            color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        .circle-btn:hover {
-          background-color: var(--hover-accent);
-          transform: scale(1.05);
-        }
-
-
-        .results-section, .history-section, .feedback-form-section { /* Renamed feedback-section to feedback-form-section for clarity */
-            margin-top: 40px;
-            padding-top: 20px;
-        }
-        
-
-        
-
-        .results-section:first-of-type, .history-section:first-of-type, .feedback-form-section:first-of-type {
-            margin-top: 0;
-            padding-top: 0;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        li {
-            background-color: var(--background-light);
-            padding: 18px 20px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 1.05em;
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transition */
-        }
-
-       
-        
-        .chat-btn{
-            background:  var(--accent-color);
-            align-item: center !important;
-            border-radius: 30px;
-            padding: 15px; 
-            width: 25%;
-            margin-top: 25px;
-            text-align: center;
-            margin-left: auto;
-            margin-right: auto;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color var(--transition-speed);
-            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.12);
-        }
-        .chat-btn, a{
-            text-decoration: none;
-            color: white;            
-        }
-
-        p {
-            margin-top: 20px;
-            color: var(--text-muted);
-            text-align: center;
-            font-size: 0.95em;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            transition: color var(--transition-speed); /* Smooth transition */
-        }
-
-        .history-item {
-            margin-bottom: 20px;
+            padding: 0 20px;
             border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            transition: border-color var(--transition-speed); /* Smooth transition */
+            z-index: 3000;
         }
 
-        .history-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .history-item p {
-            text-align: left;
-            margin: 5px 0;
-            width: 100%;
-            white-space: pre-wrap;
-            word-break: break-word;
-            overflow-wrap: break-word;
-            color: var(--text-dark);
-            transition: color var(--transition-speed); /* Smooth transition */
-        }
-
-
-        .history-item .timestamp {
-            font-size: 0.85em;
-            color: var(--text-muted);
-            text-align: left;
-            display: block;
-            margin-top: 10px;
-            transition: color var(--transition-speed); /* Smooth transition */
-        }
-        /* NEW: Specific styling for the advice list and its items */
-        .advice-list {
-            list-style: disc; /* Use bullet points */
-            margin-left: 25px; /* Indent the list */
-            margin-top: 40px; /* Space from the "Advice:" heading */
-            margin-bottom: 3px; /* Space below the entire advice list */
-        }
-
-        .advice-list li {
-            background-color: transparent; /* No background for individual advice points */
-            box-shadow: none; /* No shadow for individual advice points */
-            padding: 0; /* Remove padding from individual advice points */
-            margin-bottom: 8px; /* Space between each advice point */
-            display: list-item; /* Ensure it behaves like a list item */
-            align-items: flex-start; /* Align bullet points correctly */
-            justify-content: flex-start;
-            color: var(--text-dark); /* Ensure text color is correct */
-            font-size: 1em; /* Adjust font size if needed */
-        }
-
-        .advice-list li:last-child {
-            margin-bottom: 0; /* No bottom margin for the last advice point */
-        }
-
-
-        .feedback-message {
-            text-align: center;
-            color: var(--accent-color);
-            font-weight: 600;
-            margin-bottom: 20px;
-            transition: color var(--transition-speed); /* Smooth transition */
-        }
-        
-       label b {
-        margin-top: -60px;
-       }
-
-        /* ✅ NAVBAR STYLES */
-        .navbar {
-          background: none !important;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          padding: 0;
-          box-shadow: none;
-          position: relative;
-          z-index: 1000;
-          background-color: none !important;
-          right: 20px;
-
-        }
-
-        .nav-toggle {
-          background: none; 
-          border: none; 
-          color: var(--text-dark); 
-          font-size: 1.5em; 
-          cursor: pointer; 
-          display: flex; 
-          align-items: center; 
-          font-weight: bold; 
-        }
-
-        .nav-toggle:hover {
-          transform: scale(1.05);
-        }
-
-
-        .nav-menu {
-          flex-grow: 1;
-          display: none;
-          flex-direction: column;
-          position: absolute;
-          top: 30px;
-          right: -18px;
-          background: var(--background-light);
-          border-radius: 10px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-          padding: 10px 0;
-          width: 210px;
-          z-index: 1010;
-        }
-
-        .nav-menu a, .nav-menu button {
-          text-align: Center;
-          text-decoration: none;
-          background: none;
-          border: none;
-          width: 100%;
-          padding: 10px 2px;
-          font-size: 1em;
-          color: var(--text-dark);
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-
-        .nav-menu a:hover, .nav-menu button:hover {
-          background: var(--background-white);
-          border-radius: 15px;
-        }
-
-        .nav-menu.show {
-          display: flex;
-
-        }
-
-        /* Dropdown submenu inside navbar */
-        .dropdown {
-          position: relative;
-          width: 100%;
-        }
-
-        .dropdown-content {
-          display: none;
-          flex-direction: column;
-          background: var(--background-light);
-          border-radius: 15px;
-          margin-left: 6px;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .logout-btn {
-          display: inline-block !important; 
-          margin-top: 10px;
-          border-radius: 20px;
-
-        }
-        .mobile-logout{
-          display: none !important;
-        }
-
-
-
-
-        .dropdown-content button {
-          padding: 8px 20px;
-
-        }
-
-        .dropdown.show .dropdown-content {
-          display: flex;
-        }
-
-         /* Responsive adjustments */
-        @media (max-width: 1020px) {
-            
-            .tabs {
-                justify-content: space-between;   /* better spacing on wider phones */
-                padding: 8px 15px;
-            }
-        
-            .tab-button i {
-                font-size: 22px;
-            }
-        
-            .tab-button span {
-                font-size: 15px;
-            }
-            h2 {
-                font-size: 1.6em;
-                text-align:left;
-            }
-            h3 {
-                font-size: 1.5em;
-            }
-            h4 {
-                font-size: 1.2em;
-            }
-            
-            .input-feed-icon{
-                bottom: 300px; /* keeps it above footer on mobile */
-                padding: 10px 12px;
-                border-radius: 20px;
-            }
-
-            .chat-btn{
-                width: 40%;
-            }
-
-            .mic-btn,
-            .circle-btn {
-                font-size: 18px;
-            }
-            
-            .mic-btn{
-                display: none;
-            }
-
-            .intro-welcome{
-                max-width: 70%;
-                font-size: 0.95em;
-                padding: 12px 14px;
-            }
-            .nav-menu a:hover, .nav-menu button:hover {
-                background: none;
-                
-            }
-
-             /* Make tabs full width on smaller screens */
-            .tab-button {
-                flex-grow: 1; /* Make buttons take equal width */
-                padding: 9px 15px;
-                font-size: 0.9em;
-            }
-
-            li {
-                padding: 15px;
-                font-size: 1em;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            li a {
-                margin-top: 5px;
-            }
-
-            /* Mobile-specific header layout */
-            .app-header {
-                display: flex; /* Activate flexbox for mobile */
-                justify-content: space-between; /* Space out hamburger and settings */
-                align-items: center; /* Vertically align them */
-                padding: 10px 0; /* Adjust padding for mobile header */
-                margin-bottom: 15px;
-            }
-            .logout-btn {
-                display: none !important;
-            }
-            .mobile-logout {
-                display: flex !important;
-
-            }
-        }
-
-        @media (max-width: 480px) {
-           
-            .footer-nav {
-                height: 100px; /* taller footer on mobile */
-            }
-            
-            h2 {
-                font-size: 1.3em;
-                text-align: left;
-                
-            }
-            
-            
-           
-           .input-feed-icon {
-                bottom: 120px;
-                width: 94%;
-                border-radius: 18px;
-                padding: 8px 10px;
-           }
-
-
-            .mic-btn,
-            .circle-btn {
-                font-size: 17px;
-            }
-
-             .intro-welcome{
-                max-width: 65%;
-                font-size: 0.9em;
-                padding: 10px 12px;
-            }
-            
-            .chat-btn{
-                width: 50%;
-            }
-
-
-            .logout-btn {
-                display: none !important;
-            }
-            .mobile-logout {
-                display: flex !important;
-
-            }
-            #mapid {
-                height: 300px;
-            }
-            
-            .tabs {
-                padding: 8px 0;
-            }
-        
-            .tab-button i {
-                font-size: 18px;    /* smaller icon */
-            }
-        
-            .tab-button span {
-                font-size: 12px;    /* smaller text */
-            }
-
-
-            
-
-        }
-        /* Footer container */
         .footer-nav {
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          width: 100%;
-          background: var(--background-white); /* no border here */
-          border-top: 0.2px solid var(--shadow-light);
-          z-index: 1010;
-          height: auto;
-         
-         
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 90px; /* Adjust height to match your nav size */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* Allows clicking through the empty side gaps */
+            z-index: 2000;
+
+            /* This creates the blur across the ENTIRE width including the gaps */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            
+            
         }
 
-        /* The actual container inside */
-        .footer-container {
-           width: 100%; 
-           
-           
-
+        .tabs { 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 15px 10px;
+            width: 80%; 
+            background: var(--background-light); /* The actual visible color */
+            border: 1px solid var(--border-color);
+            border-radius: 100px;
+            pointer-events: auto; /* Re-enables clicking on the buttons */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* Make sure content isn’t hidden behind footer 
-        main, .container {
-          padding-bottom: 100px;
-        }*/
-        .rotation{
-            transform: rotate(62deg);
-            align-self: center;
-            font-size: 19px; 
-        } 
+        .tab-button { background: none; border: none; color: var(--text-dark); text-align: center; flex: 1; cursor: pointer; }
+        .tab-button.active i { color: var(--accent-color); }
+        .tab-button i { display: block; font-size: 20px; }
+
+
+        /* --- LAPTOP SCREEN OVERRIDES --- */
+        @media (min-width: 700px) {
+            :root { --sidebar-width: 260px; }
+            
+            .desktop-sidebar { display: flex; }
+            .app-header, .footer-nav { display: none; } /* Hide mobile nav */
+            
+            .main-content {
+                padding: 40px 60px;
+                max-width: 1000px;
+            }
+
+            .tab-content h3 { text-align: left; }
+            .intro-text { margin-left: 0; text-align: left; }
+        }
+
+        /* Existing component styles retained */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .chat-btn { background: var(--accent-color); border-radius: 30px; padding: 15px 30px; display: inline-block; color: white; text-decoration: none; font-weight: bold; margin-top: 20px; }
+        .history-item { background: var(--background-light); padding: 20px; border-radius: 12px; margin-bottom: 15px; list-style: none;}
+        .input-feed-icon { display: flex; background: var(--background-light); border-radius: 20px; padding: 10px; align-items: flex-end; max-width: 600px; margin: 20px 0;}
+        textarea { flex: 1; border: none; background: transparent; outline: none; padding: 10px; color: var(--text-dark); }
+        .circle-btn { background: var(--accent-color); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; }
         
+        /* Navbar ellipsis menu for mobile settings */
+        .nav-menu { position: absolute; top: 50px; right: 20px; background: var(--background-light); display: none; flex-direction: column; padding: 10px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .nav-menu.show { display: flex; }
+        .nav-menu a, .nav-menu button { padding: 10px; text-decoration: none; color: var(--text-dark); border: none; background: none; cursor: pointer; text-align: left; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <!-- New app-header for mobile alignment -->
-        <header class="app-header">
-            <h2><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h2>
-            <!-- ✅ NEW NAVBAR -->
-            <nav class="navbar">
-              <button class="nav-toggle" id="navToggle">
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-              </button>
+<body id="body">
 
-              <div class="nav-menu" id="navMenu">
-                <div class="dropdown">
-                  <button class="dropdown-btn"><i class="fa fa-gear"></i> Settings ▾</button>
-                  <div class="dropdown-content">
-                    <button class="theme-toggle" onclick="toggleTheme(); toggleNavMenu();">
-                      <i class="fa fa-moon"></i>
-                      <span>Dark Mode</span>
-                    </button>
-                    <button class="theme-toggle" onclick="toggleTheme(); toggleNavMenu();">
-                        <i class="fa fa-desktop"></i>
-                        <span>System Mode</span>
-                    </button>
-
-                    <button class="mobile-logout" onclick="window.location='{{ url_for('logout') }}'">
-                      <i class="fa fa-sign-out-alt"></i> 
-                      <span>Logout</span>
-                    </button> 
-                  </div>
-                </div>
-                <a href="/privacy_policy"><i class="fa fa-lock"></i> Privacy Policy</a>
-                <a href="/terms_of_service"><i class="fa fa-file-alt"></i> Terms of Service</a>
-
-                <button class="logout-btn" onclick="window.location='{{ url_for('logout') }}'">
-                    <i class="fa fa-sign-out-alt"></i> 
-                    <span>Logout</span>
-                </button>
-              </div>
-            </nav>
-
-        </header>
-
-        <div id="home" class="tab-content active">
-
-            <h3>Welcome {{ current_user.username }}</h3>
-            <p class="intro-text"><b>As your AI Health Advisor, I provide initial symptom guidance & help you find nearby hospitals. Please remember, a medical professional diagnosis is essential.</b></p>
-           <a href="{{ url_for('chat') }}"> <div class="chat-btn"><span>Let's Chat</span></div></a>
+    <aside class="desktop-sidebar">
+        <div class="sidebar-logo">
+            <i class="fa-solid fa-brain icon"></i> CoreEfx AI
         </div>
+        <nav class="sidebar-nav">
+            <button class="side-link active" onclick="openTab(event, 'home')">
+                <i class="fas fa-home"></i> Home
+            </button>
+            <button class="side-link" onclick="openTab(event, 'feedback')">
+                <i class="fas fa-comment-alt"></i> Feedback
+            </button>
+            <button class="side-link" onclick="openTab(event, 'history')">
+                <i class="fas fa-history"></i> History
+            </button>
 
+            <hr style="width:100%; border:0; border-top:1px solid var(--border-color); margin: 20px 0;">
 
+            <a href="/privacy_policy" class="side-link">
+                <i class="fas fa-lock"></i> Privacy Policy
+            </a>
+            <a href="/terms_of_service" class="side-link">
+                <i class="fas fa-file-alt"></i> Terms of Service
+            </a>
+            <button class="side-link" onclick="toggleTheme()">
+                <i class="fas fa-moon"></i> Appearance
+            </button>
+
+            <button class="side-link" style="font-weight: 600;" onclick="window.location='{{ url_for('logout') }}'">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+
+            <div style="font-size: 15px; align-self: center; text-align: center; padding: 5px 3px; color: var(--text-dark);">
+                <a href="/chat" style="color: var(--text-dark); text-decoration: none;"><i class="fa-solid fa-circle-user"></i> <b>{{ current_user.username }}</b></a>
+            </div>
+        </nav>
+                
+    </aside>
+
+    <header class="app-header">
+        <h2 style="margin:0; font-size: 1.2rem;"><i class="fa-solid fa-brain icon"></i> CoreEfx AI</h2>
+        
+        <button id="navToggle" style="background:none; border:none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; padding: 5px 10px;">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+
+        <div class="nav-menu" id="navMenu">
+            <div style="padding: 10px 15px; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); border-bottom: 1px solid var(--border-color); letter-spacing: 1px;">
+                Settings
+            </div>
             
+            <button onclick="toggleTheme()">
+                <i class="fa fa-moon"></i> Appearance
+            </button>
+            
+            <a href="/privacy_policy">
+                <i class="fa fa-lock"></i> Privacy Policy
+            </a>
+            
+            <a href="/terms_of_service">
+                <i class="fa fa-file-alt"></i> Terms of Service
+            </a>
+
+            <div style="font-size: 14px; padding: 12px 15px; border-top: 1px solid var(--border-color); color: var(--text-muted);">
+                <a href="/chat"><i class="fa-solid fa-circle-user"></i> <b>{{ current_user.username }}</b></a>
+            </div>
+
+            <button onclick="window.location='{{ url_for('logout') }}'" style=" font-weight: 600; padding: 12px 30px;">
+                <i class="fa fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+    <main class="main-content">
+        
+        <div id="home" class="tab-content active">
+            <h3>Welcome, {{ current_user.username }}</h3>
+            <p class="intro-text">As your AI Health Advisor, I provide initial symptom guidance & help you find nearby hospitals.</p>
+            <a href="{{ url_for('chat') }}" class="chat-btn">Let's Chat</a>
+        </div>
 
         <div id="history" class="tab-content">
-            <div class="history-section">
-                <h3>Your Health Report:</h3>
-                {% if history_reports %}
-                    <ul>
-                    {% for report in history_reports %}
-                        <li class="history-item">
-                            <div>
-                                <p><strong>Symptoms:</strong> {{ report.input_text }}</p>
-                                <p><strong>Advice:</strong></p> {# Start a new paragraph for the "Advice:" label #}
-                                <ul> {# Use an unordered list for multiple advice points #}
-                                {% if '\n' in report.result %} {# Check if there are multiple lines #}
-                                    {% for advice_point in report.result.split('\n') %}
-                                        {% if advice_point.strip() %} {# Ensure no empty list items from multiple newlines #}
-                                            <li class="single-advice-item">{{ advice_point.strip() }}</li>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% else %}
-                                    <li class="single-advice-item">{{ report.result }}</li> {# If only one advice, display it #}
-                                {% endif %}
-                                </ul>
-                                <div><span class="timestamp">{{ report.timestamp.strftime('%d-%m-%Y %H:%M') }}</span></div>
-                            </div>
-
-
-                         </li>
-                    {% endfor %}
-                    </ul>
-                {% else %}
-                    <b><p class="intro-text">No past consultations yet. Submit your symptoms on the Home tab to see your history here!</p></b>
-                {% endif %}
-            </div>
-        </div>    
+            <h3>Your Health Reports</h3>
+            {% if history_reports %}
+                <ul style="padding:0;">
+                {% for report in history_reports %}
+                    <li class="history-item">
+                        <strong>Symptoms:</strong> {{ report.input_text }}<br>
+                        <strong>Advice:</strong> {{ report.result }}<br>
+                        <small>{{ report.timestamp.strftime('%d-%m-%Y') }}</small>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>No past consultations found.</p>
+            {% endif %}
+        </div>
 
         <div id="feedback" class="tab-content">
-            <div class="feedback-form-section">
-                <h3>We Value Your Feedback!</h3>
-                <p class="intro-text"><b>Your input helps us improve. Please share your thoughts on your experience.</b></p>
-                {% if feedback_message %}
-                    <p class="feedback-message">{{ feedback_message }}</p>
-                {% endif %}
-
-
-                <form method="POST">
-                    <label for="feedback_message" class="label-tittle"><b>Your Feedback:</b></label><br><br>
-                        <div class="input-feed-icon">
-                            <textarea type="text" id="feedback_message" name="feedback_message"  required class="feedback_message" rows="4" class="feedback-textarea"  placeholder="e.g., The advice was helpful, but the map didn't load..."></textarea> 
-                            <div class ="icon-group">
-                                <button type="button" class="mic-btn" onclick="startDictation('feedback_message')"><i class="fa-solid fa-microphone"></i></button>
-                                <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane rotation"></i></button>
-                            </div>
-                        </div>
-                </form>
-            </div>
+            <h3>Feedback</h3>
+            <form method="POST">
+                <div class="input-feed-icon">
+                    <textarea id="feedback_message" name="feedback_message" placeholder="How can we improve?" required></textarea>
+                    <button type="submit" class="circle-btn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </form>
         </div>
+
+    </main>
+
+
     <footer class="footer-nav">
-        <div class="footer-container">
-            <div class="tabs" id="mainTabs">
-                <button class="tab-button active" onclick="openTab(event, 'home')">
-                    <i class="fa-solid fa-brain fa-icon-large nav-icon"></i>
-                    <span>Home</span>
-                </button>
-                <button class="tab-button" onclick="openTab(event, 'feedback')">
-                    <i class="fas fa-comment-alt nav-icon"></i>
-                    <span>Feedback</span>
-                </button>
-                <button class="tab-button" onclick="openTab(event, 'history')"> 
-                    <i class="fas fa-history nav-icon"></i>
-                    <span>History</span>
-                </button>   
-            </div>
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'home')">
+                <i class="fa-solid fa-brain"></i>
+                <span>Home</span>
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'feedback')">
+                <i class="fas fa-comment-alt"></i>
+                <span>Feedback</span>
+            </button>
+            <button class="tab-button" onclick="openTab(event, 'history')">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </button>
         </div>
-    </footer>    
-    </div>
-    
-
-
+    </footer>
 
     <script>
-       
-        // NEW JAVASCRIPT FUNCTION FOR MOBILE NAV TOGGLE -- MOVED HERE
+        // Tab Switching Logic
+        function openTab(evt, tabName) {
+            const contents = document.querySelectorAll(".tab-content");
+            contents.forEach(c => c.classList.remove("active"));
+            
+            const buttons = document.querySelectorAll(".tab-button, .side-link");
+            buttons.forEach(b => b.classList.remove("active"));
+
+            document.getElementById(tabName).classList.add("active");
+            
+            // Highlight the correct button in both mobile and desktop navs
+            const targets = document.querySelectorAll(`[onclick*="'${tabName}'"]`);
+            targets.forEach(t => t.classList.add("active"));
+        }
+
+        // Mobile Menu Toggle
         const navToggle = document.getElementById('navToggle');
         const navMenu = document.getElementById('navMenu');
-        const dropdownBtn = document.querySelector('.dropdown-btn');
-        const dropdown = document.querySelector('.dropdown');
+        navToggle.addEventListener('click', () => navMenu.classList.toggle('show'));
 
-        navToggle.addEventListener('click', () => {
-          navMenu.classList.toggle('show');
-        });
-
-        dropdownBtn.addEventListener('click', (e) => {
-           e.stopPropagation();
-           dropdown.classList.toggle('show');
-        });
-
-        document.addEventListener('click', (event) => {
-          if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
-            navMenu.classList.remove('show');
-            dropdown.classList.remove('show');
-          }
-        });
-
-        function toggleNavMenu() {
-          navMenu.classList.remove('show');
-          dropdown.classList.remove('show');
-        }
-
-
-
-
-        // Theme Toggle Functionality -- MOVED HERE (or keep inside DOMContentLoaded if it strictly depends on DOM being ready)
-
-
-        // THEME CONTROL
-        const body = document.body;
-        const themeBtn = document.querySelector('.theme-toggle i');
-        const themeText = document.querySelector('.theme-toggle span');
-
-        let systemModeActive = true;
-        const systemQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-        // Apply selected theme
-        function applyTheme(mode) {
-          body.classList.remove('dark-mode');
-
-          if (mode === 'dark') {
-            body.classList.add('dark-mode');
-            themeBtn.className = 'fa fa-sun';
-            themeText.textContent = 'Light Mode';
-          } else if (mode === 'light') {
-            themeBtn.className = 'fa fa-moon';
-            themeText.textContent = 'Dark Mode';
-          } else {
-            // System Mode UI indicator
-            themeBtn.className = 'fa fa-desktop';
-            themeText.textContent = 'System Mode';
-          }
-        }
-
-        // Force manual theme
-        function setTheme(mode) {
-          localStorage.setItem('theme', mode);
-          applyTheme(mode);
-          systemModeActive = false;
-          systemQuery.removeEventListener('change', handleSystemChange);
-        }
-
-        // Switch between dark/light/system manually
+        // Theme Toggle
         function toggleTheme() {
-          const currentMode = localStorage.getItem('theme') || 'system';
-
-          if (currentMode === 'light') {
-            setTheme('dark');
-          } else if (currentMode === 'dark') {
-            setSystemMode(); // Switch to system mode next
-          } else {
-            setTheme('light');
-          }
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        // Follow system automatically
-        function setSystemMode() {
-          localStorage.setItem('theme', 'system');
-          applyTheme('system');
-          systemModeActive = true;
-
-          // Apply system’s current theme immediately
-          applyTheme(systemQuery.matches ? 'dark' : 'light');
-
-          // Update dynamically if system theme changes
-          systemQuery.addEventListener('change', handleSystemChange);
+        // Load Theme
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
         }
-
-        function handleSystemChange(e) {
-          if (systemModeActive) {
-            applyTheme(e.matches ? 'dark' : 'light');
-          }
-        }
-
-        // On page load
-        document.addEventListener('DOMContentLoaded', () => {
-          const saved = localStorage.getItem('theme') || 'system';
-
-          if (saved === 'dark') {
-            applyTheme('dark');
-          } else if (saved === 'light') {
-            applyTheme('light');
-          } else {
-            setSystemMode();
-          }
-        });
-        
-        // ✅ NEW: Voice Input (Speech-to-Text)
-        function startDictation(targetId) {
-          if ('webkitSpeechRecognition' in window) {
-            let recognition = new webkitSpeechRecognition();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = "en-US";
-            recognition.start();
-
-            recognition.onresult = function (e) {
-              const transcript = e.results[0][0].transcript;
-              document.getElementById(targetId).value = transcript;
-              recognition.stop();
-            };
-
-            recognition.onerror = function (event) {
-              console.warn("Speech recognition error:", event.error);
-              recognition.stop();
-            };
-          } else {
-            alert("Your browser doesn't support voice input. Try Chrome.");
-          }
-        }
-
-        
-        function openTab(evt, tabName) {
-            var i, tabcontent, tablinks;
-
-            tabcontent = document.getElementsByClassName("tab-content");
-            for (i = 0; i < tabcontent.length; i++) {
-                tabcontent[i].style.display = "none";
-            }
-
-            tablinks = document.getElementsByClassName("tab-button");
-            for (i = 0; i < tablinks.length; i++) {
-                tablinks[i].className = tablinks[i].className.replace(" active", "");
-            }
-
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-            // --- END OF KEY PART ---
-        }
-
-
-        // All DOM-related initializations go here
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOM content loaded for initial setup.");
-        });
-
     </script>
 </body>
 </html>
