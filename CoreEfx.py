@@ -13,8 +13,22 @@ from flask_login import (
     logout_user, current_user, UserMixin
 )
 from flask_bcrypt import Bcrypt
+from itsdangerous import URLSafeTimedSerializer as Serializer
 
 
+# --- TOKEN HELPERS ---
+def get_reset_token(user_id):
+    s = Serializer(app.secret_key)
+    return s.dumps({'user_id': user_id})
+
+def verify_reset_token(token, expires_sec=1800):
+    s = Serializer(app.secret_key)
+    try:
+        data = s.loads(token, max_age=expires_sec)
+        user_id = data['user_id']
+    except Exception:
+        return None
+    return User.query.get(user_id)
 
 
 # === gTTS helper ===
@@ -1788,6 +1802,52 @@ def logout():
     db.session.commit()
     logout_user()
     return redirect(url_for("login"))
+
+
+
+@app.route("/reset_request", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = get_reset_token(user.id)
+            # In a real app, use Flask-Mail here.
+            # For now, we print the link to your terminal to copy/paste.
+            reset_link = url_for('reset_token', token=token, _external=True)
+            print(f"\n[SECURITY] RESET LINK: {reset_link}\n")
+
+            flash(f'A reset link has been generated! It expires in 30 mins. <a href="{reset_link}" style="color: #6ac36a; text-decoration: underline;">Click here to reset your password</a>', 'info')
+            return redirect(url_for('login'))
+        else:
+            flash('No account found with that email.', 'warning')
+
+    return render_template('reset_request.html')
+
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    user = verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+
+    if request.method == 'POST':
+        password = request.form.get('password')
+        # Use your existing bcrypt instance
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You can now log in.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('reset_token.html')
 
 
 @app.route('/privacy_policy')
