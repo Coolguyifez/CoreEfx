@@ -8,9 +8,9 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#1a1a1b" media="(prefers-color-scheme: dark)">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/brain.png') }}">
@@ -36,6 +36,7 @@
             margin: 0; 
             padding: 0; 
             overflow: hidden;
+            background-color: #ffffff;
         }
 
         body { 
@@ -113,6 +114,7 @@
 
         /* Dark Mode Overrides */
         @media (prefers-color-scheme: dark) {
+            html, body { background-color: #1a1a1b !important; /* Force dark background */}
             body { background-color: var(--dark-bg); color: var(--dark-text); }
             h1 { color: var(--dark-text); }
             .icon { color: var(--dark-accent-color); }
