@@ -1,6 +1,7 @@
 const CACHE_NAME = 'coreefx-v2'; // Changed version to force an update
 const urlsToCache = [
   '/',
+  '/login',
   '/static/images/brain.png',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap'
