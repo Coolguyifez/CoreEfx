@@ -74,6 +74,7 @@ login_manager.login_view = "login"
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 # === User model ===
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -90,17 +91,19 @@ class SymptomReport(db.Model):
     detected location, the advice given, and a timestamp.
     """
     id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each report
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     input_text = db.Column(db.Text)  # The raw text input from the user (symptoms)
     location = db.Column(db.String(100))  # User's approximate location (latitude,longitude string)
     result = db.Column(db.Text)  # The health advice/diagnosis provided by the system (increased length)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Time when the report was created
     severity = db.Column(db.String(20))  # Low, Moderate, High
     recipient = db.Column(db.String(50))  # "Myself" or "Someone else"
-    age = db.Column(db.String(50))
+    last_diagnosed = db.Column(db.String(100))  # e.g., "Never", "Months ago"
+    notice = db.Column(db.String(100))  # e.g., "Recently", "Long ago"
+    age = db.Column(db.String(20))
     gender = db.Column(db.String(20))
-    audio_url = db.Column(db.String(255))
+
     # 🔑 Link report to user
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('reports', lazy=True))
 
 
@@ -116,8 +119,8 @@ class Feedback(db.Model):
     Represents a record for user feedback.
     """
     id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each feedback entry
-    message = db.Column(db.String(1000))  # The feedback message content
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
+    message = db.Column(db.String(1000))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)# The feedback message content
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -577,9 +580,19 @@ symptom_data = {
             "severe chills"
         ],
         "advice": {
-            "low": "\n{subject} {verb_has} signs of mild malaria. {subject} should rest and get a blood test soon.",
-            "moderate": "\nYou likely {verb_has} malaria. Please visit the health center quickly for a blood test and ACT treatment.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} showing severe malaria symptoms. Go to the hospital immediately for a drip."
+            "low": (
+                "\n{subject} {verb_has} signs of mild malaria. {subject} should rest and get a blood test soon."
+                "\n\n🍎 **Diet Recommendation:** Eat light, energy-rich foods like pap, oats, or bananas. Drink plenty of water and coconut water to stay hydrated."
+                "\n\n🛡️ **Precautions:** Sleep under a treated mosquito net and clear stagnant water around your home."
+                "\n\n🚫 **Avoid:** Avoid heavy, oily, or spicy foods that can upset the stomach. Do not skip meals even if appetite is low."
+            ),
+            "moderate": (
+                "\nYou likely {verb_has} malaria. Please visit the health center quickly for a blood test and ACT treatment."
+                "\n\n🥗 **Diet Recommendation:** Focus on high-protein foods like boiled eggs or chicken soup to help the body recover. Fresh orange juice is great for Vitamin C."
+                "\n\n🛡️ **Precautions:** Finish the full course of malaria drugs even if you start feeling better. Rest in a cool, ventilated room."
+                "\n\n🚫 **Avoid:** Avoid alcohol, smoking, and strenuous physical exercise. Do not self-medicate without a confirmed test."
+            ),
+            "high": "\n🚨 {subject} {verb_is} showing severe malaria symptoms. Go to the hospital immediately for a drip or injections."
         }
     },
 
@@ -607,9 +620,19 @@ symptom_data = {
             "bloating"
         ],
         "advice": {
-            "low": "\n{subject} should rest and drink only safe, boiled water. Monitor the fever closely.",
-            "moderate": "\nThis may be typhoid fever. {subject} {verb_needs} to visit the nearest health center for a test and antibiotics.",
-            "high": "\n🚨 CRITICAL: {subject} {verb_has} severe typhoid symptoms. Go to the hospital immediately to check for internal complications."
+            "low": (
+                "\n{subject} should rest and drink only safe, boiled or bottled water. Monitor the fever closely."
+                "\n\n🍎 **Diet Recommendation:** Stick to a semi-solid diet like soft rice (congee), custard, or well-cooked potatoes. These are easy on {possessive} stomach."
+                "\n\n🛡️ **Precautions:** Always wash hands with soap after using the toilet and before touching food. Ensure all drinking water is boiled thoroughly."
+                "\n\n🚫 **Avoid:** Avoid raw vegetables, unpeeled fruits, and salads that might have been washed in contaminated water. Do not drink tap water directly."
+            ),
+            "moderate": (
+                "\nThis may be typhoid fever. {subject} {verb_needs} to visit the nearest health center for a Widal test and antibiotics."
+                "\n\n🥗 **Diet Recommendation:** Increase fluid intake with coconut water, fresh fruit juices (no pulp), and electrolyte drinks to prevent dehydration from diarrhea."
+                "\n\n🛡️ **Precautions:** {subject} should avoid preparing food for others until a doctor confirms the infection is gone. Sanitize all eating utensils."
+                "\n\n🚫 **Avoid:** Avoid high-fiber foods like whole grains, nuts, and raw seeds, as they can irritate the intestines. Stay away from fried and spicy street foods."
+            ),
+            "high": "\n🚨 {subject} {verb_has} severe typhoid symptoms. Go to the hospital immediately to check for internal complications or the need for intravenous (IV) fluids."
         }
     },
 
@@ -634,9 +657,19 @@ symptom_data = {
             "stuffy nose"
         ],
         "advice": {
-            "low": "\nThis looks like a common cold. {subject} should rest and drink plenty of fluids.",
-            "moderate": "\n{subject} {verb_has} a persistent cold. If {possessive} throat pain gets worse, consider seeing a health worker.",
-            "high": "\n⚠️ WARNING: If {subject} {verb_is} having real trouble breathing or a very high fever with this cold, go to the clinic now."
+            "low": (
+                "\nThis looks like a common cold. {subject} should rest and drink plenty of fluids."
+                "\n\n🍎 **Diet Recommendation:** Drink warm lemon water with honey to soothe {possessive} throat. Eat warm pepper soup or chicken broth to help clear catarrh."
+                "\n\n🛡️ **Precautions:** Use a clean tissue to blow {possessive} nose and dispose of it immediately. Wash hands frequently to avoid spreading the cold to others."
+                "\n\n🚫 **Avoid:** Avoid very cold drinks or ice cream as they can irritate the throat. Stay away from dusty environments which can make the cough worse."
+            ),
+            "moderate": (
+                "\n{subject} {verb_has} a persistent cold. If {possessive} throat pain gets worse, consider seeing a health worker."
+                "\n\n🥗 **Diet Recommendation:** Increase intake of Vitamin C rich fruits like oranges, grapefruits, and tangerines. Garlic and ginger tea can help reduce congestion."
+                "\n\n🛡️ **Precautions:** Use salt-water gargles twice a day to reduce throat swelling. Ensure {subject} {verb_is} sleeping in a well-ventilated but warm room."
+                "\n\n🚫 **Avoid:** Avoid smoking or being near people who smoke, as the lungs are already sensitive. Avoid sharing towels or drinking glasses with family members."
+            ),
+            "high": "\n🚨 If {subject} {verb_is} having real trouble breathing or a very high fever with this cold, go to the clinic now. Severe congestion can sometimes lead to pneumonia."
         }
     },
 
@@ -661,9 +694,19 @@ symptom_data = {
             "debilitating weakness"
         ],
         "advice": {
-            "low": "\nThis could be the flu. {subject} {verb_needs} plenty of bed rest and warm fluids.",
-            "moderate": "\n{subject} {verb_has} moderate flu symptoms. Monitor {possessive} breathing and visit a health worker if it does not improve in 3 days.",
-            "high": "\n🚨 URGENT: {subject} {verb_has} severe flu signs. Go to the hospital immediately if {subject} {verb_is} gasping for air."
+            "low": (
+                "\nThis could be the flu. {subject} {verb_needs} plenty of bed rest and warm fluids."
+                "\n\n🍎 **Diet Recommendation:** Eat light meals that are easy to digest, such as oats, pap, or soft-boiled yams. Stay hydrated with water and herbal teas."
+                "\n\n🛡️ **Precautions:** Keep a thermometer handy to monitor the fever. {subject} should stay home from work or school until the fever has been gone for 24 hours."
+                "\n\n🚫 **Avoid:** Avoid caffeinated drinks like coffee or strong soda, as they can lead to dehydration. Do not engage in heavy physical labor."
+            ),
+            "moderate": (
+                "\n{subject} {verb_has} moderate flu symptoms. Monitor {possessive} breathing and visit a health worker if it does not improve in 3 days."
+                "\n\n🥗 **Diet Recommendation:** Focus on protein-rich foods like beans or fish to help the body repair itself. Drink warm water with a pinch of salt and sugar (ORS) if {subject} {verb_is} sweating heavily."
+                "\n\n🛡️ **Precautions:** Change bedsheets and pillowcases frequently to keep the environment clean. Use a humidifier or a bowl of hot water for steam inhalation."
+                "\n\n🚫 **Avoid:** Avoid crowded places to prevent spreading the virus. Avoid self-medicating with strong antibiotics, as the flu is caused by a virus, not bacteria."
+            ),
+            "high": "\n🚨 {subject} {verb_has} severe flu signs. Go to the hospital immediately if {subject} {verb_is} gasping for air, chest pain is present, or if the fever refuses to come down with basic medicine."
         }
     },
 
@@ -688,9 +731,19 @@ symptom_data = {
             "stomach rumbling"
         ],
         "advice": {
-            "low": "\n{subject} {verb_has} mild diarrhea. Start drinking ORS (salt and sugar solution) immediately to stay hydrated.",
-            "moderate": "\nThis may be a diarrheal infection. {subject} {verb_needs} to see a health worker if {subject} cannot stop vomiting.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} losing too much water. Go to the hospital for a drip immediately."
+            "low": (
+                "\n{subject} {verb_has} mild diarrhea. Start drinking ORS (salt and sugar solution) immediately to stay hydrated."
+                "\n\n🍎 **Diet Recommendation:** Eat the BRAT diet: Bananas, Rice, Applesauce, and Toast. These help firm up the stool. Drink coconut water or salted rice water."
+                "\n\n🛡️ **Precautions:** Wash hands thoroughly with soap after every toilet visit. Ensure all cooking utensils and plates are washed with clean, treated water."
+                "\n\n🚫 **Avoid:** Avoid milk and dairy products, as they can make diarrhea worse. Stay away from greasy, fried foods and very sugary drinks or sodas."
+            ),
+            "moderate": (
+                "\nThis may be a diarrheal infection. {subject} {verb_needs} to see a health worker if {subject} cannot stop vomiting."
+                "\n\n🥗 **Diet Recommendation:** Sip on clear vegetable broths and diluted fruit juices (non-acidic). Eat small, frequent meals of boiled potatoes or plain pasta."
+                "\n\n🛡️ **Precautions:** If {subject} {verb_is} handling food for others, stop immediately until the stooling stops. Use a disinfectant to clean the toilet area."
+                "\n\n🚫 **Avoid:** Avoid caffeine (coffee/strong tea) and alcohol, which cause the body to lose more water. Avoid spicy peppers that can irritate the intestines."
+            ),
+            "high": "\n🚨 {subject} {verb_is} losing too much water. Go to the hospital for a drip immediately. Severe dehydration can lead to kidney failure or shock."
         }
     },
 
@@ -713,9 +766,19 @@ symptom_data = {
             "blood in urine"
         ],
         "advice": {
-            "low": "\nThis looks like a urinary tract infection. {subject} should drink plenty of clean water to wash {possessive} system and not hold pee.",
-            "moderate": "\n{subject} {verb_needs} to visit a health center for a test and proper antibiotics for this infection.",
-            "high": "\n🚨 EMERGENCY: If {subject} {verb_has} high fever or back pain with these symptoms, seek medical care immediately as it may have reached the kidneys."
+            "low": (
+                "\nThis looks like a urinary tract infection. {subject} should drink plenty of clean water to wash {possessive} system and not hold pee."
+                "\n\n🍎 **Diet Recommendation:** Drink unsweetened cranberry juice if available. Eat water-rich fruits like watermelon and cucumbers to encourage frequent urination."
+                "\n\n🛡️ **Precautions:** Always wipe from front to back after using the toilet to prevent bacteria from entering the tract. Wear loose-fitting cotton underwear."
+                "\n\n🚫 **Avoid:** Avoid sugary drinks and artificial sweeteners, which can feed the bacteria. Limit spicy foods that might irritate the bladder."
+            ),
+            "moderate": (
+                "\n{subject} {verb_needs} to visit a health center for a test and proper antibiotics for this infection."
+                "\n\n🥗 **Diet Recommendation:** Incorporate probiotic-rich foods like plain yogurt (non-sugar) to help maintain healthy bacteria levels. Drink warm ginger tea for inflammation."
+                "\n\n🛡️ **Precautions:** Empty the bladder immediately after sexual activity. Avoid using scented soaps or feminine sprays in the private area."
+                "\n\n🚫 **Avoid:** Avoid alcohol and heavy caffeine, as these act as bladder irritants and can increase the feeling of urgency and pain."
+            ),
+            "high": "\n🚨 If {subject} {verb_has} high fever, chills, or back/side pain with these symptoms, seek medical care immediately. This suggests the infection may have reached the kidneys."
         }
     },
 
@@ -742,7 +805,7 @@ symptom_data = {
         "advice": {
             "low": "\nThis may be a skin infection. {subject} should avoid scratching and keep the area clean and dry.",
             "moderate": "\n{subject} should see a doctor for a medicated cream or medicine, especially if the rash is spreading.",
-            "high": "\n🚨 URGENT: If the skin is peeling, very painful, or {subject} {verb_has} a very high fever, visit the hospital now."
+            "high": "\n🚨 If the skin is peeling, very painful, or {subject} {verb_has} a very high fever, visit the hospital now."
         }
     },
 
@@ -769,7 +832,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} may be dehydrated. {subject} should go to a cool place and drink clean water or ORS.",
             "moderate": "\n{subject} {verb_is} showing signs of heat exhaustion. Rest with legs raised and keep drinking fluids.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} severely dehydrated. If {subject} cannot drink, go to the hospital for a drip immediately."
+            "high": "\n🚨 {subject} {verb_is} severely dehydrated. If {subject} cannot drink, go to the hospital for a drip immediately."
         }
     },
 
@@ -794,7 +857,7 @@ symptom_data = {
         "advice": {
             "low": "\nThis may be due to stress or fatigue. {subject} should rest in a dark room and stay hydrated.",
             "moderate": "\n{subject} can take paracetamol. If the pain continues, {subject} should be checked for malaria or high blood pressure.",
-            "high": "\n🚨 URGENT: If this is the worst headache {subject} {verb_has} ever felt, or if {possessive} neck is stiff, go to the hospital immediately."
+            "high": "\n🚨 If this is the worst headache {subject} {verb_has} ever felt, or if {possessive} neck is stiff, go to the hospital immediately."
         }
     },
 
@@ -819,7 +882,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} general body aches. This may be due to fatigue or minor stress. {subject} should rest and try a warm bath.",
             "moderate": "\n{subject} {verb_has} significant body pain. {subject} can take paracetamol and stay hydrated, but visit a clinic if it persists.",
-            "high": "\n🚨 NOTICE: {subject} {verb_is} in severe pain. This could be a sign of a serious infection like malaria or meningitis. Please see a doctor immediately."
+            "high": "\n🚨 {subject} {verb_is} in severe pain. This could be a sign of a serious infection like malaria or meningitis. Please see a doctor immediately."
         }
     },
 
@@ -846,7 +909,7 @@ symptom_data = {
         "advice": {
             "low": "\nThese could be early pregnancy signs. {subject} should take a test to confirm the condition.",
             "moderate": "\nIf confirmed, {subject} should visit a health center to start antenatal care and take pregnancy vitamins.",
-            "high": "\n🚨 URGENT: If {subject} {verb_has} severe lower belly pain or heavy bleeding, go to the hospital immediately."
+            "high": "\n🚨 If {subject} {verb_has} severe lower belly pain or heavy bleeding, go to the hospital immediately."
         }
     },
 
@@ -873,7 +936,7 @@ symptom_data = {
         "advice": {
             "low": "\nThis may be Apollo. {subject} should avoid touching {possessive} eyes and wash {possessive} hands frequently.",
             "moderate": "\n{subject} {verb_needs} to visit a health center for proper antibiotic eye drops.",
-            "high": "\n🚨 URGENT: If {subject} cannot see clearly or has severe pain, {subject} must see an eye doctor immediately."
+            "high": "\n🚨 If {subject} cannot see clearly or has severe pain, {subject} must see an eye doctor immediately."
         }
     },
 
@@ -899,7 +962,7 @@ symptom_data = {
         "advice": {
             "low": "\n{possessive} vision is slightly blurry. {subject} should rest {possessive} eyes and avoid bright screens for now.",
             "moderate": "\n{subject} {verb_has} noticeable eye trouble. {subject} {verb_needs} an urgent check-up with an eye specialist (ophthalmologist).",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} experiencing rapid vision loss or intense eye pain. This is a medical emergency. Go to an eye clinic right now."
+            "high": "\n🚨 {subject} {verb_is} experiencing rapid vision loss or intense eye pain. This is a medical emergency. Go to an eye clinic right now."
         }
     },
 
@@ -926,7 +989,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} a chest infection. Monitor {possessive} breathing closely and stay warm.",
             "moderate": "\nThis could be pneumonia. {subject} {verb_needs} a medical exam and likely antibiotics from a health center.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} struggling to breathe. Seek oxygen and emergency medical care immediately."
+            "high": "\n🚨 If {subject} {verb_is} struggling to breathe. Seek oxygen and emergency medical care immediately."
         }
     },
 
@@ -953,7 +1016,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} a persistent cough. Because it has lasted long, {subject} should go for a free TB test at a health center.",
             "moderate": "\nThis could be tuberculosis. It can spread to others in the house. {subject} must visit a health worker for testing and free treatment immediately.",
-            "high": "\n🚨 CRITICAL: {subject} {verb_is} coughing blood and losing weight rapidly. {subject} {verb_needs} immediate hospital admission for TB care."
+            "high": "\n🚨 {subject} {verb_is} coughing blood and losing weight rapidly. {subject} {verb_needs} immediate hospital admission for TB care."
         }
     },
 
@@ -981,7 +1044,7 @@ symptom_data = {
         "advice": {
             "low": "\nThis may be diabetes. {subject} should reduce sugar intake and go for a blood sugar test.",
             "moderate": "\n{subject} {verb_needs} to see a doctor to manage {possessive} sugar levels and get proper medication.",
-            "high": "\n🚨 EMERGENCY: If {subject} {verb_is} confused, vomiting, or very weak, {possessive} sugar may be dangerously high. Go to the hospital now."
+            "high": "\n🚨 If {subject} {verb_is} confused, vomiting, or very weak, {possessive} sugar may be dangerously high. Go to the hospital now."
         }
     },
 
@@ -1008,7 +1071,7 @@ symptom_data = {
         "advice": {
             "low": "\n{possessive} blood pressure may be slightly high. {subject} should rest, reduce salt, and check the BP again later.",
             "moderate": "\nThis looks like hypertension. {subject} {verb_needs} to see a doctor for a proper BP check and lifestyle advice.",
-            "high": "\n🚨 DANGER: {possessive} blood pressure is very high. This can lead to a stroke. Go to the hospital immediately."
+            "high": "\n🚨 {possessive} blood pressure is very high. This can lead to a stroke. Go to the hospital immediately."
         }
     },
 
@@ -1034,7 +1097,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should avoid stress and salty foods. Monitor if the chest tightness continues.",
             "moderate": "\nThis may be a heart problem. {subject} {verb_needs} a check-up with a cardiologist for an ECG or scan.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} showing signs of a heart attack. Go to the emergency room right now."
+            "high": "\n🚨 {subject} {verb_is} showing signs of a heart attack. Go to the emergency room right now."
         }
     },
 
@@ -1061,7 +1124,7 @@ symptom_data = {
         "advice": {
             "low": "\n{possessive} symptoms may be due to mild malnutrition. Please provide balanced meals with proteins (beans, eggs, fish) and vitamins.",
             "moderate": "\n{subject} {verb_has} signs of moderate malnutrition. {subject} {verb_needs} a nutrition plan and supplements from a health center.",
-            "high": "\n🚨 CRITICAL: This is severe malnutrition (possible Kwashiorkor or Marasmus). {subject} must be taken to a stabilization center or hospital immediately for therapeutic feeding."
+            "high": "\n🚨 This is severe malnutrition (possible Kwashiorkor or Marasmus). {subject} must be taken to a stabilization center or hospital immediately for therapeutic feeding."
         }
     },
 
@@ -1082,7 +1145,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should avoid spicy foods and soda. Do not take pain killers like Ibuprofen on an empty stomach.",
             "moderate": "\nThis could be an ulcer. {subject} {verb_needs} to see a doctor for treatment to protect the stomach lining.",
-            "high": "\n🚨 CRITICAL: {subject} {verb_is} showing signs of internal bleeding (black stool/vomiting blood). See a doctor immediately."
+            "high": "\n🚨 {subject} {verb_is} showing signs of internal bleeding (black stool/vomiting blood). See a doctor immediately."
         }
     },
 
@@ -1104,7 +1167,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should stay away from dust and smoke. Keep the inhaler close.",
             "moderate": "\n{possessive} asthma seems to be acting up. {subject} {verb_needs} to use a preventer inhaler and see a doctor.",
-            "high": "\n🚨 EMERGENCY: {subject} cannot breathe well. Use the rescue inhaler and go to the hospital immediately for oxygen."
+            "high": "\n🚨 {subject} cannot breathe well. Use the rescue inhaler and go to the hospital immediately for oxygen."
         }
     },
     "tonsillitis": {
@@ -1122,7 +1185,7 @@ symptom_data = {
         "advice": {
             "low": "\nThis looks like mild tonsillitis. {subject} should drink warm water and gargle with salt water to soothe the pain.",
             "moderate": "\n{subject} {verb_has} moderate tonsillitis. {subject} likely {verb_needs} antibiotics. Please visit a health worker if the fever stays high.",
-            "high": "\n🚨 URGENT: If {subject} {verb_is} having a very hard time swallowing or breathing because of the swelling, go to the emergency room immediately."
+            "high": "\n🚨 If {subject} {verb_is} having a very hard time swallowing or breathing because of the swelling, go to the emergency room immediately."
         }
     },
 
@@ -1143,7 +1206,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} signs of liver irritation. Rest well and avoid all alcohol and herbal mixtures.",
             "moderate": "\nThis may be Hepatitis. {subject} {verb_needs} a blood test (HBsAg) at the hospital to know the type.",
-            "high": "\n🚨 URGENT: {subject} {verb_is} very ill with jaundice. Go to the hospital for liver support treatment."
+            "high": "\n🚨 {subject} {verb_is} very ill with jaundice. Go to the hospital for liver support treatment."
         }
     },
 
@@ -1162,7 +1225,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should drink plenty of water to help flush the system.",
             "moderate": "\nThis could be kidney stones. {subject} {verb_needs} an ultrasound scan and proper pain medication.",
-            "high": "\n🚨 URGENT: {subject} {verb_is} in extreme pain or cannot pass urine. Go to the hospital immediately."
+            "high": "\n🚨 {subject} {verb_is} in extreme pain or cannot pass urine. Go to the hospital immediately."
         }
     },
 
@@ -1182,7 +1245,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should eat more iron-rich foods like green vegetables and liver.",
             "moderate": "\n{possessive} blood level (PCV) might be low. {subject} {verb_needs} a blood test and iron supplements.",
-            "high": "\n🚨 CRITICAL: {subject} {verb_is} severely anemic. {subject} may need a blood transfusion. Go to the hospital now."
+            "high": "\n🚨 {subject} {verb_is} severely anemic. {subject} may need a blood transfusion. Go to the hospital now."
         }
     },
 
@@ -1201,7 +1264,7 @@ symptom_data = {
         "advice": {
             "low": "\nEnsure {subject} gets enough sleep and avoids triggers. Monitor any small 'absent' moments.",
             "moderate": "\n{subject} {verb_needs} to see a neurologist to start daily medication to prevent future fits.",
-            "high": "\n🚨 EMERGENCY: The seizure has lasted too long or {subject} is not waking up. Seek emergency care immediately."
+            "high": "\n🚨 The seizure has lasted too long or {subject} is not waking up. Seek emergency care immediately."
         }
     },
 
@@ -1236,7 +1299,7 @@ symptom_data = {
         "advice": {
             "low": "\n⚠️ Note: {subject} must monitor {possessive} blood pressure daily. Any increase is a danger sign.",
             "moderate": "\n{subject} {verb_has} signs of preeclampsia. {subject} {verb_needs} to see {possessive} doctor today for a check-up.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} showing critical signs of preeclampsia. Rush to the hospital now; this is very serious for both {subject} and the baby."
+            "high": "\n🚨 {subject} {verb_is} showing critical signs of preeclampsia. Rush to the hospital now; this is very serious for both {subject} and the baby."
         }
     },
 
@@ -1253,7 +1316,7 @@ symptom_data = {
         "advice": {
             "low": "\nThis could be a minor bone injury. {subject} should rest and keep the limb still.",
             "moderate": "\nThis could be a fractured or broken bone. {subject} should use a stick or hard material to keep the place straight and go to the hospital.",
-            "high": "\n🚨 EMERGENCY: This is a severe broken bone. Do not move {subject}. Keep the limb completely still and call for an ambulance or go to the emergency room immediately."
+            "high": "\n🚨 This is a severe broken bone. Do not move {subject}. Keep the limb completely still and call for an ambulance or go to the emergency room immediately."
         }
     },
 
@@ -1272,7 +1335,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} an allergy. {subject} should take an antihistamine and stay away from the cause.",
             "moderate": "\n{possessive} allergy is worsening. {subject} {verb_needs} medical attention before the throat closes.",
-            "high": "\n🚨 LIFE-THREATENING: {subject} {verb_is} in anaphylactic shock. {subject} cannot breathe well. Rush to the hospital for an adrenaline (EpiPen) injection now!"
+            "high": "\n🚨 If {subject} {verb_is} in anaphylactic shock. {subject} cannot breathe well. This is life threatening, rush to the hospital for an adrenaline (EpiPen) injection now!"
         }
     },
 
@@ -1290,7 +1353,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} signs of Bilharzia. {subject} should avoid swimming in fresh water (rivers/ponds) and get a urine test.",
             "moderate": "\nThis could be Schistosomiasis. {subject} {verb_needs} proper deworming medicine (Praziquantel) from a health center.",
-            "high": "\n🚨 WARNING: Heavy blood in the urine or stool indicates a severe infection. {subject} must visit the hospital for a full check-up."
+            "high": "\n🚨 Heavy blood in the urine or stool indicates a severe infection. {subject} must visit the hospital for a full check-up."
         }
     },
     "gallstones": {
@@ -1306,7 +1369,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} may have gallstones. {subject} should avoid oily and fatty foods to prevent the pain from returning.",
             "moderate": "\nThis looks like a gallbladder issue. {subject} {verb_needs} an abdominal scan at a clinic to confirm if stones are present.",
-            "high": "\n🚨 EMERGENCY: If {subject} {verb_is} vomiting and {possessive} eyes are yellow (jaundice), the stone might be blocking a duct. Go to the hospital now."
+            "high": "\n🚨 If {subject} {verb_is} vomiting and {possessive} eyes are yellow (jaundice), the stone might be blocking a duct. Go to the hospital now."
         }
     },
 
@@ -1324,7 +1387,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} likely {verb_has} Dengue. {subject} should rest and take only Paracetamol. Do NOT take Ibuprofen or Aspirin.",
             "moderate": "\nThis looks like Dengue fever. {subject} {verb_needs} to stay very hydrated and be monitored by a health worker for any bleeding.",
-            "high": "\n🚨 CRITICAL: If {subject} starts bleeding from the gums or nose, it is Dengue Hemorrhagic Fever. Seek emergency care immediately."
+            "high": "\n🚨 If {subject} starts bleeding from the gums or nose, it is Dengue Hemorrhagic Fever. Seek emergency care immediately."
         }
     },
 
@@ -1340,9 +1403,9 @@ symptom_data = {
             "severe headache"
         ],
         "advice": {
-            "low": "\n⚠️ Even if symptoms are mild, {subject} {verb_needs} a brain scan immediately to prevent a full stroke.",
+            "low": "\n⚠️ Even if symptoms are low, {subject} {verb_needs} a brain scan immediately to prevent a full stroke.",
             "moderate": "\n{subject} {verb_is} showing signs of a stroke. Do not wait. Take {subject} to the hospital right now.",
-            "high": "\n🚨 CRITICAL EMERGENCY: {subject} {verb_is} having a major stroke. Every minute counts to save {possessive} brain. Rush to the nearest Emergency Center immediately!"
+            "high": "\n🚨 {subject} {verb_is} having a major stroke. Every minute counts to save {possessive} brain. Rush to the nearest Emergency Center immediately!"
         }
     },
 
@@ -1360,7 +1423,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should monitor the pain. If it moves to the lower right side, it could be the appendix.",
             "moderate": "\nThis may be appendicitis. {subject} should not eat or drink anything and go to the hospital for a scan.",
-            "high": "\n🚨 URGENT: The appendix may burst. {subject} {verb_needs} surgery immediately. Go to the hospital emergency room now."
+            "high": "\n🚨 The appendix may burst. {subject} {verb_needs} surgery immediately. Go to the hospital emergency room now."
         }
     },
 
@@ -1379,7 +1442,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} a persistent fever. Monitor {possessive} symptoms very closely for any bleeding.",
             "moderate": "\nThis could be Lassa Fever. {subject} {verb_needs} to go to the nearest health center immediately for isolation and treatment.",
-            "high": "\n🚨 CRITICAL: This is a life-threatening infection. {subject} {verb_is} showing severe Lassa Fever signs. Seek specialized medical help immediately."
+            "high": "\n🚨 This is a life-threatening infection. {subject} {verb_is} showing severe Lassa Fever signs. Seek specialized medical help immediately."
         }
     },
     "hemorrhoids (piles)": {
@@ -1395,7 +1458,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} may have hemorrhoids or piles. {subject} should eat high-fiber food and drink lots of water.",
             "moderate": "\nFor these piles, {subject} should avoid straining when {subject} {verb_is} stooling. See a doctor for ointment.",
-            "high": "\n⚠️ NOTICE: If the pain is severe or the bleeding is heavy, {subject} {verb_needs} to see a doctor for possible surgery or advanced care."
+            "high": "\n⚠️ If the pain is severe or the bleeding is heavy, {subject} {verb_needs} to see a doctor for possible surgery or advanced care."
         }
     },
     "gonorrhea (std)": {
@@ -1411,7 +1474,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} may have an infection. {subject} should get a test at a clinic soon.",
             "moderate": "\nThis looks like Gonorrhea (STD). {subject} {verb_needs} a doctor for a test and antibiotics. Do not have sex until treatment is complete.",
-            "high": "\n⚠️ URGENT: The infection may be spreading. {subject} must see a doctor immediately to prevent long-term damage like PID."
+            "high": "\n⚠️ The infection may be spreading. {subject} must see a doctor immediately to prevent long-term damage like PID."
         }
     },
     "syphilis (std)": {
@@ -1427,7 +1490,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} {verb_has} symptoms that could be an early STD like Syphilis. {subject} should avoid sexual contact and get a blood test soon.",
             "moderate": "\nThis looks like Syphilis. {subject} {verb_needs} a penicillin injection from a clinic to stop the infection from spreading.",
-            "high": "\n🚨 URGENT: Syphilis can affect the brain and heart if left too long. Since {subject} {verb_is} showing advanced signs, see a specialist today."
+            "high": "\n🚨 Syphilis can affect the brain and heart if left too long. Since {subject} {verb_is} showing advanced signs, see a specialist today."
         }
     },
 
@@ -1446,7 +1509,7 @@ symptom_data = {
         "advice": {
             "low": "\nIt could be that {possessive} sugar level is low. {subject} should quickly eat something sweet like sugar or juice.",
             "moderate": "\nThis is hypoglycemia. {subject} {verb_needs} to eat a proper meal now and check {possessive} sugar level.",
-            "high": "\n🚨 EMERGENCY: {subject} {verb_is} at risk of fainting or a coma. Give {subject} sugar immediately and go to the hospital if {subject} does not wake up fully."
+            "high": "\n🚨 {subject} {verb_is} at risk of fainting or a coma. Give {subject} sugar immediately and go to the hospital if {subject} does not wake up fully."
         }
     },
     "glaucoma (eye pressure)": {
@@ -1463,7 +1526,7 @@ symptom_data = {
         "advice": {
             "low": "\n{subject} should have {possessive} eye pressure checked by an eye doctor soon.",
             "moderate": "\nThis may be Glaucoma. High pressure can blind {subject} fast. {subject} {verb_needs} to see an ophthalmologist today.",
-            "high": "\n🚨 EMERGENCY: Sudden vision loss or severe eye pain is a medical emergency. Go to an eye clinic right now."
+            "high": "\n🚨 Sudden vision loss or severe eye pain is a medical emergency. Go to an eye clinic right now."
         }
     }
 }
@@ -1804,7 +1867,6 @@ def logout():
     return redirect(url_for("login"))
 
 
-
 @app.route("/reset_request", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
@@ -1877,6 +1939,10 @@ def chat():
         recipient = data.get("patient", "self").lower()
         gender = data.get("gender", "male").lower()
         age_group = data.get("age", "adult").lower()
+        last_diagnosed = data.get("last_diagnosed", "N/A")
+        notice = data.get("notice_self") or data.get("notice_others") or "unknown"
+
+
 
         result = []
         hospitals_list = []
@@ -1893,6 +1959,10 @@ def chat():
             subj = "He" if gender == "male" else "She"
             poss = "his" if gender == "male" else "her"
             v_has, v_is, v_needs = "has", "is", "needs"
+
+        enhanced_input = f"{user_input}. Symptoms noticed {notice}."
+        if recipient == "self" and last_diagnosed != "Never":
+            enhanced_input += f" Patient has history of diagnosis: {last_diagnosed}."
 
         # --- STEP 2: Hybrid NLP/ML Logic ---
         ml_results = ml_predict_condition(user_input, top_n=5)
@@ -1913,22 +1983,25 @@ def chat():
         # --- STEP 3: Generate Advice ---
         if valid_conditions:
             cond_key = valid_conditions[0].lower()
-            if cond_key in symptom_data:
-                cond_entry = symptom_data[cond_key]
-                raw_text = cond_entry.get("advice", {}).get(severity, cond_entry.get("advice", {}).get("moderate",
-                                                                                                       "Please consult a doctor."))
+            cond_entry = symptom_data.get(cond_key)
 
+            if cond_entry:
+                advice_dict = cond_entry.get("advice", {})
+                raw_text = advice_dict.get(severity, advice_dict.get("moderate", "Please consult a doctor."))
                 final_msg = raw_text.format(subject=subj, possessive=poss, verb_has=v_has, verb_is=v_is,
                                             verb_needs=v_needs)
 
-                if age_group == "child":
-                    final_msg = "👶 PEDIATRIC: " + final_msg
+                if age_group == "minor":
+                    final_msg = "🧒🏾 Minor: " + final_msg
                 elif age_group == "elderly":
-                    final_msg = "👴 SENIOR: " + final_msg
+                    final_msg = "🧓🏾 Elderly: " + final_msg
                 result.append(final_msg)
+            else:
+                result.append(
+                    f"I recognized symptoms for {cond_key}, but I'm still learning the best advice for it. Please consult a doctor.")
         else:
             result.append(
-                f"I couldn't match your symptoms precisely. Given your {severity} severity, please see a doctor.")
+                f"I couldn't match your symptoms precisely. Since you noticed this {notice}, please consult a doctor.")
 
         # Audio Generation
         audio_path = generate_audio(" ".join(result))
@@ -1983,6 +2056,8 @@ def chat():
                 result=" ".join(result),
                 location=f"{lat_str},{lon_str}",
                 severity=severity,
+                last_diagnosed=last_diagnosed,
+                notice=notice,
                 # Ensure these columns exist in your SymptomReport model:
                 recipient=recipient,
                 gender=gender,
@@ -2005,6 +2080,7 @@ def chat():
 
     # GET request: Show the chat page
     return render_template('chat.html')
+
 
 @app.route("/home", methods=["GET", "POST"])
 @login_required
