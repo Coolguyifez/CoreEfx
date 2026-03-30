@@ -6,10 +6,10 @@
     <title>CoreEfx AI Health Advisor</title>
 
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#008000">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="CoreEfx AI">
+    <meta name="theme-color" content="#008000">
     
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/brain.png') }}">
@@ -138,9 +138,7 @@
         // 1. Service Worker Registration for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('Service Worker registered'))
-                .catch(err => console.log('Service Worker failed', err));
+                navigator.serviceWorker.register('/sw.js', { scope: '/' });
             });
         }
 
