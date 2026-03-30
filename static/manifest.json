@@ -1,6 +1,6 @@
 {
   "name": "CoreEfx AI Health Advisor",
-  "short_name": "CoreEfx",
+  "short_name": "CoreEfx AI",
   "description": "AI-Powered Health Advisory System",
   "start_url": "/",
   "display": "standalone",
