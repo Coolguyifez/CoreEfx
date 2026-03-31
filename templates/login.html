@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -134,12 +133,10 @@
 <body>
 <form method="POST">
     <h1><i class="fa-solid fa-brain fa-icon-large icon"></i> CoreEfx AI</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% with messages = get_flashed_messages() %}
       {% if messages %}
-        {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            {{ message | safe }}
-          </div>
+        {% for message in messages %}
+          <div class="flash-error">{{ message | safe }}</div>
         {% endfor %}
       {% endif %}
     {% endwith %}
@@ -178,7 +175,4 @@
     }
 </script>
 </body>
-
 </html>
-
-
