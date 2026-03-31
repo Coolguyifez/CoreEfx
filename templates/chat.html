@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     
@@ -50,6 +49,7 @@
             position: fixed; 
             width: 100%;
             display: flex;
+            overflow-y: hidden;
             flex-direction: column;
             background-color: var(--background-white);
             color: var(--text-dark);
@@ -264,7 +264,7 @@
 
 
         .circle-btn, .mic-btn {
-            width: 45px; height: 45px;
+            width: 40px; height: 40px;
             border-radius: 50%;
             border: none;
             background: var(--accent-color);
@@ -325,7 +325,7 @@
             <div style="display: flex; flex-direction: column;">
                 <span style="font-weight: 600; font-size: 22px;"><a href="{{ url_for('home') }}"><i class="fa-solid fa-angle-left icon_i"></i></a>
                 &nbsp;<i class="fa-solid fa-circle-user icon"></i> {{ current_user.username }}</span>
-                <span style="font-size: 10px; opacity: 0.6;"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CoreEfx AI</i></span>
+                <span style="font-size: 10px; opacity: 0.6;"><i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CoreEfx AI</i></span>
             </div>  
         </div>
 
