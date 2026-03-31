@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
@@ -21,6 +21,7 @@
             --shadow-light: rgba(0, 0, 0, 0.08);
             --transition-speed: 0.5s;
             --sidebar-width: 0px; /* Default for mobile */
+            --header-light:rgba(255, 255, 255, 0.8);
         }
 
         body.dark-mode {
@@ -34,6 +35,7 @@
             --text-muted: #b0b0b0; /* Lighter muted text */
             --border-color: #4a4d52; /* Darker border */
             --shadow-light: rgba(0, 0, 0, 0.3); /* More pronounced shadow */
+            --header-light: rgba(26, 26, 27, 0.75);
         }
 
         body {
@@ -87,11 +89,13 @@
             right: 0;
             height: 60px;
             justify-content: space-between;
+            backdrop-filter: blur(12px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
             align-items: center;
-            background-color: var(--background-white);
+            background-color: transparent !important;
             padding: 0 20px;
             border-bottom: 0.3px solid var(--border-color);
-            z-index: 3000;
+            z-index: 1000;
         }
 
 
