@@ -6,8 +6,7 @@
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
@@ -25,7 +24,9 @@
             --shadow-light: rgba(0, 0, 0, 0.08);
             --transition-speed: 0.5s;
             --sidebar-width: 0px; /* Default for mobile */
+            --header-light:rgba(255, 255, 255, 0.8);
         }
+        
 
         body.dark-mode {
             --primary-color: #6aabff;
@@ -38,7 +39,9 @@
             --text-muted: #b0b0b0;
             --border-color: #4a4d52;
             --shadow-light: rgba(0, 0, 0, 0.3);
+            --header-light:rgba(26, 26, 27, 0.75);
         }
+        
 
         html, body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -134,9 +137,11 @@
             left: 0;
             right: 0;
             height: 60px;
+            backdrop-filter: blur(12px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
             justify-content: space-between;
             align-items: center;
-            background-color: var(--background-white);
+            background-color: transparent;
             padding: 0 20px;
             border-bottom: 0.3px  var(--border-color);
             z-index: 3000;
