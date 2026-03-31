@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -257,7 +256,7 @@
             <button class="side-link" onclick="setTheme('light')"><i class="fa fa-sun"></i> Light Mode</button>
             <button class="side-link" onclick="setTheme('dark')"><i class="fa fa-moon"></i> Dark Mode</button>
             <button class="side-link" onclick="setSystemMode()"><i class="fa fa-desktop"></i> System Mode</button>
-            <button id="shareBtn" class="side-link"><i class="fa-solid fa-share-nodes"></i> Share App</button>
+
             <button class="side-link" style="font-weight: 600;" onclick="window.location='{{ url_for('logout') }}'">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </button>
@@ -291,7 +290,6 @@
             <a href="/terms_of_service" style="font-size: small;">
                 <i class="fa fa-file-alt"></i> Terms of Service
             </a>
-            <a href="#" id="shareBtn" style="font-size: small;"><i class="fa-solid fa-share-nodes"></i> Share App</a>
 
             <div style="font-size: 14px; padding: 12px 15px; border-top: 1px solid var(--border-color); color: var(--text-muted);">
                 <a href="/chat"><i class="fa-solid fa-circle-user"></i> <b>{{ current_user.username }}</b></a>
@@ -376,6 +374,7 @@
             const targets = document.querySelectorAll(`[onclick*="'${tabName}'"]`);
             targets.forEach(t => t.classList.add("active"));
         }
+
         // Mobile Menu Toggle
         const navToggle = document.getElementById('navToggle');
         const navMenu = document.getElementById('navMenu');
@@ -424,39 +423,6 @@
                 responseDiv.style.color = "red";
                 responseDiv.innerText = "❌ Connection error.";
             });
-
-            const shareBtn = document.getElementById('shareBtn');
-
-            if (shareBtn) {
-                shareBtn.addEventListener('click', async (e) => {
-                    e.preventDefault(); // Stop the page from jumping
-        
-                    // Check if the browser supports the native share API
-                    if (navigator.share) {
-                        try {
-                            await navigator.share({
-                                title: 'CoreEfx AI Health Advisor',
-                                text: 'I am using CoreEfx AI to check my symptoms and stay healthy. Try it out!',
-                                url: window.location.origin // Automatically uses your Render URL
-                            });
-                            console.log('App shared successfully');
-                        } catch (err) {
-                            console.log('Share cancelled or failed:', err);
-                        }
-                    } else {
-                        // Fallback for desktop browsers that don't support native sharing
-                        const dummy = document.createElement('input');
-                        const text = window.location.origin;
-                        document.body.appendChild(dummy);
-                        dummy.value = text;
-                        dummy.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(dummy);
-                        alert("Link copied to clipboard! You can now paste and share it.");
-                    }
-                });
-            }
-
         });
 
 
