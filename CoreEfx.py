@@ -1791,7 +1791,6 @@ def welcome():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
-    # If already logged in, no need to sign up
     if current_user.is_authenticated:
         return redirect(url_for("home"))
 
@@ -1803,11 +1802,15 @@ def signup():
             email = request.form.get("email")
             password = request.form.get("password")
 
-            # Check if user already exists
-            existing_user = User.query.filter_by(username=username).first()
-            if existing_user:
-                flash("Username already exists. Please choose another.")
+            # 1. Check if Username exists
+            if User.query.filter_by(username=username).first():
+                flash("Username already exists. Please choose another.", "warning")
                 return redirect(url_for("signup"))
+
+            # 2. Check if Email exists (Crucial Fix)
+            if User.query.filter_by(email=email).first():
+                flash("An account with this email already exists. Please login.", "info")
+                return redirect(url_for("login"))
 
             # Hash the password
             hashed = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -1824,18 +1827,18 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
 
-            # Optional: Log the activity
+            # Log the activity
             activity = UserActivity(user_id=new_user.id, action="account_created")
             db.session.add(activity)
             db.session.commit()
 
-            flash("Account created successfully! Please login.")
+            flash("Account created successfully! Please login.", "success")
             return redirect(url_for("login"))
 
         except Exception as e:
             db.session.rollback()
             print(f"Signup Error: {e}")
-            flash("An error occurred. Please try again.")
+            flash("An error occurred. Please try again.", "danger")
 
     return render_template("signup.html")
 
