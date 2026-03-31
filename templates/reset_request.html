@@ -11,29 +11,71 @@
         body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background-color: #f9f9f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
         .main-content { background: var(--background-light); padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); width: 100%; max-width: 350px; text-align: center; border: 1px solid var(--border-color); }
         .input-feed-icon { display: flex; align-items: center; background: #f0f2f5; border-radius: 50px; padding: 5px 15px; margin: 20px 0; border: 1px solid var(--border-color); }
-        .circle-btn { background: var(--accent-color); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.3s; }
-        .circle-btn:hover { opacity: 0.8; }
+        .chat-btn {display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background-color: var(--accent-color); /* Uses your green: #008000 */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease; /* Smooth transition for hover */
+            box-shadow: 0 4px 15px rgba(0, 128, 0, 0.2); /* Soft shadow */ }
+        .chat-btn:hover { opacity: 0.8; }
         h3 { color: var(--text-dark); margin-bottom: 10px; }
         p { color: var(--text-muted); font-size: 0.9rem; }
         a { color: var(--accent-color); text-decoration: none; font-size: 0.85rem; }
+        .flash-error {
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
     <div class="main-content">
         <i class="fa-solid fa-lock-open" style="font-size: 2.5rem; color: var(--accent-color); margin-bottom: 15px;"></i>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="flash-error">{{ message | safe }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
         <h3>Forgot Password?</h3>
-        <p>Enter your email and we'll send you a link to get back into your account.</p>
+        
+        <p>Enter your details to receive a reset link.</p>
         
         <form method="POST">
             <div class="input-feed-icon">
-                <input type="email" name="email" placeholder="Email Address" required 
-                       style="flex:1; background:transparent; border:none; padding:10px; outline:none; color:var(--text-dark);">
-                <button type="submit" class="circle-btn">
-                    <i class="fa-solid fa-arrow-up"></i>
-                </button>
+                <i class="fa-solid fa-user" style="color: var(--text-muted); margin-left: 5px;"></i>
+                <input type="username" name="username" placeholder="Username" required
+                        style="flex:1; background:transparent; border:none; padding:10px; outline:none; color:var(--text-dark);">
             </div>
+
+            <div class="input-feed-icon">
+                <i class="fa-solid fa-envelope" style="color: var(--text-muted); margin-left: 5px;"></i>
+                <input type="email" name="email" placeholder="Email Address" required 
+                    style="flex:1; background:transparent; border:none; padding:10px; outline:none; color:var(--text-dark);">
+            </div>
+
+            <button type="submit" class="chat-btn" style="margin-top: 20px; width: 100%;">
+                Send Reset Link <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
+            </button>
         </form>
-        <a href="{{ url_for('login') }}">Back to Login</a>
+
+        <div style="margin-top: 20px;">
+            <a href="{{ url_for('login') }}">Back to Login</a>
+        </div>
     </div>
 </body>
 </html>
