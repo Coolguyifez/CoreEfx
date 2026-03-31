@@ -4,8 +4,8 @@
   "description": "AI-Powered Health Advisory System",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#1a1a1b",
+  "theme_color": "#1a1a1b",
   "orientation": "portrait",
   "icons": [
     {
