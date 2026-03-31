@@ -36,7 +36,8 @@
             margin: 0; 
             padding: 0; 
             overflow: hidden;
-            background-color: #ffffff;
+            overscroll-behavior-y: none;
+            background-color: var(--light-bg) !important;
         }
 
         body { 
@@ -46,7 +47,6 @@
             justify-content: center; 
             align-items: center; 
             text-align: center; 
-            background-color: var(--light-bg); 
             color: var(--light-text); 
             transition: background-color var(--transition-speed), color var(--transition-speed); 
         }
@@ -114,8 +114,8 @@
 
         /* Dark Mode Overrides */
         @media (prefers-color-scheme: dark) {
-            html, body { background-color: #1a1a1b !important; /* Force dark background */}
-            body { background-color: var(--dark-bg); color: var(--dark-text); }
+            html, body { background-color: var(--dark-bg) !important; /* Force dark background */}
+            body {color: var(--dark-text); }
             h1 { color: var(--dark-text); }
             .icon { color: var(--dark-accent-color); }
             h3, .status-text { color: var(--muted-dark-text); }
