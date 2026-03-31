@@ -15,6 +15,12 @@ from flask_login import (
 from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer as Serializer
 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+
 
 # --- TOKEN HELPERS ---
 def get_reset_token(user_id):
@@ -1826,7 +1832,7 @@ def signup():
             db.session.add(activity)
             db.session.commit()
 
-            flash("Account created successfully! Please login.",)
+            flash("Account created successfully! Please login.", 'success')
             return redirect(url_for("login"))
 
         except Exception as e:
