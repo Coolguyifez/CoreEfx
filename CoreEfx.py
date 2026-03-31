@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template_string, render_template, jsonify, url_for, flash, send_from_directory
+from flask import Flask, request, redirect, render_template_string, render_template, jsonify, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import spacy
@@ -1765,18 +1765,10 @@ def find_nearby_hospitals(user_lat, user_lon, radius_km=100):
 
 
 
-# --- PWA ROUTES ---
-@app.route('/manifest.json')
-def serve_manifest():
-    return send_from_directory('static', 'manifest.json')
 
-@app.route('/sw.js')
-def serve_sw():
-    return send_from_directory('static', 'sw.js')
 
 
 # MIN_HYBRID_THRESHOLD = 5 # more lenient
-    
 
 @app.route("/")
 def welcome():
@@ -1791,6 +1783,7 @@ def welcome():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    # If already logged in, no need to sign up
     if current_user.is_authenticated:
         return redirect(url_for("home"))
 
@@ -1802,15 +1795,11 @@ def signup():
             email = request.form.get("email")
             password = request.form.get("password")
 
-            # 1. Check if Username exists
-            if User.query.filter_by(username=username).first():
-                flash("Username already exists. Please choose another.", "warning")
+            # Check if user already exists
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                flash("Username already exists. Please choose another.")
                 return redirect(url_for("signup"))
-
-            # 2. Check if Email exists (Crucial Fix)
-            if User.query.filter_by(email=email).first():
-                flash("An account with this email already exists. Please login.", "info")
-                return redirect(url_for("login"))
 
             # Hash the password
             hashed = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -1827,18 +1816,18 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
 
-            # Log the activity
+            # Optional: Log the activity
             activity = UserActivity(user_id=new_user.id, action="account_created")
             db.session.add(activity)
             db.session.commit()
 
-            flash("Account created successfully! Please login.", "success")
+            flash("Account created successfully! Please login.")
             return redirect(url_for("login"))
 
         except Exception as e:
             db.session.rollback()
             print(f"Signup Error: {e}")
-            flash("An error occurred. Please try again.", "danger")
+            flash("An error occurred. Please try again.")
 
     return render_template("signup.html")
 
