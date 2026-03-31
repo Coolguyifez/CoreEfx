@@ -1798,7 +1798,12 @@ def signup():
             # Check if user already exists
             existing_user = User.query.filter_by(username=username).first()
             if existing_user:
-                flash("Username already exists. Please choose another.")
+                flash('<p style="color:red">Username already exists. Please choose another</p>')
+                return redirect(url_for("signup"))
+
+            existing_user = User.query.filter_by(email=email).first()
+            if existing_user:
+                flash('<p style="color:red">Email already exists. Please choose another.</p>')
                 return redirect(url_for("signup"))
 
             # Hash the password
@@ -1821,7 +1826,7 @@ def signup():
             db.session.add(activity)
             db.session.commit()
 
-            flash("Account created successfully! Please login.")
+            flash("Account created successfully! Please login.",)
             return redirect(url_for("login"))
 
         except Exception as e:
@@ -1855,7 +1860,7 @@ def login():
 
             return redirect(url_for("home"))
         else:
-            flash("Invalid username or password.", "danger")
+            flash('<p style ="color: red;">Invalid username or password</p>', 'warning')
 
     return render_template("login.html")
 
@@ -1875,8 +1880,9 @@ def reset_request():
         return redirect(url_for('home'))
 
     if request.method == 'POST':
+        username = request.form.get('username')
         email = request.form.get('email')
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username, email=email).first()
         if user:
             token = get_reset_token(user.id)
             # In a real app, use Flask-Mail here.
@@ -1887,10 +1893,11 @@ def reset_request():
             flash(f'A reset link has been generated! It expires in 30 mins. <a href="{reset_link}" style="color: #6ac36a; text-decoration: underline;">Click here to reset your password</a>', 'info')
             return redirect(url_for('login'))
         else:
-            flash('No account found with that email.', 'warning')
+            flash('<p style=" color:red">No account found with that username or email</p>', 'warning')
+            return redirect(url_for('reset_request'))
 
     return render_template('reset_request.html')
-
+    
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
