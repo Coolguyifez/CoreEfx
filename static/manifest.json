@@ -4,6 +4,7 @@
   "description": "AI-Powered Health Advisory System",
   "start_url": "/",
   "display": "standalone",
+  "display_override": ["window-controls-overlay", "minimal-ui"],
   "background_color": "#1a1a1b",
   "theme_color": "#1a1a1b",
   "orientation": "portrait",
