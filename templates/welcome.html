@@ -2,15 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
     <title>CoreEfx AI Health Advisor</title>
 
-    <link rel="manifest" href="/manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1a1a1b" media="(prefers-color-scheme: dark)">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/brain.png') }}">
@@ -36,8 +30,7 @@
             margin: 0; 
             padding: 0; 
             overflow: hidden;
-            overscroll-behavior-y: none;
-            background-color: var(--light-bg) !important;
+            
         }
 
         body { 
@@ -47,10 +40,11 @@
             justify-content: center; 
             align-items: center; 
             text-align: center; 
+            background-color: var(--light-bg); 
             color: var(--light-text); 
             transition: background-color var(--transition-speed), color var(--transition-speed); 
         }
-
+        
         .splash-content {
             padding: 20px;
             animation: fadeIn 1.5s ease-out;
@@ -114,13 +108,12 @@
 
         /* Dark Mode Overrides */
         @media (prefers-color-scheme: dark) {
-            html, body { background-color: var(--dark-bg) !important; /* Force dark background */}
-            body {color: var(--dark-text); }
+            body { background-color: var(--dark-bg); color: var(--dark-text); }
             h1 { color: var(--dark-text); }
-            .icon { color: var(--dark-accent-color); }
+            .icon{color: var(--dark-accent-color);}
             h3, .status-text { color: var(--muted-dark-text); }
             .loader-container { background: rgba(255, 255, 255, 0.1); }
-            .loader-fill { background: var(--dark-accent-color); } 
+            .loader-fill { background: var(--dark-accent-color)}; /* Brighter green for dark mode */ 
         }
     </style>
 </head>
@@ -139,11 +132,7 @@
 
     <script>
         // 1. Service Worker Registration for PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { scope: '/' });
-            });
-        }
+        
 
         // 2. Status Text Update
         const statusLabel = document.getElementById('statusLabel');
@@ -156,7 +145,7 @@
             } else {
                 clearInterval(interval);
             }
-        }, 3000);
+        }, 4000);
 
         // 3. Redirect logic
         const destination = "{{ next_url if next_url else url_for('login') }}";
@@ -169,7 +158,7 @@
             setTimeout(() => {
                 window.location.href = destination;
             }, 500);
-        }, 10000); // 10 second total delay
+        }, 20000); // 20 second total delay
     </script>
 </body>
 </html>
