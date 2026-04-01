@@ -100,6 +100,26 @@
             text-transform: uppercase;
         }
 
+        /* Install Button Styles */
+        #installBtn {
+            display: none;
+            margin-top: 25px;
+            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(0, 128, 0, 0.2);
+            transition: transform 0.2s active;
+        }
+
+        #installBtn:active {
+            transform: scale(0.95);
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -118,7 +138,8 @@
             .icon{color: var(--dark-accent-color);}
             h3, .status-text { color: var(--muted-dark-text); }
             .loader-container { background: rgba(255, 255, 255, 0.1); }
-            .loader-fill { background: var(--dark-accent-color)}; /* Brighter green for dark mode */ 
+            .loader-fill { background: var(--dark-accent-color)}; /* Brighter green for dark mode */
+            #installBtn { background-color: var(--dark-accent-color); }
         }
     </style>
 </head>
@@ -133,15 +154,23 @@
             <div class="loader-fill"></div>
         </div>
         <p class="status-text" id="statusLabel">Initializing AI...</p>
+
+        <button id="installBtn">
+            <i class="fa-solid fa-download"></i> Install App
+        </button>
     </div>
+    
 
     <script>
         // 1. Service Worker Registration for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js', { scope: '/' });
+                navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker failed', err));
             });
         }
+        
         
         // 2. Status Text Update
         const statusLabel = document.getElementById('statusLabel');
@@ -154,9 +183,31 @@
             } else {
                 clearInterval(interval);
             }
-        }, 4000);
+        }, 4500);
 
-        // 3. Redirect logic
+        3. PWA Install Logic
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Show the button if installation is possible
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User Choice: ${outcome}`);
+                deferredPrompt = null;
+                installBtn.style.display = 'none';
+            }
+        });
+        
+
+        // 4. Redirect logic
         const destination = "{{ next_url if next_url else url_for('login') }}";
         
         setTimeout(() => {
@@ -166,7 +217,7 @@
             
             setTimeout(() => {
                 window.location.href = destination;
-            }, 500);
+            }, 600);
         }, 20000); // 20 second total delay
     </script>
 </body>
