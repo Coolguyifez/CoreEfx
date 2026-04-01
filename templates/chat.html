@@ -150,27 +150,49 @@
         /* --- CHAT AREA --- */
         .chat-area { display: flex; flex-direction: column; gap: 15px; width: 100%;}
 
-        .reply-me, .intro-welcome, .typing-indicator {
+        .reply-me, .intro-welcome, .input-sympt, .typing-indicator {
             align-self: flex-start;
             background-color: var(--background-light);
-            padding: 12px 16px;
+            /* Reduced top padding to 6px to remove top space */
+            padding: 6px 16px 10px 16px; 
             border-radius: 0 20px 20px 20px;
-            white-space: pre-wrap; /* This ensures \n creates a new line in the chat bubble */
+            white-space: pre-wrap;
             word-wrap: break-word;
             max-width: 75%;
             box-shadow: 0 2px 4px var(--shadow-light);
             animation: fadeIn 0.3s ease;
+            margin-top: 0;
+            display: flex;
+            flex-direction: column; /* Stack text on top of time */
         }
-
 
         .input-sympt {
             align-self: flex-end;
             background-color: var(--accent-color);
             color: white;
-            padding: 12px 16px;
             border-radius: 20px 20px 0 20px;
-            box-shadow: 0 2px 4px var(--shadow-light);
-            max-width: 80%;
+        }
+
+        /* The Time Stamp Style */
+        .timestamp {
+            font-size: 0.65rem;
+            opacity: 0.5;
+            margin-top: 4px;
+            align-self: flex-end; /* Pushes time to the bottom right */
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-sympt .timestamp {
+            color: #e0e0e0; /* Make time visible on the green background */
+        }
+
+        /* Keep the typing dots horizontal */
+        .typing-indicator {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center;
+            gap: 5px;
+            padding: 15px !important;
         }
 
         /* --- STICKY INPUT BAR --- */
@@ -417,7 +439,7 @@
             { id: "age", q: "What is the age group?", opt: [] },
             { id: "severity", q: "How severe is the symptom?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
             { id: "notice_self", q: "When did you notice this?", opt: [{l:"Recently", v:"recently"}, {l:"Long ago", v:"long ago"}], condition: "self" },
-            { id: "last_diagnosed", q: "When were you last diagnosed by an health professioner?", opt: [{l:"Never", v:"never"}, {l:"Months ago", v:"months ago"}, {l:"Years ago", v:"years ago"}], condition: "self" },
+            { id: "last_diagnosed", q: "When did you last go for a check up?", opt: [{l:"Never", v:"never"}, {l:"Months ago", v:"months ago"}, {l:"Years ago", v:"years ago"}], condition: "self" },
             { id: "notice_others", q: "When was this noticed?", opt: [{l:"Recently", v:"recently"}, {l:"Long ago", v:"long ago"}], condition: "someone" }
         ];
 
@@ -691,14 +713,22 @@
                     <div style="background: var(--background-light); padding: 15px; border-radius: 12px; margin-bottom: 10px; border-left: 5px solid var(--accent-color);">
                         <div style="font-weight: bold; font-size: 1.1rem;">${h.name}</div>
                         <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
-                            <i class="bi bi-geo-alt"></i> ${h.city}
+                            <i class="bi bi-geo-alt"></i> ${h.city} • <strong>${h.distance} away</strong>
                         </div>
-                        <div style="display: flex; gap: 15px;">
+                        
+                        <div style="font-size: 0.85rem; margin-bottom: 10px; color: var(--text-dark);">
+                            <i class="bi bi-clock-history"></i> Estimated Travel Time: <strong>${h.travel_time}</strong>
+                        </div>
+
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
                             <a href="tel:${h.phone}" style="text-decoration:none; color:var(--accent-color); font-weight:600; font-size:0.9rem;">
                                 <i class="bi bi-telephone-fill"></i> ${h.phone || 'Call'}
                             </a>
                             <a href="${h.url}" target="_blank" style="text-decoration:none; color:var(--primary-color); font-weight:600; font-size:0.9rem;">
                                 <i class="bi bi-info-circle-fill"></i> Website
+                            </a>
+                            <a href="${h.maps_link}" target="_blank" style="text-decoration:none; color:#db4437; font-weight:600; font-size:0.9rem;">
+                                <i class="bi bi-map-fill"></i> Google Map
                             </a>
                         </div>
                     </div>
@@ -765,7 +795,20 @@
         function appendMessage(content, className) {
             const div = document.createElement('div');
             div.className = className;
-            div.innerHTML = content;
+            
+            // Create the time
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                            now.getMinutes().toString().padStart(2, '0');
+
+            // Put the content and time together
+            div.innerHTML = `
+                <div style="display: flex; flex-direction: column; width: 100%;">
+                    <div style="margin: 0; padding: 0;">${content}</div>
+                    <span class="timestamp">${timeStr}</span>
+                </div>
+            `;
+
             chatArea.appendChild(div);
             chatArea.scrollTop = chatArea.scrollHeight;
             return div;
