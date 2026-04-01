@@ -137,8 +137,12 @@
 
     <script>
         // 1. Service Worker Registration for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js', { scope: '/' });
+            });
+        }
         
-
         // 2. Status Text Update
         const statusLabel = document.getElementById('statusLabel');
         const statuses = ["Analyzing environment...", "Loading Medical Models...", "Readying Advisor..."];
