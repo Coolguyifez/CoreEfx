@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template_string, render_template, jsonify, url_for, flash
+from flask import Flask, request, redirect, render_template_string, render_template, jsonify, url_for, flash, , send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import spacy
@@ -1774,7 +1774,14 @@ def find_nearby_hospitals(user_lat, user_lon, radius_km=100):
 
 
 
+# --- PWA ROUTES ---
+@app.route('/manifest.json')
+def serve_manifest():
+    return send_from_directory('static', 'manifest.json')
 
+@app.route('/sw.js')
+def serve_sw():
+    return send_from_directory('static', 'sw.js')
 
 # MIN_HYBRID_THRESHOLD = 5 # more lenient
 
