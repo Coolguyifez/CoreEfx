@@ -2336,46 +2336,70 @@ def terms_of_service():
 @app.route("/submit_vitals", methods=["POST"])
 @login_required
 def submit_vitals():
-    # Use request.get_json() if sending via JavaScript fetch,
-    # or request.form if sending via a standard HTML form.
     data = request.get_json()
-
     if not data:
         return jsonify({"status": "error", "message": "No data received"}), 400
 
     try:
-        # 1. Extract values
         temp = float(data.get('temp', 0))
         hr = int(data.get('hr', 0))
         bp_sys = int(data.get('bp_sys', 0))
         bp_dia = int(data.get('bp_dia', 0))
         spo2 = int(data.get('spo2', 0))
 
-        # 2. Basic Logic for Severity & Advice
-        severity = "Normal"
-        advice_parts = []
+        # 1. Assessment Lists
+        high_alerts = []
+        moderate_warnings = []
 
-        if temp > 38.0:
-            severity = "Moderate"
-            advice_parts.append("Fever detected.")
-        elif temp < 35.0:
+        # --- TEMPERATURE ---
+        if temp < 35.0:
+            high_alerts.append("your body temperature is critically low, indicating a risk of hypothermia")
+        elif temp > 39.0:
+            high_alerts.append("you have a high fever that requires immediate attention")
+        elif 37.5 <= temp <= 38.4:
+            moderate_warnings.append("you have a low-grade fever; please check if you've been in the sun or are feeling unwell")
+        elif 38.5 <= temp <= 39.0:
+            moderate_warnings.append("your temperature indicates a moderate fever")
+        elif 35.0 <= temp <= 36.0:
+            moderate_warnings.append("your body temperature is slightly subnormal; ensure you are in a warm environment")
+
+        # --- OXYGEN (SpO2) ---
+        if spo2 <= 92:
+            high_alerts.append("your oxygen saturation is at a critical level")
+        elif 93 <= spo2 <= 94:
+            moderate_warnings.append("your oxygen levels are slightly below the ideal range")
+
+        # --- BLOOD PRESSURE ---
+        if bp_sys >= 180 or bp_dia >= 120:
+            high_alerts.append("your blood pressure is in a crisis range")
+        elif bp_sys >= 140 or bp_dia >= 90:
+            moderate_warnings.append("your blood pressure reading is high (Stage 2 Hypertension range)")
+        elif 120 <= bp_sys <= 139 or 80 <= bp_dia <= 89:
+            moderate_warnings.append("your blood pressure is currently elevated")
+
+        # --- HEART RATE ---
+        if hr > 120 or hr < 45:
+            high_alerts.append("your heart rate is significantly outside the safe resting range")
+        elif hr > 100 or hr < 60:
+            moderate_warnings.append("your heart rate is slightly irregular for a resting state")
+
+        # 2. Construct Professional Response
+        if high_alerts:
             severity = "High"
-            advice_parts.append("Low body temperature (Hypothermia risk).")
-
-        if spo2 < 94:
-            severity = "High"
-            advice_parts.append("Low oxygen levels detected.")
-
-        if bp_sys >= 140 or bp_dia >= 90:
+            # Combine sentences: "We noticed that [alert1] and [alert2]."
+            summary = " and ".join(high_alerts)
+            advice = f"Emergency Alert: We noticed that {summary}. Please seek medical attention or contact emergency services immediately."
+        
+        elif moderate_warnings:
             severity = "Moderate"
-            advice_parts.append("Blood pressure is elevated.")
-
-        if not advice_parts:
-            advice = "Your vitals appear to be within normal ranges."
+            summary = " and ".join(moderate_warnings)
+            advice = f"Health Note: It appears that {summary}. We recommend monitoring these vitals closely and consulting a healthcare professional if you feel unwell."
+        
         else:
-            advice = " ".join(advice_parts) + " Please monitor and consult a professional if symptoms persist."
+            severity = "Normal"
+            advice = "Your vitals are currently within the standard healthy ranges. Continue to maintain your routine and stay hydrated!"
 
-        # 3. Create and Save the Vitals Entry
+        # 3. Save to Database
         new_vitals = VitalsLog(
             user_id=current_user.id,
             temperature=temp,
@@ -2384,24 +2408,20 @@ def submit_vitals():
             bp_diastolic=bp_dia,
             spo2=spo2,
             severity=severity,
-            result=advice  # Storing the AI advice here
+            result=advice
         )
-
         db.session.add(new_vitals)
         db.session.commit()
 
         return jsonify({
             "status": "success",
-            "message": "Vitals saved successfully!",
             "severity": severity,
             "advice": advice
         }), 200
 
-    except ValueError:
-        return jsonify({"status": "error", "message": "Invalid input format. Please enter numbers."}), 400
     except Exception as e:
         db.session.rollback()
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return jsonify({"status": "error", "message": "Input error. Please ensure all vitals are numbers."}), 400
 
 
 @app.route('/chat', methods=['GET', 'POST'])
