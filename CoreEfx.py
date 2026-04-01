@@ -2518,7 +2518,7 @@ def chat():
                         elif "teaching" in h.name.lower() or "emergency" in h.name.lower():
                             h_is_emergency = True
 
-                        # Travel time calculation
+                        # 3. Travel time calculation
                         # Calculate total hours first
                         total_hours = dist_km / AVG_SPEED_KMH
 
