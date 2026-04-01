@@ -152,6 +152,36 @@
             z-index: 3000;
         }
 
+        /* Responsive Vitals Form */
+        .vitals-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two columns by default */
+            gap: 15px;
+            background: var(--background-light);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box; /* Ensures padding doesn't add to width */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* Prevents flex items from overflowing */
+        }
+
+        .form-group input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--background-white);
+            color: var(--text-dark);
+            width: 100%;
+            box-sizing: border-box; /* Keeps inputs inside their containers */
+        }
+        
+
         .footer-nav {
             position: fixed;
             bottom: 0;
@@ -201,6 +231,8 @@
         .tab-button i { display: block; font-size: 20px; }
 
 
+
+
         /* --- LAPTOP SCREEN OVERRIDES --- */
         @media (min-width: 700px) {
             :root { --sidebar-width: 260px; }
@@ -242,6 +274,9 @@
             <button class="side-link active" onclick="openTab(event, 'home')">
                 <i class="fas fa-home"></i> Home
             </button>
+            <button class="side-link" onclick="openTab(event, 'vitals')">
+                <i class="fas fa-heartbeat"></i> Vitals
+            </button>
             <button class="side-link" onclick="openTab(event, 'feedback')">
                 <i class="fas fa-comment-alt"></i> Feedback
             </button>
@@ -260,9 +295,7 @@
             <button class="side-link" onclick="setTheme('light')"><i class="fa fa-sun"></i> Light Mode</button>
             <button class="side-link" onclick="setTheme('dark')"><i class="fa fa-moon"></i> Dark Mode</button>
             <button class="side-link" onclick="setSystemMode()"><i class="fa fa-desktop"></i> System Mode</button>
-            <button id="shareBtn" class="side-link">
-                <i class="fa-solid fa-share-nodes"></i> Share App
-            </button>
+            <button class="side-link shareBtn"> <i class="fa-solid fa-share-nodes"></i> Share App</button>
 
             <button class="side-link" style="font-weight: 600;" onclick="window.location='{{ url_for('logout') }}'">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -297,14 +330,12 @@
             <a href="/terms_of_service" style="font-size: small;">
                 <i class="fa fa-file-alt"></i> Terms of Service
             </a>
-            <button id="shareBtn">
-                <i class="fa-solid fa-share-nodes"></i> Share App
-            </button>
+
+            <button class="shareBtn"> <i class="fa-solid fa-share-nodes"></i> Share App</button>
 
             <div style="font-size: 14px; padding: 12px 15px; border-top: 1px solid var(--border-color); color: var(--text-muted);">
                 <a href="/chat"><i class="fa-solid fa-circle-user"></i> <b>{{ current_user.username }}</b></a>
             </div>
-            
 
             <button onclick="window.location='{{ url_for('logout') }}'" style=" font-weight: 600; padding: 12px 30px;">
                 <i class="fa fa-sign-out-alt"></i> Logout
@@ -319,21 +350,79 @@
             <a href="{{ url_for('chat') }}" class="chat-btn">Check symptoms</a>
         </div>
 
+
+        <div id="vitals" class="tab-content">
+            <div style="max-width: 100%; overflow-x: auto;"> <h3>Vitals Tracker</h3>
+                <p>Enter your readings below for a severity analysis.</p>
+                <form id="vitalsForm" class="vitals-form">
+                    <div class="form-group">
+                        <label>Temperature (°C)</label>
+                        <input type="number" step="0.1" name="temp" placeholder="36.5" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Heart Rate (BPM)</label>
+                        <input type="number" name="hr" placeholder="72" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BP Systolic (Top)</label>
+                        <input type="number" name="bp_sys" placeholder="120" required>
+                    </div>
+                    <div class="form-group">
+                        <label>BP Diastolic (Bottom)</label>
+                        <input type="number" name="bp_dia" placeholder="80" required>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Oxygen SpO2 (%)</label>
+                        <input type="number" name="spo2" placeholder="98" required>
+                    </div>
+                    <button type="submit" class="chat-btn" style="grid-column: span 2; border: none; cursor: pointer; width: 100%;">Analyze</button>
+                </form>
+            </div>
+            <div id="vitalsResult" style="
+                margin-top: 25px; 
+                padding: 20px; 
+                border-radius: 12px; 
+                display: none; 
+                word-wrap: break-word; 
+                border: 1px solid var(--border-color); 
+                box-shadow: 0 4px 12px var(--shadow-light);
+                text-align: center;
+                transition: all 0.3s ease;">
+            </div>
+        </div>
+
         <div id="history" class="tab-content">
-            <h3>Your Health Reports</h3>
-            {% if history_reports %}
-                <ul style="padding:0;">
-                {% for report in history_reports %}
-                    <li class="history-item">
-                        <strong>Symptoms:</strong> {{ report.input_text }}<br>
-                        <strong>Advice:</strong> {{ report.result }}<br>
-                        <small>{{ report.timestamp.strftime('%d-%m-%Y') }}</small>
-                    </li>
-                {% endfor %}
-                </ul>
-            {% else %}
-                <p>No past consultations found.</p>
-            {% endif %}
+            <h3 id="history-title">Your Health History</h3>
+            
+            <ul id="history-list" style="padding:0; list-style: none;">
+                {% if all_history %}
+                    {% for item in all_history %}
+                        {# Check if the item is a VitalsLog (has temperature) or SymptomReport #}
+                        {% if item.temperature is defined %}
+                            <li class="history-item vitals-record" style="border-left: 5px solid var(--primary-color);">
+                                <strong><i class="fas fa-heartbeat"></i> Vitals Reading:</strong>
+                                <p>Temp: {{ item.temperature }}°C | HR: {{ item.heart_rate }} bpm | BP: {{ item.bp_systolic }}/{{ item.bp_diastolic }} | SpO2: {{ item.spo2 }}%</p>
+                                <div style= "padding: 5px; border-radius: 8px;">
+                                    <strong>Status:</strong> {{ item.severity }}<br>
+                                    <strong>Advice:</strong> {{ item.result }}
+                                </div>
+                                <small>{{ item.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
+                            </li>
+                        {% else %}
+                            <li class="history-item symptom-record" style="border-left: 5px solid var(--accent-color);">
+                                <strong><i class="fas fa-stethoscope"></i> Symptom Report:</strong>
+                                <p>{{ item.input_text }}</p>
+                                <div style="padding: 5px; border-radius: 8px;">
+                                    <strong>AI Advice:</strong> {{ item.result }}
+                                </div>
+                                <small>{{ item.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="empty-msg">No health records found.</p>
+                {% endif %}
+            </ul>
         </div>
 
         <div id="feedback" class="tab-content">
@@ -359,6 +448,10 @@
                 <i class="fa-solid fa-brain"></i>
                 <span>Home</span>
             </button>
+            <button class="tab-button" onclick="openTab(event, 'vitals')">
+                <i class="fa-solid fa-heartbeat"></i>
+                <span>Vitals</span>
+            </button>
             <button class="tab-button" onclick="openTab(event, 'feedback')">
                 <i class="fas fa-comment-alt"></i>
                 <span>Feedback</span>
@@ -372,19 +465,45 @@
 
     <script>
         // Tab Switching Logic
-        function openTab(evt, tabName) {
+       function openTab(evt, tabName, filterType = 'all') {
+            // 1. Standard Tab Switching
             const contents = document.querySelectorAll(".tab-content");
             contents.forEach(c => c.classList.remove("active"));
             
             const buttons = document.querySelectorAll(".tab-button, .side-link");
             buttons.forEach(b => b.classList.remove("active"));
 
-            document.getElementById(tabName).classList.add("active");
+            const activeTab = document.getElementById(tabName);
+            if(activeTab) activeTab.classList.add("active");
             
-            // Highlight the correct button in both mobile and desktop navs
-            const targets = document.querySelectorAll(`[onclick*="'${tabName}'"]`);
-            targets.forEach(t => t.classList.add("active"));
+            if (evt) {
+                const targets = document.querySelectorAll(`[onclick*="'${tabName}'"]`);
+                targets.forEach(t => t.classList.add("active"));
+            }
+
+            // 2. Specialized History Filtering
+            if (tabName === 'history') {
+                const symptomSec = document.getElementById('symptom-history-section');
+                const vitalsSec = document.getElementById('vitals-history-section');
+                const title = document.getElementById('history-title');
+
+                if (filterType === 'vitals') {
+                    title.innerText = "Vitals History";
+                    vitalsSec.style.display = 'block';
+                    symptomSec.style.display = 'none';
+                } else if (filterType === 'symptoms') {
+                    title.innerText = "Symptom History";
+                    symptomSec.style.display = 'block';
+                    vitalsSec.style.display = 'none';
+                } else {
+                    // Default: Show both or prioritize one
+                    title.innerText = "All Health History";
+                    symptomSec.style.display = 'block';
+                    vitalsSec.style.display = 'block';
+                }
+            }
         }
+
 
         // Mobile Menu Toggle
         const navToggle = document.getElementById('navToggle');
@@ -400,22 +519,103 @@
         }
 
 
-        const shareBtn = document.getElementById('shareBtn');
-    
-        shareBtn.addEventListener('click', async () => {
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'CoreEfx AI Health Advisor',
-                        text: 'Check your symptoms and get AI health advice with CoreEfx.',
-                        url: 'https://coreefx-ai-nky0.onrender.com'
+        const shareBtns = document.querySelectorAll('.shareBtn');
+
+        shareBtns.forEach(btn => {
+            btn.addEventListener('click', async () => {
+                if (navigator.share) {
+                    try {
+                        await navigator.share({
+                            title: 'CoreEfx AI Health Advisor',
+                            text: 'Check your symptoms and get AI health advice with CoreEfx AI.',
+                            url: 'https://coreefx-ai-nky0.onrender.com'
+                        });
+                        console.log('App shared successfully');
+                    } catch (err) {
+                        console.log('Share cancelled or failed:', err);
+                    }
+                } else {
+                    // Fallback for browsers/devices that don't support native sharing
+                    const url = 'https://coreefx-ai-nky0.onrender.com';
+                    navigator.clipboard.writeText(url).then(() => {
+                        alert("Link copied to clipboard! You can now paste and share it.");
                     });
-                    console.log('App shared successfully');
-                } catch (err) {
-                    console.log('Share cancelled or failed:', err);
                 }
-            } else {
-                alert("Link copied to clipboard! You can now paste and share it.");
+            });
+        });
+
+        // Vitals Logic
+        document.getElementById('vitalsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            const resultDiv = document.getElementById('vitalsResult');
+            const historyList = document.getElementById('history-list');
+
+            try {
+                const response = await fetch('/submit_vitals', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const res = await response.json();
+
+                if (res.status === 'success') {
+                    resultDiv.style.display = 'block';
+                    
+                    // Applying "Box" styling based on severity
+                    if (res.severity === 'High') {
+                        resultDiv.style.background = 'rgba(248, 215, 218, 0.2)'; // Light red tint
+                        resultDiv.style.border = '2px solid #dc3545';            // Strong red border
+                        resultDiv.style.color = '#721c24';                       // Dark red text
+                    } else {
+                        resultDiv.style.background = 'rgba(212, 237, 218, 0.2)'; // Light green tint
+                        resultDiv.style.border = '2px solid var(--accent-color)'; // Theme green border
+                        resultDiv.style.color = '#155724';                        // Dark green text
+                    }
+
+                    // Adding an icon and better spacing to the inside of the box
+                    resultDiv.innerHTML = `
+                        <div style="font-size: 1.2rem; margin-bottom: 10px;">
+                            <i class="fas ${res.severity === 'High' ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i>
+                            <strong>${res.severity} Severity Detected</strong>
+                        </div>
+                        <p style="margin: 0; line-height: 1.5;">${res.advice}</p>
+                    `;
+                    
+                    // DYNAMIC INJECTION
+                    if (historyList) {
+                        const now = new Date();
+                        const timestamp = now.getDate().toString().padStart(2, '0') + '-' + 
+                                        (now.getMonth() + 1).toString().padStart(2, '0') + '-' + 
+                                        now.getFullYear() + ' ' + 
+                                        now.getHours().toString().padStart(2, '0') + ':' + 
+                                        now.getMinutes().toString().padStart(2, '0');
+
+                        const newEntry = document.createElement('li');
+                        newEntry.className = 'history-item vitals-record';
+                        newEntry.style.borderLeft = '5px solid var(--primary-color)';
+                        newEntry.innerHTML = `
+                            <strong><i class="fas fa-heartbeat"></i> Vitals Reading:</strong>
+                            <p>Temp: ${data.temp}°C | HR: ${data.hr} bpm | BP: ${data.bp_sys}/${data.bp_dia} | SpO2: ${data.spo2}%</p>
+                            <div style="background: rgba(0,0,0,0.03); padding: 10px; border-radius: 8px;">
+                                <strong>Status:</strong> ${res.severity}<br>
+                                <strong>Advice:</strong> ${res.advice}
+                            </div>
+                            <small>${timestamp}</small>
+                        `;
+                        // Adds it to the top of the combined list
+                        historyList.prepend(newEntry);
+                        
+                        // Remove "No health records found" message if it exists
+                        const emptyMsg = document.querySelector('.empty-msg');
+                        if (emptyMsg) emptyMsg.remove();
+                    }
+
+                    this.reset();
+                }
+            } catch (err) {
+                alert("Error connecting to server.");
             }
         });
 
