@@ -2357,11 +2357,13 @@ def submit_vitals():
         elif temp > 39.0:
             high_alerts.append("you have a high fever that requires immediate attention")
         elif 37.5 <= temp <= 38.4:
-            moderate_warnings.append("you have a low-grade fever; please check if you've been in the sun or are feeling unwell")
+            moderate_warnings.append(
+                "you have a low-grade fever; please check if you've been in the sun or are feeling unwell")
         elif 38.5 <= temp <= 39.0:
             moderate_warnings.append("your temperature indicates a moderate fever")
         elif 35.0 <= temp <= 36.0:
-            moderate_warnings.append("your body temperature is slightly subnormal; ensure you are in a warm environment")
+            moderate_warnings.append(
+                "your body temperature is slightly subnormal; ensure you are in a warm environment")
 
         # --- OXYGEN (SpO2) ---
         if spo2 <= 92:
@@ -2389,12 +2391,12 @@ def submit_vitals():
             # Combine sentences: "We noticed that [alert1] and [alert2]."
             summary = " and ".join(high_alerts)
             advice = f"Emergency Alert: We noticed that {summary}. Please seek medical attention or contact emergency services immediately."
-        
+
         elif moderate_warnings:
             severity = "Moderate"
             summary = " and ".join(moderate_warnings)
             advice = f"Health Note: It appears that {summary}. We recommend monitoring these vitals closely and consulting a healthcare professional if you feel unwell."
-        
+
         else:
             severity = "Normal"
             advice = "Your vitals are currently within the standard healthy ranges. Continue to maintain your routine and stay hydrated!"
@@ -2422,6 +2424,7 @@ def submit_vitals():
     except Exception as e:
         db.session.rollback()
         return jsonify({"status": "error", "message": "Input error. Please ensure all vitals are numbers."}), 400
+
 
 
 @app.route('/chat', methods=['GET', 'POST'])
