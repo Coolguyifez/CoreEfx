@@ -2514,8 +2514,13 @@ def chat():
                 f"I couldn't match your symptoms precisely. Since you noticed this {notice}, please consult a doctor.")
 
         # Audio Generation
-        audio_path = generate_audio(" ".join(result))
-        audio_file = os.path.basename(audio_path)
+        try:
+            full_text = " ".join(result)
+            audio_path = generate_audio(full_text)
+            audio_file = os.path.basename(audio_path)
+        except Exception as e:
+            print(f"⚠️ Audio Generation Failed (Likely 429 Rate Limit): {e}")
+            audio_file = None
 
         # --- STEP 4: HOSPITAL MAPPING (Improved Accuracy) ---
         if lat_str and lon_str:
