@@ -565,11 +565,11 @@
                     
                     // Applying "Box" styling based on severity
                     if (res.severity === 'High') {
-                        resultDiv.style.background = 'rgba(248, 215, 218, 0.2)'; // Light red tint
+                        resultDiv.style.background = 'var(--header-light)'; // Light red tint
                         resultDiv.style.border = '2px solid #dc3545';            // Strong red border
                         resultDiv.style.color = '#721c24';                       // Dark red text
                     } else {
-                        resultDiv.style.background = 'rgba(212, 237, 218, 0.2)'; // Light green tint
+                        resultDiv.style.background = 'var(--header-light)'; // Light green tint
                         resultDiv.style.border = '2px solid var(--accent-color)'; // Theme green border
                         resultDiv.style.color = '#155724';                        // Dark green text
                     }
