@@ -12,7 +12,7 @@
       "src": "/static/images/brain.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable"
     },
     {
       "src": "/static/images/brain.png",
