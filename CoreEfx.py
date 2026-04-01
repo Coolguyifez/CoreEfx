@@ -2351,19 +2351,17 @@ def submit_vitals():
         high_alerts = []
         moderate_warnings = []
 
-        # --- TEMPERATURE ---
+        # --- TEMPERATURE (Adult Clinical Ranges) ---
         if temp < 35.0:
             high_alerts.append("your body temperature is critically low, indicating a risk of hypothermia")
         elif temp > 39.0:
-            high_alerts.append("you have a high fever that requires immediate attention")
-        elif 37.5 <= temp <= 38.4:
-            moderate_warnings.append(
-                "you have a low-grade fever; please check if you've been in the sun or are feeling unwell")
-        elif 38.5 <= temp <= 39.0:
-            moderate_warnings.append("your temperature indicates a moderate fever")
+            high_alerts.append("you have a high fever that requires immediate clinical attention")
         elif 35.0 <= temp <= 36.0:
-            moderate_warnings.append(
-                "your body temperature is slightly subnormal; ensure you are in a warm environment")
+            moderate_warnings.append("your body temperature is subnormal; please confirm if you are in a cold environment or feeling chilled")
+        elif 37.5 <= temp <= 38.0:
+            moderate_warnings.append("you have a low-grade fever; it is worth investigating if you have been under the sun or are starting to feel unwell")
+        elif 38.1 <= temp <= 39.0:
+            moderate_warnings.append("your temperature indicates a moderate fever")
 
         # --- OXYGEN (SpO2) ---
         if spo2 <= 92:
@@ -2373,7 +2371,7 @@ def submit_vitals():
 
         # --- BLOOD PRESSURE ---
         if bp_sys >= 180 or bp_dia >= 120:
-            high_alerts.append("your blood pressure is in a crisis range")
+            high_alerts.append("your blood pressure is in a hypertensive crisis range")
         elif bp_sys >= 140 or bp_dia >= 90:
             moderate_warnings.append("your blood pressure reading is high (Stage 2 Hypertension range)")
         elif 120 <= bp_sys <= 139 or 80 <= bp_dia <= 89:
@@ -2388,20 +2386,26 @@ def submit_vitals():
         # 2. Construct Professional Response
         if high_alerts:
             severity = "High"
-            # Combine sentences: "We noticed that [alert1] and [alert2]."
             summary = " and ".join(high_alerts)
             advice = f"Emergency Alert: We noticed that {summary}. Please seek medical attention or contact emergency services immediately."
-
         elif moderate_warnings:
             severity = "Moderate"
             summary = " and ".join(moderate_warnings)
-            advice = f"Health Note: It appears that {summary}. We recommend monitoring these vitals closely and consulting a healthcare professional if you feel unwell."
-
+            advice = f"Health Note: It appears that {summary}. We recommend monitoring these vitals closely and consulting a healthcare professional if symptoms persist."
         else:
             severity = "Normal"
             advice = "Your vitals are currently within the standard healthy ranges. Continue to maintain your routine and stay hydrated!"
 
-        # 3. Save to Database
+        # 3. Audio Generation with 429 Error Handling
+        audio_url = None
+        try:
+            audio_path = generate_audio(advice)
+            audio_url = url_for('static', filename=os.path.basename(audio_path))
+        except Exception as e:
+            # Catching rate limits (429) or connection issues
+            print(f"Audio generation skipped: {e}")
+
+        # 4. Save to Database
         new_vitals = VitalsLog(
             user_id=current_user.id,
             temperature=temp,
@@ -2410,7 +2414,8 @@ def submit_vitals():
             bp_diastolic=bp_dia,
             spo2=spo2,
             severity=severity,
-            result=advice
+            result=advice,
+            timestamp=datetime.utcnow()
         )
         db.session.add(new_vitals)
         db.session.commit()
@@ -2418,7 +2423,8 @@ def submit_vitals():
         return jsonify({
             "status": "success",
             "severity": severity,
-            "advice": advice
+            "advice": advice,
+            "audio_file": audio_url
         }), 200
 
     except Exception as e:
