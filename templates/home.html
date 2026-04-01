@@ -260,6 +260,9 @@
             <button class="side-link" onclick="setTheme('light')"><i class="fa fa-sun"></i> Light Mode</button>
             <button class="side-link" onclick="setTheme('dark')"><i class="fa fa-moon"></i> Dark Mode</button>
             <button class="side-link" onclick="setSystemMode()"><i class="fa fa-desktop"></i> System Mode</button>
+            <button id="shareBtn" class="side-link">
+                <i class="fa-solid fa-share-nodes"></i> Share App
+            </button>
 
             <button class="side-link" style="font-weight: 600;" onclick="window.location='{{ url_for('logout') }}'">
                 <i class="fas fa-sign-out-alt"></i> Logout
@@ -294,10 +297,14 @@
             <a href="/terms_of_service" style="font-size: small;">
                 <i class="fa fa-file-alt"></i> Terms of Service
             </a>
+            <a href="#" id="shareBtn" style="font-size: small;">
+                <i class="fa-solid fa-share-nodes"></i> Share App
+            </a>
 
             <div style="font-size: 14px; padding: 12px 15px; border-top: 1px solid var(--border-color); color: var(--text-muted);">
                 <a href="/chat"><i class="fa-solid fa-circle-user"></i> <b>{{ current_user.username }}</b></a>
             </div>
+            
 
             <button onclick="window.location='{{ url_for('logout') }}'" style=" font-weight: 600; padding: 12px 30px;">
                 <i class="fa fa-sign-out-alt"></i> Logout
@@ -391,6 +398,26 @@
                 navMenu.classList.toggle('show');
             }
         }
+
+
+        const shareBtn = document.getElementById('shareBtn');
+    
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'CoreEfx AI Health Advisor',
+                        text: 'Check your symptoms and get AI health advice with CoreEfx.',
+                        url: 'https://coreefx-ai-nky0.onrender.com'
+                    });
+                    console.log('App shared successfully');
+                } catch (err) {
+                    console.log('Share cancelled or failed:', err);
+                }
+            } else {
+                alert("Link copied to clipboard! You can now paste and share it.");
+            }
+        });
 
 
         document.getElementById('feedbackForm').addEventListener('submit', function(e) {
