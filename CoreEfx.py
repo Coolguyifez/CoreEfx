@@ -2426,7 +2426,6 @@ def submit_vitals():
         return jsonify({"status": "error", "message": "Input error. Please ensure all vitals are numbers."}), 400
 
 
-
 @app.route('/chat', methods=['GET', 'POST'])
 @login_required
 def chat():
