@@ -95,7 +95,6 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 60px;
             /* padding to account for the notch/status bar */
             padding-top: env(safe-area-inset-top); 
             /* the header tall enough to hold the status bar + your 60px content */
@@ -144,7 +143,10 @@
         /* --- CONTENT WRAPPER --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            padding: calc(10px + env(safe-area-inset-top)) 20px 100px 20px; /* Bottom padding for mobile footer */
+            padding-top: calc(40px + env(safe-area-inset-top)); 
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-bottom: 120px; /* Bottom padding for mobile footer */
             transition: margin-left 0.3s ease;
         }
 
@@ -229,6 +231,18 @@
         .tab-button { background: none; border: none; color: var(--text-dark); text-align: center; flex: 1; cursor: pointer; }
         .tab-button.active i { color: var(--accent-color); }
         .tab-button i { display: block; font-size: 20px; }
+        .tab-content h3 {
+            margin-top: 0 !important; /* Forces the title to the top */
+            padding-top: 10px;        /* Small, consistent gap from the header bar */
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+        }
+        
+        /* Ensure the first element in a tab doesn't push everything down */
+        .tab-content > *:first-child {
+            margin-top: 0; 
+        }
 
 
 
