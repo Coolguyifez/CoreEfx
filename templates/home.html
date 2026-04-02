@@ -90,23 +90,27 @@
 
         /* --- MOBILE HEADER & FOOTER (Visible by default) --- */
         .app-header {
-           display: flex;
-            position: sticky !important;
+            display: flex;
+            position: fixed !important; /* Changed from sticky to fixed */
             top: 0;
             left: 0;
             right: 0;
-            /* padding to account for the notch/status bar */
-            padding-top: env(safe-area-inset-top); 
-            /* the header tall enough to hold the status bar + your 60px content */
-            height: calc(60px + env(safe-area-inset-top));
+            width: 100%;
+            
+            /* Height + Notch */
+            height: calc(80px + env(safe-area-inset-top));
+            padding-top: env(safe-area-inset-top);
+            
             justify-content: space-between;
-            backdrop-filter: blur(12px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(12px) saturate(180%);
             align-items: center;
             background-color: var(--header-light) !important;
-            padding: 0 20px;
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            padding-left: 20px;
+            padding-right: 20px;
             z-index: 3000;
-            box-sizing: border-box; /* Ensures padding doesn't break the layout */
+            box-sizing: border-box;
+            
         }
 
 
@@ -143,7 +147,7 @@
         /* --- CONTENT WRAPPER --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            padding-top: calc(40px + env(safe-area-inset-top)); 
+            padding-top: calc(100px + env(safe-area-inset-top)); 
             padding-left: 20px;
             padding-right: 20px;
             padding-bottom: 120px; /* Bottom padding for mobile footer */
