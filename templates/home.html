@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -87,6 +87,8 @@
             color: var(--text-dark);
         }
 
+
+        /* --- MOBILE HEADER & FOOTER (Visible by default) --- */
         .app-header {
            display: flex;
             position: sticky !important;
@@ -94,13 +96,16 @@
             left: 0;
             right: 0;
             height: 60px;
+            /* padding to account for the notch/status bar */
+            padding-top: env(safe-area-inset-top); 
+            /* the header tall enough to hold the status bar + your 60px content */
+            height: calc(60px + env(safe-area-inset-top));
             justify-content: space-between;
             backdrop-filter: blur(12px) saturate(180%) !important;
             -webkit-backdrop-filter: blur(12px) saturate(180%);
             align-items: center;
             background-color: var(--header-light) !important;
             padding: 0 20px;
-            border-bottom: 0.3px solid var(--border-color);
             z-index: 3000;
         }
 
@@ -138,25 +143,12 @@
         /* --- CONTENT WRAPPER --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            padding: 10px 20px 100px 20px; /* Bottom padding for mobile footer */
+            padding: calc(10px + env(safe-area-inset-top)) 20px 100px 20px; /* Bottom padding for mobile footer */
             transition: margin-left 0.3s ease;
         }
 
-        /* --- MOBILE HEADER & FOOTER (Visible by default) --- */
-        .app-header {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 60px;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--background-white);
-            padding: 0 20px;
-            border-bottom: 0.3px  var(--border-color);
-            z-index: 3000;
-        }
+        
+     
 
         /* Responsive Vitals Form */
         .vitals-form {
@@ -194,6 +186,7 @@
             left: 0;
             width: 100%;
             height: 80px;
+            padding-bottom: env(safe-area-inset-bottom);
             display: flex;
             justify-content: center;
             align-items: center;
