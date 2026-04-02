@@ -184,26 +184,44 @@
             }
         }, 4500);
 
-        //3. PWA Install Logic
+        /// 3. PWA Install Logic
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
-
+        
+        // A. Handle Android/Chrome Installation
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            // Show the button if installation is possible
+            installBtn.style.display = 'block'; // Show button for Android
+        });
+        
+        // B. Handle iPhone/iOS Detection
+        const isIos = () => {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        }
+        // Check if it's already installed
+        const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+        
+        if (isIos() && !isInStandaloneMode()) {
+            // For iPhone, we change the button text since we can't trigger the prompt
             installBtn.style.display = 'block';
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User Choice: ${outcome}`);
-                deferredPrompt = null;
-                installBtn.style.display = 'none';
-            }
-        });
+            installBtn.innerHTML = '<i class="fa-solid fa-share-from-square"></i> How to Install on iPhone';
+            
+            installBtn.addEventListener('click', () => {
+                alert("To install CoreEfx on your iPhone:\n\n1. Tap the 'Share' button (square with arrow) at the bottom.\n2. Scroll down and tap 'Add to Home Screen'.\n3. Tap 'Add' at the top right.");
+            });
+        } else {
+            // Normal Android Click Logic
+            installBtn.addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    deferredPrompt = null;
+                    installBtn.style.display = 'none';
+                }
+            });
+        }
         
 
         // 4. Redirect logic
