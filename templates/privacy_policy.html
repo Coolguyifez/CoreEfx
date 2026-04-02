@@ -1,13 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#1a1a1b" media="(prefers-color-scheme: dark)">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -22,8 +17,25 @@
             --bg-body: #ffffff;
             --bg-sidebar: #f7f9fc;
             --border-light: #e3e8ee;
-            --shadow-sm: 0 2px 5px rgba(0,0,0,0.05);
+            --header-bg: rgba(255, 255, 255, 0.8);
+            --contact-bg: #f0f7ff;
         }
+
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-body: #1a1a1b;
+                --text-main: #e0e0e0;
+                --text-secondary: #b0b0b0;
+                --bg-sidebar: #2c2f33;
+                --border-light: #4a4d52;
+                --header-bg: rgba(26, 26, 27, 0.8);
+                --contact-bg: #1e293b;
+            }
+
+       
+        }
+
 
         * { box-sizing: border-box; }
 
@@ -34,6 +46,7 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .icon{
@@ -45,9 +58,8 @@
         header {
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-light);
             padding: 1rem 5%;
             z-index: 1000;
             display: flex;
@@ -86,8 +98,9 @@
         /* --- Sidebar Navigation --- */
         aside {
             position: sticky;
-            top: 100px;
+            top: 100px; /*Ensures it accounts for header height */
             height: fit-content;
+            align-self: start; /* Prevents the sidebar from stretching */
         }
 
         aside h4 {
@@ -106,6 +119,13 @@
             font-size: 0.95rem;
             border-left: 2px solid transparent;
             transition: all 0.2s;
+        }
+
+        .toc-link.active {
+            color: var(--brand-success);
+            border-left: 2px solid var(--brand-success);
+            padding-left: 10px;
+            font-weight: 600;
         }
 
         .toc-link:hover { color: var(--brand-success); }
@@ -147,7 +167,7 @@
         }
 
         .contact-box {
-            background: #f0f7ff;
+            background: var(--contact-bg);
             border-radius: 12px;
             padding: 30px;
             margin-top: 60px;
@@ -155,9 +175,19 @@
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
-            .page-wrapper { grid-template-columns: 1fr; }
+            .page-wrapper { 
+                grid-template-columns: 1fr; 
+                padding-top: 30px; /* Reduce top padding on mobile */
+            }
             aside { display: none; }
             h1 { font-size: 2rem; }
+            
+            /* Make the back button easier to hit on mobile */
+            .back-btn {
+                padding: 8px 12px;
+                background: var(--bg-sidebar);
+                border-radius: 6px;
+            }
         }
     </style>
 </head>
@@ -266,6 +296,8 @@
                 });
             });
         });
+        
+
     </script>
 </body>
 </html>
