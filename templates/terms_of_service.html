@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
+        /* --- THEME CONSTANTS --- */
         :root {
             --brand-primary: #008000;
             --brand-danger: #dc3545;
@@ -23,6 +24,23 @@
             --bg-body: #ffffff;
             --bg-sidebar: #f7f9fc;
             --border-light: #e3e8ee;
+            --header-bg: rgba(255, 255, 255, 0.8);
+            --disclaimer-bg: #fff5f5;
+            --disclaimer-border: #feb2b2;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --brand-primary: #00a300; /* Slightly brighter green for dark bg */
+                --text-main: #e0e0e0;
+                --text-secondary: #b0b0b0;
+                --bg-body: #1a1a1b;
+                --bg-sidebar: #2c2f33;
+                --border-light: #4a4d52;
+                --header-bg: rgba(26, 26, 27, 0.8);
+                --disclaimer-bg: #2d1a1a; 
+                --disclaimer-border: #631717;
+            }
         }
 
         * { box-sizing: border-box; }
@@ -34,12 +52,13 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             line-height: 1.7;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         header {
             position: sticky;
             top: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: var(--header-bg);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-light);
             padding: 1rem 5%;
@@ -58,7 +77,7 @@
             gap: 10px;
         }
 
-        .icon{
+        .icon {
             color: var(--brand-primary);
         }
 
@@ -67,6 +86,11 @@
             text-decoration: none;
             font-size: 0.9rem;
             font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .back-btn:hover { 
+            color: var(--brand-primary); 
         }
 
         .page-wrapper {
@@ -102,7 +126,17 @@
             transition: all 0.2s;
         }
 
-        .toc-link:hover { color: var(--brand-primary); }
+        .toc-link:hover { 
+            color: var(--brand-primary); 
+            padding-left: 5px;
+        }
+
+        .toc-link.active {
+            color: var(--brand-primary);
+            border-left: 2px solid var(--brand-primary);
+            padding-left: 10px;
+            font-weight: 600;
+        }
 
         .content-section { max-width: 800px; }
 
@@ -119,15 +153,21 @@
         }
 
         .disclaimer-card {
-            background: #fff5f5;
+            background: var(--disclaimer-bg);
             border-radius: 12px;
             padding: 24px;
             margin: 30px 0;
-            border: 1px solid #feb2b2;
+            border: 1px solid var(--disclaimer-border);
             border-left: 5px solid var(--brand-danger);
         }
 
-        .disclaimer-card h3 { color: var(--brand-danger); margin-top: 0; }
+        .disclaimer-card h3 { 
+            color: var(--brand-danger); 
+            margin-top: 0; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
         .info-card {
             background: var(--bg-sidebar);
@@ -135,14 +175,24 @@
             padding: 24px;
             margin: 20px 0;
             border-left: 4px solid var(--brand-primary);
+            color: var(--text-main);
         }
 
         ul { padding-left: 20px; }
         li { margin-bottom: 12px; color: var(--text-secondary); }
 
         @media (max-width: 900px) {
-            .page-wrapper { grid-template-columns: 1fr; }
+            .page-wrapper { 
+                grid-template-columns: 1fr; 
+                padding-top: 30px;
+            }
             aside { display: none; }
+            h1 { font-size: 2rem; }
+            .back-btn {
+                padding: 8px 12px;
+                background: var(--bg-sidebar);
+                border-radius: 6px;
+            }
         }
     </style>
 </head>
@@ -183,7 +233,7 @@
                 <ul>
                     <li>The content provided is for <strong>educational and informational purposes only</strong>.</li>
                     <li>The AI's suggestions do not constitute medical advice, diagnosis, or treatment.</li>
-                    <li><strong>Emergency Use:</strong> Do not use this app in a life-threatening emergency. Contact your local emergency services (e.g., 112 in Nigeria) immediately.</li>
+                    <li><strong>Emergency Use:</strong> Do not use this app in a life-threatening emergency. Contact your local emergency services (e.g., <span style="color: var(--brand-danger); font-weight: bold;">112</span> in Nigeria) immediately.</li>
                     <li>Always seek the advice of a qualified healthcare provider with any questions you may have regarding a medical condition.</li>
                 </ul>
             </section>
