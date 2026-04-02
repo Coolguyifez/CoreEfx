@@ -49,6 +49,7 @@
             background-color: var(--background-white);
             color: var(--text-dark);
             transition: background-color var(--transition-speed);
+            overscroll-behavior-y: none;
         }
 
         /* --- DESKTOP SIDEBAR (Hidden by default on mobile) --- */
@@ -137,7 +138,7 @@
         /* --- CONTENT WRAPPER --- */
         .main-content {
             margin-left: var(--sidebar-width);
-            padding: 80px 20px 100px 20px; /* Bottom padding for mobile footer */
+            padding: 10px 20px 100px 20px; /* Bottom padding for mobile footer */
             transition: margin-left 0.3s ease;
         }
 
