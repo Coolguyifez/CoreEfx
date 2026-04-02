@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>CoreEfx AI Health Advisor</title>
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/brain.png') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -19,8 +22,8 @@
             --border-light: #e3e8ee;
             --header-bg: rgba(255, 255, 255, 0.8);
             --contact-bg: #f0f7ff;
+            --icon: #008000;
         }
-
 
         @media (prefers-color-scheme: dark) {
             :root {
@@ -31,11 +34,9 @@
                 --border-light: #4a4d52;
                 --header-bg: rgba(26, 26, 27, 0.8);
                 --contact-bg: #1e293b;
+                --icon:#e0e0e0;
             }
-
-       
         }
-
 
         * { box-sizing: border-box; }
 
@@ -47,20 +48,27 @@
             color: var(--text-main);
             line-height: 1.7;
             transition: background-color 0.3s ease, color 0.3s ease;
+            /* Respect the bottom home bar on iPhone */
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
-        .icon{
+        .icon { color: var(--icon); }
 
-            color:  var(--brand-success);
-        }
 
-        /* --- Modern Navigation Header --- */
+        /* --- Updated Header with iPhone Fix --- */
         header {
             position: sticky;
             top: 0;
             background: var(--header-bg);
             backdrop-filter: blur(10px);
-            padding: 1rem 5%;
+            -webkit-backdrop-filter: blur(10px); /* Safari Fix */
+            
+            /* Dynamic padding for the notch/status bar */
+            padding-top: calc(1rem + env(safe-area-inset-top));
+            padding-bottom: 1rem;
+            padding-left: 5%;
+            padding-right: 5%;
+            
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -85,7 +93,6 @@
         }
         .back-btn:hover { color: var(--brand-success); }
 
-        /* --- Layout Container --- */
         .page-wrapper {
             max-width: 1200px;
             margin: 0 auto;
@@ -95,12 +102,12 @@
             padding: 60px 5%;
         }
 
-        /* --- Sidebar Navigation --- */
         aside {
             position: sticky;
-            top: 100px; /*Ensures it accounts for header height */
+            /* Push sidebar down so it doesn't hide under the taller header */
+            top: calc(100px + env(safe-area-inset-top));
             height: fit-content;
-            align-self: start; /* Prevents the sidebar from stretching */
+            align-self: start;
         }
 
         aside h4 {
@@ -130,15 +137,8 @@
 
         .toc-link:hover { color: var(--brand-success); }
 
-        /* --- Content Area --- */
-        .content-section {
-            max-width: 800px;
-        }
-
-        .hero-title {
-            margin-bottom: 40px;
-        }
-
+        .content-section { max-width: 800px; }
+        .hero-title { margin-bottom: 40px; }
         h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
         .effective-date { color: var(--text-secondary); font-size: 0.95rem; }
 
@@ -152,9 +152,7 @@
         }
 
         h3 { font-size: 1.25rem; margin-top: 30px; color: var(--brand-success); }
-
         p { margin-bottom: 20px; font-size: 1.05rem; color: var(--text-secondary); }
-
         ul { padding-left: 20px; margin-bottom: 25px; }
         li { margin-bottom: 12px; color: var(--text-secondary); }
 
@@ -173,16 +171,13 @@
             margin-top: 60px;
         }
 
-        /* --- Mobile Responsiveness --- */
         @media (max-width: 900px) {
             .page-wrapper { 
                 grid-template-columns: 1fr; 
-                padding-top: 30px; /* Reduce top padding on mobile */
+                padding-top: 30px;
             }
             aside { display: none; }
             h1 { font-size: 2rem; }
-            
-            /* Make the back button easier to hit on mobile */
             .back-btn {
                 padding: 8px 12px;
                 background: var(--bg-sidebar);
