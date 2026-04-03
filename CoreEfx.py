@@ -782,7 +782,24 @@ with app.app_context():
             Hospital(name="PHC Mbarakpa", city="Akamkpa", lat=5.3000, lon=8.3800, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
             Hospital(name="PHC Old Netim", city="Akamkpa", lat=5.3200, lon=8.3400, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
             Hospital(name="PHC Ikot Effiong Ambai", city="Akpabuyo", lat=4.9400, lon=8.4200, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
-            Hospital(name="PHC Atimbo", city="Calabar Municipality", lat=4.955
+            Hospital(name="PHC Atimbo", city="Calabar Municipality", lat=4.9550, lon=8.3700, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Diamond", city="Calabar South", lat=4.9480, lon=8.3220, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Henshaw Town", city="Calabar South", lat=4.9420, lon=8.3260, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Duke Town", city="Calabar South", lat=4.9460, lon=8.3300, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Efut Abua", city="Calabar South", lat=4.9380, lon=8.3320, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Epariba", city="Calabar South", lat=4.9320, lon=8.3280, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Anantigha", city="Calabar South", lat=4.9280, lon=8.3350, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Boco", city="Calabar South", lat=4.9360, lon=8.3240, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Mbukpa", city="Calabar South", lat=4.9410, lon=8.3190, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Essien Town", city="Calabar Municipality", lat=4.9750, lon=8.3550, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Ishie Town", city="Calabar Municipality", lat=4.9820, lon=8.3460, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Ikot Ishie", city="Calabar Municipality", lat=4.9850, lon=8.3480, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Ikot Omin", city="Calabar Municipality", lat=5.0100, lon=8.3600, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC 8 Miles", city="Calabar Municipality", lat=5.0200, lon=8.3700, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Nasarawa", city="Calabar Municipality", lat=5.0150, lon=8.3450, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Parliamentary", city="Calabar Municipality", lat=4.9800, lon=8.3650, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Etta Agbor", city="Calabar Municipality", lat=4.9600, lon=8.3550, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
+            Hospital(name="PHC Goldie", city="Calabar Municipality", lat=4.9550, lon=8.3450, url="https://crossriverstate.gov.ng/", severity_tag="Low"),
             
             # --- BENUE STATE - 50 ENTRIES ---
             # --- HIGH SEVERITY (Tertiary / Specialist / Federal) ---
