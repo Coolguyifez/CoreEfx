@@ -1,6 +1,6 @@
-from flask import Flask, request, redirect, render_template_string, render_template, jsonify, url_for, flash, send_from_directory
+from flask import Flask, request, redirect, render_template, jsonify, url_for, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime, timedelta
 import spacy
 # === NEW Machine Learning imports ===
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -1594,13 +1594,13 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} {verb_has} signs of mild malaria. {subject} should rest and get a blood test soon."
+                "\n {subject} should rest and get a blood test soon."
                 "\n\n🍎 **Diet Recommendation:** Eat light, energy-rich foods like pap, oats, or bananas. Drink plenty of water and coconut water to stay hydrated."
                 "\n\n🛡️ **Precautions:** Sleep under a treated mosquito net and clear stagnant water around your home."
                 "\n\n🚫 **Avoid:** Avoid heavy, oily, or spicy foods that can upset the stomach. Do not skip meals even if appetite is low."
             ),
             "moderate": (
-                "\nYou likely {verb_has} malaria. Please visit the health center quickly for a blood test and ACT treatment."
+                "\n Please visit the health center quickly for a blood test and ACT treatment."
                 "\n\n🥗 **Diet Recommendation:** Focus on high-protein foods like boiled eggs or chicken soup to help the body recover. Fresh orange juice is great for Vitamin C."
                 "\n\n🛡️ **Precautions:** Finish the full course of malaria drugs even if you start feeling better. Rest in a cool, ventilated room."
                 "\n\n🚫 **Avoid:** Avoid alcohol, smoking, and strenuous physical exercise. Do not self-medicate without a confirmed test."
@@ -1640,7 +1640,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid raw vegetables, unpeeled fruits, and salads that might have been washed in contaminated water. Do not drink tap water directly."
             ),
             "moderate": (
-                "\nThis may be typhoid fever. {subject} {verb_needs} to visit the nearest health center for a Widal test and antibiotics."
+                "\n {subject} {verb_needs} to visit the nearest health center for a Widal test and antibiotics."
                 "\n\n🥗 **Diet Recommendation:** Increase fluid intake with coconut water, fresh fruit juices (no pulp), and electrolyte drinks to prevent dehydration from diarrhea."
                 "\n\n🛡️ **Precautions:** {subject} should avoid preparing food for others until a doctor confirms the infection is gone. Sanitize all eating utensils."
                 "\n\n🚫 **Avoid:** Avoid high-fiber foods like whole grains, nuts, and raw seeds, as they can irritate the intestines. Stay away from fried and spicy street foods."
@@ -1656,7 +1656,7 @@ symptom_data = {
             "runny nose (catarrh dey come out)",
             "nasal congestion (nose block)",
             "mild fever (small body hot)",
-            "catarrh",
+            "catarrh (running nose)",
             "throat dey scratch",
             "wetin I dey swallow dey pain",
             "I dey hawk phlegm",
@@ -1665,13 +1665,14 @@ symptom_data = {
             "my head dey heavy with catarrh",
             "mucus discharge",
             "phlegm",
+            "sneezing (coughing)"
             "constant sneezing",
             "throat irritation",
             "stuffy nose"
         ],
         "advice": {
             "low": (
-                "\nThis looks like a common cold. {subject} should rest and drink plenty of fluids."
+                "\n {subject} should rest and drink plenty of fluids."
                 "\n\n🍎 **Diet Recommendation:** Drink warm lemon water with honey to soothe {possessive} throat. Eat warm pepper soup or chicken broth to help clear catarrh."
                 "\n\n🛡️ **Precautions:** Use a clean tissue to blow {possessive} nose and dispose of it immediately. Wash hands frequently to avoid spreading the cold to others."
                 "\n\n🚫 **Avoid:** Avoid very cold drinks or ice cream as they can irritate the throat. Stay away from dusty environments which can make the cough worse."
@@ -1682,7 +1683,7 @@ symptom_data = {
                 "\n\n🛡️ **Precautions:** Use salt-water gargles twice a day to reduce throat swelling. Ensure {subject} {verb_is} sleeping in a well-ventilated but warm room."
                 "\n\n🚫 **Avoid:** Avoid smoking or being near people who smoke, as the lungs are already sensitive. Avoid sharing towels or drinking glasses with family members."
             ),
-            "high": "\n🚨 If {subject} {verb_is} having real trouble breathing or a very high fever with this cold, go to the clinic now. Severe congestion can sometimes lead to pneumonia."
+            "high": "\n🚨{subject} {verb_is} having real trouble breathing or a very high fever with this cold, go to the clinic now. Severe congestion can sometimes lead to pneumonia."
         }
     },
 
@@ -1708,7 +1709,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThis could be the flu. {subject} {verb_needs} plenty of bed rest and warm fluids."
+                "\n {subject} {verb_has} mild flu. {subject} {verb_needs} plenty of bed rest and warm fluids."
                 "\n\n🍎 **Diet Recommendation:** Eat light meals that are easy to digest, such as oats, pap, or soft-boiled yams. Stay hydrated with water and herbal teas."
                 "\n\n🛡️ **Precautions:** Keep a thermometer handy to monitor the fever. {subject} should stay home from work or school until the fever has been gone for 24 hours."
                 "\n\n🚫 **Avoid:** Avoid caffeinated drinks like coffee or strong soda, as they can lead to dehydration. Do not engage in heavy physical labor."
@@ -1751,7 +1752,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid milk and dairy products, as they can make diarrhea worse. Stay away from greasy, fried foods and very sugary drinks or sodas."
             ),
             "moderate": (
-                "\nThis may be a diarrheal infection. {subject} {verb_needs} to see a health worker if {subject} cannot stop vomiting."
+                "\n{subject} {verb_has} diarrheal infection. {subject} {verb_needs} to see a health worker if {subject} cannot stop vomiting."
                 "\n\n🥗 **Diet Recommendation:** Sip on clear vegetable broths and diluted fruit juices (non-acidic). Eat small, frequent meals of boiled potatoes or plain pasta."
                 "\n\n🛡️ **Precautions:** If {subject} {verb_is} handling food for others, stop immediately until the stooling stops. Use a disinfectant to clean the toilet area."
                 "\n\n🚫 **Avoid:** Avoid caffeine (coffee/strong tea) and alcohol, which cause the body to lose more water. Avoid spicy peppers that can irritate the intestines."
@@ -1760,7 +1761,7 @@ symptom_data = {
         }
     },
 
-    "urinary tract infection (UTI)": {
+    "urinary tract infection (uti)": {
         "symptoms": [
             "pain when urinating (when you piss e dey pain)",
             "frequent urge to urinate (dey always wan piss)",
@@ -1780,7 +1781,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThis looks like a urinary tract infection. {subject} should drink plenty of clean water to wash {possessive} system and not hold pee."
+                "\n{subject} may {verb_has} UTI. {subject} should drink plenty of clean water to wash {possessive} system and not hold pee."
                 "\n\n🍎 **Diet Recommendation:** Drink unsweetened cranberry juice if available. Eat water-rich fruits like watermelon and cucumbers to encourage frequent urination."
                 "\n\n🛡️ **Precautions:** Always wipe from front to back after using the toilet to prevent bacteria from entering the tract. Wear loose-fitting cotton underwear."
                 "\n\n🚫 **Avoid:** Avoid sugary drinks and artificial sweeteners, which can feed the bacteria. Limit spicy foods that might irritate the bladder."
@@ -1795,7 +1796,7 @@ symptom_data = {
         }
     },
 
-    "skin infection (rash/measles/chickenpox)": {
+    "skin infection (rash/measles/chickenpox/pimples/fungi/bacteria)": {
         "symptoms": [
             "rash (skin get small small spots)",
             "itchy skin (skin dey scratch)",
@@ -1817,7 +1818,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThis may be a skin infection. {subject} should avoid scratching and keep the area clean and dry."
+                "\n{subject} may {verb_has} a skin infection or reaction. {subject} should avoid scratching and keep the area clean and dry. Go to the nearest hospital to confirm."
                 "\n\n🍎 **Diet Recommendation:** Eat foods high in Vitamin C (oranges, guavas) and Zinc (beans, nuts) to help the skin heal faster."
                 "\n\n🛡️ **Precautions:** Use mild, fragrance-free soap. Wear loose, breathable cotton clothing to avoid further irritation. Wash bedsheets and towels in hot water."
                 "\n\n🚫 **Avoid:** Avoid sharing towels, sponges, or clothes with others to prevent spreading. Do not apply strong local herbs or 'concoctions' that can burn the skin."
@@ -1828,7 +1829,7 @@ symptom_data = {
                 "\n\n🛡️ **Precautions:** Keep fingernails short to prevent skin damage and secondary infections from scratching. Apply a cool, damp cloth to itchy areas for relief."
                 "\n\n🚫 **Avoid:** Avoid hot baths or showers, which can make itching worse. Stay away from harsh detergents and scented body creams until the skin clears."
             ),
-            "high": "\n🚨 If the skin is peeling, very painful, or {subject} {verb_has} a very high fever, visit the hospital now. This could be a severe allergic reaction or systemic infection."
+            "high": "\n🚨 If {possessive} skin is peeling, very painful, or {subject} {verb_has} a very high fever, visit the hospital now. This could be a severe allergic reaction or systemic infection."
         }
     },
 
@@ -1939,7 +1940,7 @@ symptom_data = {
         }
     },
 
-    "early pregnancy": {
+    "pregnancy": {
         "symptoms": [
             "missed period (menstruation no come)",
             "nausea (body dey turn)",
@@ -1961,13 +1962,13 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThese could be early pregnancy signs. {subject} should take a test to confirm the condition."
+                "\n{subject} may {verb_has} early pregnancy signs. {subject} should take a test to confirm the condition."
                 "\n\n🍎 **Diet Recommendation:** Eat small, frequent meals rather than three large ones to manage nausea. Ginger biscuits or lemon water can help with morning sickness."
                 "\n\n🛡️ **Precautions:** Start tracking the date of the last menstrual period. Rest as much as possible, as the body is using a lot of energy."
                 "\n\n🚫 **Avoid:** Avoid all alcohol, tobacco, and unnecessary medications. Stop eating raw or undercooked eggs and meat."
             ),
             "moderate": (
-                "\nIf confirmed, {subject} should visit a health center to start antenatal care and take pregnancy vitamins."
+                "\n {subject} should visit a health center to start antenatal care and take pregnancy vitamins, if confirmed."
                 "\n\n🥗 **Diet Recommendation:** Focus on Folic Acid and Iron-rich foods like beans, spinach, eggs, and fortified cereals. Drink plenty of clean water."
                 "\n\n🛡️ **Precautions:** Wear a supportive bra if breasts are tender. Visit a dentist, as pregnancy can sometimes affect gum health."
                 "\n\n🚫 **Avoid:** Avoid heavy lifting and exposure to harsh chemicals or fumes. Limit caffeine intake (coffee/strong tea/colas)."
@@ -1976,7 +1977,7 @@ symptom_data = {
         }
     },
 
-    "Apollo/conjunctivitis": {
+    "apollo/conjunctivitis": {
         "symptoms": [
             "red eye (eye red)",
             "itchy eye (eye dey scratch)",
@@ -1998,7 +1999,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThis may be Apollo. {subject} should avoid touching {possessive} eyes and wash {possessive} hands frequently."
+                "\n{subject} may {verb_has} Apollo. {subject} should avoid touching {possessive} eyes and wash {possessive} hands frequently."
                 "\n\n🍎 **Diet Recommendation:** Eat foods rich in Vitamin A (carrots, sweet potatoes, palm oil) to support general eye health."
                 "\n\n🛡️ **Precautions:** Use a clean, separate towel for the face. Change pillowcases daily while the infection is active to prevent re-infection."
                 "\n\n🚫 **Avoid:** Avoid rubbing the eyes, as this spreads the infection and causes more damage. Do not share towels, sponges, or eye makeup with anyone."
@@ -2009,7 +2010,7 @@ symptom_data = {
                 "\n\n🛡️ **Precautions:** Wear sunglasses if light bothers the eyes. Apply a cool (not ice cold) compress using a clean cloth to the closed eyelids for comfort."
                 "\n\n🚫 **Avoid:** Avoid using 'urine', 'sugar water', or 'lemon juice' in the eyes; these are dangerous and can cause blindness. Do not wear contact lenses until the infection is gone."
             ),
-            "high": "\n🚨 If {subject} cannot see clearly, has a very high fever, or has intense pain that feels like it's behind the eye, {subject} must see an eye doctor immediately."
+            "high": "\n🚨 {subject} cannot see clearly, has a very high fever, or has intense pain that feels like it's behind the eye, {subject} must see an eye doctor immediately."
         }
     },
 
@@ -2077,7 +2078,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid cold drinks and sitting directly under a fan or air conditioner. Do not smoke or stay near people who are smoking."
             ),
             "moderate": (
-                "\nThis could be pneumonia. {subject} {verb_needs} a medical exam and likely antibiotics from a health center."
+                "\n{subject} {verb_needs} a medical exam and likely antibiotics from a health center."
                 "\n\n🥗 **Diet Recommendation:** Drink warm water with honey and lemon to soothe the throat and chest. High-protein foods like chicken or beans help the body fight the infection."
                 "\n\n🛡️ **Precautions:** Get plenty of bed rest. Sleep with an extra pillow to prop the head up, which can make breathing easier."
                 "\n\n🚫 **Avoid:** Avoid heavy oily foods that can make {subject} feel more sluggish. Do not stop taking prescribed antibiotics early, even if {subject} feels better."
@@ -2114,7 +2115,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid crowded places where the infection could be spread to others. Do not smoke, as it further damages the lungs."
             ),
             "moderate": (
-                "\nThis could be tuberculosis. It can spread to others in the house. {subject} must visit a health worker for testing and free treatment immediately."
+                "\n It can spread to others in the house. {subject} must visit a health worker for testing and free treatment immediately."
                 "\n\n🥗 **Diet Recommendation:** Take Vitamin B6 rich foods (bananas, potatoes) and a multivitamin, as TB treatment can sometimes cause vitamin deficiencies."
                 "\n\n🛡️ **Precautions:** Ensure everyone living with {subject} is also screened. TB treatment is long (usually 6 months); {subject} must commit to taking it every single day."
                 "\n\n🚫 **Avoid:** Avoid alcohol during treatment, as it can cause severe liver problems when mixed with TB drugs. Do not use local 'cough mixtures' to hide the symptoms."
@@ -2146,7 +2147,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThis may be diabetes. {subject} should reduce sugar intake and go for a blood sugar test."
+                "\n {subject} should reduce sugar intake and go for a blood sugar test."
                 "\n\n🍎 **Diet Recommendation:** Switch to whole grains like local brown rice or 'Ofada'. Eat plenty of fiber from vegetables (Ugu, Okra) to slow down sugar absorption."
                 "\n\n🛡️ **Precautions:** Start a daily walking routine (30 minutes). Learn to check blood sugar at home if possible."
                 "\n\n🚫 **Avoid:** Avoid sugary soft drinks, malt drinks, and white bread. Stop adding extra sugar to tea, pap, or garri."
@@ -2189,7 +2190,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid 'white' salt and salty snacks (chips, salted nuts). Limit alcohol and kola nuts, which can spike blood pressure."
             ),
             "moderate": (
-                "\nThis looks like hypertension. {subject} {verb_needs} to see a doctor for a proper BP check and lifestyle advice."
+                "\n {subject} {verb_needs} to see a doctor for a proper BP check and lifestyle advice."
                 "\n\n🥗 **Diet Recommendation:** Follow the DASH diet—lots of vegetables (Ugu, garden eggs), fruits, and low-fat proteins. Drink plenty of water and limit red meat."
                 "\n\n🛡️ **Precautions:** Start a daily walking routine (30 mins) if the doctor clears it. Take any prescribed BP medicine at the same time every day—do not skip doses even if feeling fine."
                 "\n\n🚫 **Avoid:** Avoid processed meats (sausages, canned meats) which are very high in sodium. Stop smoking immediately, as it narrows blood vessels and increases stroke risk."
@@ -2225,7 +2226,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid fried foods and trans-fats (margarine, fast food). Limit high-sugar foods which contribute to heart inflammation."
             ),
             "moderate": (
-                "\nThis may be a heart problem. {subject} {verb_needs} a check-up with a cardiologist for an ECG or scan."
+                "\n{subject} may {verb_has} an heart problem. {subject} {verb_needs} a check-up with a cardiologist for an ECG or scan."
                 "\n\n🥗 **Diet Recommendation:** Focus on 'Titus' or Mackerel fish (Omega-3) which protects the heart. Reduce total carbohydrate intake (yam, fufu) if overweight."
                 "\n\n🛡️ **Precautions:** If legs are swelling, try to keep them elevated when sitting. Monitor how many pillows are needed to breathe comfortably at night."
                 "\n\n🚫 **Avoid:** Avoid high-caffeine energy drinks which can cause irregular heartbeats. Avoid 'bitters' or local herbs that claim to 'wash the heart'—they can be dangerous."
@@ -2293,7 +2294,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid hot pepper, citrus fruits (lemons/oranges), and vinegar. Avoid smoking, which increases stomach acid."
             ),
             "moderate": (
-                "\nThis could be an ulcer. {subject} {verb_needs} to see a doctor for treatment to protect the stomach lining."
+                "\nT{subject} may {verb_has} ulcer. {subject} {verb_needs} to see a doctor for treatment to protect the stomach lining."
                 "\n\n🥗 **Diet Recommendation:** Yogurt with live cultures can help balance gut bacteria. Steamed fish or chicken is better than fried or highly seasoned meats."
                 "\n\n🛡️ **Precautions:** Manage stress, as it can increase acid production. Finish the full course of ulcer medication (like Omeprazole) as directed by the doctor."
                 "\n\n🚫 **Avoid:** Avoid NSAIDs (Ibuprofen, Aspirin, Diclofenac) as these can cause the ulcer to bleed. Avoid coffee and strong tea."
@@ -2347,13 +2348,13 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\nThis looks like mild tonsillitis. {subject} should drink warm water and gargle with salt water to soothe the pain."
+                "\n{subject} may {verb_has} mild tonsillitis. {subject} should drink warm water and gargle with salt water to soothe the pain."
                 "\n\n🍎 **Diet Recommendation:** Stick to soft foods like pap, mashed potatoes, or yogurt. Warm honey and lemon water can coat the throat and reduce pain."
                 "\n\n🛡️ **Precautions:** Get plenty of rest to allow the immune system to fight the infection. Replace the toothbrush after the infection clears to avoid re-infection."
                 "\n\n🚫 **Avoid:** Avoid very crunchy or hard foods (like fried plantain chips) that can scratch the throat. Avoid sharing drinking cups or cutlery."
             ),
             "moderate": (
-                "\n{subject} {verb_has} moderate tonsillitis. {subject} likely {verb_needs} antibiotics. Please visit a health worker if the fever stays high."
+                "\n{subject} may {verb_has} moderate tonsillitis. {subject} likely {verb_needs} Antibiotics or Antivirals. Please visit a health worker if the fever stays high."
                 "\n\n🥗 **Diet Recommendation:** Cold foods like ice cream or cold yogurt can sometimes numb the throat and provide relief. Warm chicken broth is excellent for hydration."
                 "\n\n🛡️ **Precautions:** If antibiotics are prescribed, {subject} MUST finish the whole pack even if the pain stops. This prevents heart and kidney complications (Rheumatic fever)."
                 "\n\n🚫 **Avoid:** Avoid smoking or being around smoke, which irritates the tonsils. Do not shout or strain the voice."
@@ -2413,7 +2414,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid excessive salt (maggi/salt) and high-oxalate foods like spinach (Ugu) or peanuts if {subject} is prone to stones. Limit bottled sodas."
             ),
             "moderate": (
-                "\nThis could be kidney stones. {subject} {verb_needs} an ultrasound scan and proper pain medication."
+                "\n {subject} {verb_needs} an ultrasound scan and proper pain medication."
                 "\n\n🥗 **Diet Recommendation:** Reduce intake of animal protein (heavy meat). Focus on plant-based proteins like beans in moderate amounts."
                 "\n\n🛡️ **Precautions:** If {subject} manages to pass a stone in the urine, try to keep it in a clean container to show the doctor for analysis."
                 "\n\n🚫 **Avoid:** Do not take high doses of Vitamin C supplements, as these can increase stone risk in some people. Avoid 'dry' periods without drinking water."
@@ -2493,13 +2494,13 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} {verb_has} mild menstrual pain. {subject} should use a hot water bottle on {possessive} belly and rest."
+                "\n{subject} may {verb_has} mild menstrual pain. {subject} should use a hot water bottle on {possessive} belly and rest."
                 "\n\n🍎 **Diet Recommendation:** Eat bananas and dark chocolate to help with cramps. Ginger or chamomile tea can also relax the uterine muscles."
                 "\n\n🛡️ **Precautions:** Light exercise like walking or stretching can actually help reduce pain by increasing blood flow."
                 "\n\n🚫 **Avoid:** Reduce salt and caffeine intake a few days before {possessive} period to reduce bloating and tension."
             ),
             "moderate": (
-                "\nThis looks like dysmenorrhea. {subject} {verb_needs} pain medicine like paracetamol. If the pain no gree go, see a doctor."
+                "\n {subject} likely {verb_has} dysmenorrhea. {subject} {verb_needs} pain medicine like paracetamol or any pain relief medication precribed by a or {possessive} doctor."
                 "\n\n🥗 **Diet Recommendation:** Take Magnesium and Vitamin B1 rich foods like beans, nuts, and whole grains to help reduce the severity of cramps."
                 "\n\n🛡️ **Precautions:** Track the cycle to see if the pain is getting worse over time. Heavy pain can sometimes indicate underlying issues like fibroids."
                 "\n\n🚫 **Avoid:** Avoid very cold water or 'iced' drinks if {subject} finds they make the cramping feel more intense."
@@ -2605,13 +2606,13 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} {verb_has} signs of Bilharzia. {subject} should avoid swimming in fresh water (rivers/ponds) and get a urine test."
+                "\n{subject} should avoid swimming in fresh water (rivers/ponds) and get a urine test."
                 "\n\n🍎 **Diet Recommendation:** Eat a balanced diet to support the immune system. Stay hydrated to help with urinary discomfort."
                 "\n\n🛡️ **Precautions:** Only use water that has been boiled or filtered for bathing and washing. Warn others in the community about the water source."
                 "\n\n🚫 **Avoid:** Do not enter fresh water rivers, ponds, or lakes where snails might live. Avoid walking barefoot in damp soil near these water bodies."
             ),
             "moderate": (
-                "\nThis could be Schistosomiasis. {subject} {verb_needs} proper deworming medicine (Praziquantel) from a health center."
+                "\n{subject} {verb_needs} proper deworming medicine (Praziquantel) from a health center."
                 "\n\n🥗 **Diet Recommendation:** Eat iron-rich foods (liver, Ugu) as the infection can cause blood loss and anemia over time."
                 "\n\n🛡️ **Precautions:** Complete the full course of medication. Ensure {subject} has a follow-up test in a few weeks to make sure the parasites are gone."
                 "\n\n🚫 **Avoid:** Avoid self-treating with regular dewormers bought on the street; they often do not kill Schistosoma parasites. You need the specific hospital-grade dose."
@@ -2632,7 +2633,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may have gallstones. {subject} should avoid oily and fatty foods to prevent the pain from returning."
+                "\n {subject} should avoid oily and fatty foods to prevent the pain from returning."
                 "\n\n🍎 **Diet Recommendation:** Switch to a low-fat diet. Eat more fiber (whole grains, vegetables). Drink plenty of water."
                 "\n\n🛡️ **Precautions:** Maintain a healthy weight, but avoid 'crash dieting' or losing weight too fast, as this can actually cause more gallstones."
                 "\n\n🚫 **Avoid:** Avoid fried foods (fried meat, puff-puff, akara), butter, and heavy cream. Limit red meat."
@@ -2640,7 +2641,7 @@ symptom_data = {
             "moderate": (
                 "\nThis looks like a gallbladder issue. {subject} {verb_needs} an abdominal scan at a clinic to confirm if stones are present."
                 "\n\n🥗 **Diet Recommendation:** Focus on lean proteins like skinless chicken or fish. Small, frequent meals are better than one large, heavy meal."
-                "\n\n🛡️ **Precautions:** If {subject} feels a 'gallbladder attack' coming on (pain after eating), try to stay calm and sit upright. Keep a record of which foods trigger the pain."
+                "\n\n🛡️ **Precautions:** If {subject} feel a 'gallbladder attack' coming on (pain after eating), try to stay calm and sit upright. Keep a record of which foods trigger the pain."
                 "\n\n🚫 **Avoid:** Avoid highly processed snacks and 'junk' food. Do not ignore the pain even if it goes away, as the stones are still there."
             ),
             "high": "\n🚨 If {subject} {verb_is} in intense pain, vomiting, or {possessive} eyes are yellow (jaundice), the stone might be blocking a bile duct. Go to the hospital now; this can lead to a serious infection."
@@ -2666,7 +2667,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** **STRICTLY AVOID** Ibuprofen (Aboliki, Advil), Aspirin, or Diclofenac. These can increase the risk of internal bleeding with Dengue."
             ),
             "moderate": (
-                "\nThis looks like Dengue fever. {subject} {verb_needs} to stay very hydrated and be monitored by a health worker for any bleeding signs."
+                "\n {subject} {verb_needs} to stay very hydrated and be monitored by a health worker for any bleeding signs."
                 "\n\n🥗 **Diet Recommendation:** Eat light, vitamin-rich foods like fruit purees or vegetable soups to keep {possessive} strength up."
                 "\n\n🛡️ **Precautions:** Monitor the skin for tiny red purple spots (petechiae). Watch for any bleeding from the gums when brushing teeth."
                 "\n\n🚫 **Avoid:** Avoid heavy manual labor. Do not go to a chemist to get 'injections' unless they know it's Dengue, as some injections can cause bleeding at the site."
@@ -2725,7 +2726,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid eating heavy or solid meals until the cause of the pain is known. Do not take laxatives or 'purging' medicines, as these can cause the appendix to burst."
             ),
             "moderate": (
-                "\nThis may be appendicitis. {subject} should go to the hospital for a scan."
+                "\n {subject} should go to the hospital for a scan."
                 "\n\n🥗 **Diet Recommendation:** Stop eating and drinking entirely (NPO) once the pain becomes localized to the right side, in case surgery is needed."
                 "\n\n🛡️ **Precautions:** If the pain suddenly disappears, do not assume it is cured; this can actually mean the appendix has ruptured. See a doctor immediately."
                 "\n\n🚫 **Avoid:** Avoid applying heat (like a hot water bottle) to the stomach, as heat can increase the risk of inflammation and rupture."
@@ -2754,7 +2755,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid eating any food that may have been in contact with rodents. Do not dry food (like garri or yam) in the open where rats can reach it."
             ),
             "moderate": (
-                "\nThis could be Lassa Fever. {subject} {verb_needs} to go to the nearest health center immediately for isolation and treatment."
+                "\n {subject} {verb_needs} to go to the nearest health center immediately for isolation and treatment."
                 "\n\n🥗 **Diet Recommendation:** Eat soft, high-energy foods like pap or mashed yams. Keep fluids high to prevent dehydration from the fever."
                 "\n\n🛡️ **Precautions:** Family members should avoid contact with {subject}'s body fluids (blood, urine, saliva). Use gloves if care is necessary."
                 "\n\n🚫 **Avoid:** Do not treat this as 'normal malaria'. Avoid going to crowded places to prevent spreading the virus to others."
@@ -2774,7 +2775,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may have hemorrhoids or piles. {subject} should eat high-fiber food and drink lots of water."
+                "\n {subject} should eat high-fiber food and drink lots of water."
                 "\n\n🍎 **Diet Recommendation:** Increase fiber intake significantly. Eat plenty of beans, brown rice, 'Ofada' rice, and fruits like pawpaw and bananas."
                 "\n\n🛡️ **Precautions:** Try a 'Sit bath'—sit in warm water for 10–15 minutes several times a day to reduce swelling and pain."
                 "\n\n🚫 **Avoid:** Avoid sitting for long periods on the toilet. Do not use dry or rough toilet paper; use moist wipes or water instead."
@@ -2807,7 +2808,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid all sexual activity until you have been cleared by a doctor. Do not try to 'wash' the discharge away with harsh chemicals or soaps inside the private area."
             ),
             "moderate": (
-                "\nThis looks like Gonorrhea (STD). {subject} {verb_needs} a doctor for a test and antibiotics."
+                "\n. {subject} {verb_needs} a doctor for a test and antibiotics."
                 "\n\n🥗 **Diet Recommendation:** Eat foods high in Vitamin C (citrus fruits, bell peppers) to boost the immune system's ability to fight the infection."
                 "\n\n🛡️ **Precautions:** Complete the entire course of antibiotics prescribed by the doctor, even if symptoms disappear after one or two days."
                 "\n\n🚫 **Avoid:** Avoid self-medicating with random 'G-wash' or herbal drinks, as untreated gonorrhea can lead to infertility."
@@ -2834,7 +2835,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid sexual contact until a doctor confirms the infection is treated. Do not apply creams or ointments to the sore without medical advice."
             ),
             "moderate": (
-                "\nThis looks like Syphilis. {subject} {verb_needs} a penicillin injection from a clinic."
+                "\n {subject} {verb_needs} a penicillin injection from a clinic."
                 "\n\n🥗 **Diet Recommendation:** Stay hydrated. Garlic and ginger can be added to meals for their general anti-inflammatory and immune-boosting properties."
                 "\n\n🛡️ **Precautions:** Ensure your partner is treated at the same time, or you will simply catch it again after your treatment."
                 "\n\n🚫 **Avoid:** Avoid alcohol during the treatment phase, as your body needs to focus on clearing the infection and responding to the medication."
@@ -2863,7 +2864,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid heavy exercise when sugar is low. Do not skip meals, especially if taking diabetes medication."
             ),
             "moderate": (
-                "\nThis is hypoglycemia. {subject} {verb_needs} to eat a proper meal now and check {possessive} sugar level."
+                "\n{subject} {verb_needs} to eat a proper meal now and check {possessive} sugar level."
                 "\n\n🥗 **Diet Recommendation:** After the initial sugar boost, eat a snack with complex carbohydrates and protein (like crackers with peanut butter or a small bowl of beans) to keep sugar steady."
                 "\n\n🛡️ **Precautions:** If {subject} {verb_is} diabetic, discuss these episodes with a doctor; the medication dosage may need to be adjusted."
                 "\n\n🚫 **Avoid:** Avoid eating 'complex' foods like chocolate or cake to treat an initial low, as the fat in them slows down the sugar absorption when you need it fast."
@@ -2891,12 +2892,12 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid smoking, as it increases eye pressure. Do not use 'over-the-counter' steroid eye drops without a prescription, as these can cause glaucoma."
             ),
             "moderate": (
-                "\nThis may be Glaucoma. High pressure can blind {subject} fast. {subject} {verb_needs} to see an ophthalmologist today."
+                "\nHigh pressure can blind {subject} fast. {subject} {verb_needs} to see an ophthalmologist today."
                 "\n\n🥗 **Diet Recommendation:** Maintain a healthy weight and lower insulin levels by reducing sugary foods and refined flour (white bread/white rice)."
                 "\n\n🛡️ **Precautions:** If prescribed eye drops, {subject} must use them at the exact same time every day without fail. They are 'life-savers' for vision."
                 "\n\n🚫 **Avoid:** Avoid drinking large amounts of water very quickly (more than a liter in minutes), as this can temporarily raise eye pressure."
             ),
-            "high": "\n🚨 Sudden vision loss, halos around lights, or severe eye pain with vomiting is an emergency. Go to an eye clinic right now."
+            "high": "\n🚨 {subject} {verb_has} Sudden vision loss, halos around lights, or severe eye pain with vomiting is an emergency. Go to an eye clinic right now."
         }
     }
 }
@@ -3052,7 +3053,7 @@ medical_keywords = [
     "short breath", "shortness of breath", "shortness of breath (no fit breathe well)",
     "shortness of breath when climbing stair", "skin burning", "skin dey vex me", "skin eruption",
     "skin rash", "sleep too much or too little", "slurred speech", "small fever", "small piss dey come",
-    "small small bumps", "small small bumps or line on skin", "smallpox dey my body",
+    "small small bumps", "small small bumps or line on skin", "smallpox dey my body", "sneezing",
     "social withdrawal", "sore for mouth", "sore throat", "sore throat (throat dey pain)", "sore tongue",
     "soreness", "sometimes no symptoms at all", "spit blood", "speech Difficulty" "sticky discharge (eye gum when you wake)",
     "stiff neck", "stomachache", "stomach hurts", "stomach cramps (belly twist)", "stomach dey bleed",
@@ -3417,7 +3418,10 @@ def chat():
     if request.method == 'POST':
         data = request.get_json()
         user_input = data.get("symptoms", "").strip()
-
+        input_lower = user_input.lower()
+        is_follow_up = data.get("is_follow_up", False)
+        current_suspect = (data.get("suspected") or "").lower()
+        original_description = data.get("original_symptoms", user_input)
         # Get coordinates from frontend hidden inputs
         lat_str = data.get("lat")
         lon_str = data.get("lon")
@@ -3430,11 +3434,13 @@ def chat():
         last_diagnosed = data.get("last_diagnosed", "N/A")
         notice = data.get("notice_self") or data.get("notice_others") or "unknown"
 
-
-
-        result = []
+        # Initialize response variables
+        final_result_list = []
         hospitals_list = []
         audio_file = ""
+        is_triage = False
+        pending_conditions = data.get("pending_conditions", [])
+        confirmed_conditions = data.get("confirmed_conditions", [])
 
         # Validate input
         if not user_input:
@@ -3448,159 +3454,216 @@ def chat():
             poss = "his" if gender == "male" else "her"
             v_has, v_is, v_needs = "has", "is", "needs"
 
-        enhanced_input = f"{user_input}. Symptoms noticed {notice}."
-        if recipient == "self" and last_diagnosed != "Never":
-            enhanced_input += f" Patient has history of diagnosis: {last_diagnosed}."
+        triage_map = {
+            "malaria": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} also experiencing a bitter taste in {poss} mouth or chills?",
+            "typhoid fever": f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have stomach pain or notice small red spots on {poss} skin?",
+            "common cold": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} sneezing frequently or having a runny nose?",
+            "influenza (flu)": f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have severe body aches and a very high fever?",
+            "diarrheal disease": f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} passed watery stool more than 3 times today?",
+            "urinary tract infection (UTI)": f"Is there a burning sensation when {'you are' if recipient == 'self' else f'{subj.lower()} is'} urinating?",
+            "skin infection (rash/measles/chickenpox/pimples/fungi/bacteria)": f"Is the rash itchy or appearing as fluid-filled blisters?",
+            "dehydration": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling extremely thirsty with very dark urine?",
+            "headache": f"Is the pain concentrated in one specific spot or felt all over the head?",
+            "body pain": f"Is the pain felt mostly in the joints or in the muscles?",
+            "pregnancy": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing morning sickness or a missed period?",
+            "apollo/conjunctivitis": f"Are {poss} eyes red, itchy, or swollen with discharge?",
+            "blurred vision": f"Is {poss} vision cloudy, or {'are you' if recipient == 'self' else f'is {subj.lower()}'} seeing double?",
+            "pneumonia": f"Is it difficult to breathe, or is there sharp chest pain when coughing?",
+            "tuberculosis (tb)": f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been coughing for more than three weeks?",
+            "diabetes": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} urinating very frequently, especially at night?",
+            "hypertension": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling dizzy or hearing ringing sounds in {poss} ears?",
+            "heart disease": f"Is there a squeezing sensation or heavy pressure in {poss} chest?",
+            "malnutrition": f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed extreme weakness or rapid weight loss?",
+            "stomach ulcer": f"Does the pain feel like burning that gets worse on an empty stomach?",
+            "asthma": f"Is there a whistling or wheezing sound during breathing?",
+            "tonsillitis": f"Is it very painful to swallow, and are the tonsils or adenoids visibly swollen?",
+            "hepatitis (viral)": f"Have the whites of {poss} eyes or the skin turned yellowish?",
+            "kidney stones": f"Is there sharp, severe pain in the side of the back or lower abdomen?",
+            "anemia": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling unusually tired and looking pale?",
+            "epilepsy/seizure": f"Was there a sudden loss of consciousness or uncontrollable shaking?",
+            "menstrual pain": f"Is the cramping severe enough to stop daily activities?",
+            "preeclampsia": f"Are there severe headaches, blurred vision, or swollen feet during this pregnancy?",
+            "fracture": f"Is there an obvious deformity or an inability to move the limb?",
+            "allergic reaction": f"Is there any swelling of the face, lips, or difficulty breathing?",
+            "schistosomiasis": f"Is there any noticeable blood in the urine?",
+            "gallstones": f"Is there intense pain in the upper right side of the stomach?",
+            "dengue fever": f"Is there a high fever accompanied by severe pain behind the eyes?",
+            "stroke": f"Is there sudden weakness on one side of the body or slurred speech?",
+            "appendicitis": f"Is the pain sharp and located in the lower right side of the stomach?",
+            "lassa fever": f"Is there any unexplained bleeding from the nose, mouth, or gums?",
+            "hemorrhoids (piles)": f"Is there pain or bright red blood during bowel movements?",
+            "gonorrhea (std)": f"Is there any unusual discharge or pain during urination?",
+            "syphilis (std)": f"Are there any painless sores or a rash on the palms of the hands?",
+            "hypoglycemia": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling shaky, sweaty, and very hungry?",
+            "glaucoma": f"Is there severe eye pain with nausea or seeing rainbows around lights?"
+        }
 
         # --- STEP 2: Hybrid NLP/ML Logic ---
-        ml_results = ml_predict_condition(user_input, top_n=5)
-        spacy_matches = check_symptoms(user_input, min_score_threshold=1, top_n=5)
+        if not is_follow_up:
+            ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.15)
+            spacy_matches = check_symptoms(user_input, min_score_threshold=2, top_n=5)
 
-        hybrid_scores = {}
-        for cond, prob in ml_results:
-            hybrid_scores[cond] = {"ml": prob * 100, "nlp": 0}
-        for cond, score in spacy_matches:
-            if cond in hybrid_scores:
-                hybrid_scores[cond]["nlp"] = score * 10
-            else:
-                hybrid_scores[cond] = {"ml": 0, "nlp": score * 10}
+            hybrid_scores = {}
+            for cond, prob in ml_results:
+                hybrid_scores[cond.lower()] = {"ml": prob * 100, "nlp": 0}
 
-        ranked = sorted([(c, s["ml"] + s["nlp"]) for c, s in hybrid_scores.items()], key=lambda x: x[1], reverse=True)
-        valid_conditions = [c for c, score in ranked if score >= 20][:1]
+            for cond, score in spacy_matches:
+                c_low = cond.lower()
+                negators = ["no ", "not ", "don't ", "dont ", "never ", "haven't ", "without ", "no get "]
+                is_negated = any(f"{neg}{c_low}" in input_lower for neg in negators)
 
-        # --- STEP 3: Generate Advice ---
-        if valid_conditions:
-            cond_key = valid_conditions[0].lower()
-            cond_entry = symptom_data.get(cond_key)
+                # --- GENDER-BASED FILTERING ---
+                # List of terms that should only apply to female anatomy
+                female_only_terms = ["pregnancy", "menstrual", "period pain", "ovarian", "uterine", "menstruation"]
 
-            if cond_entry:
-                advice_dict = cond_entry.get("advice", {})
-                raw_text = advice_dict.get(severity, advice_dict.get("moderate", "Please consult a doctor."))
-                final_msg = raw_text.format(subject=subj, possessive=poss, verb_has=v_has, verb_is=v_is,
-                                            verb_needs=v_needs)
+                if gender == "male":
+                    if any(term in c_low for term in female_only_terms):
+                        is_negated = True
 
-                if age_group == "minor":
-                    final_msg = "🧒🏾 Minor: " + final_msg
-                elif age_group == "elderly":
-                    final_msg = "🧓🏾 Elderly: " + final_msg
-                result.append(final_msg)
-            else:
-                result.append(
-                    f"I recognized symptoms for {cond_key}, but I'm still learning the best advice for it. Please consult a doctor.")
+                if not is_negated:
+                    if c_low in hybrid_scores:
+                        hybrid_scores[c_low]["nlp"] = score * 20
+                    else:
+                        hybrid_scores[c_low] = {"ml": 0, "nlp": score * 20}
+
+            ranked = sorted([(c, s["ml"] + s["nlp"]) for c, s in hybrid_scores.items()],
+                            key=lambda x: x[1], reverse=True)
+
+            pending_conditions = [c for c, score in ranked if score >= 45]
+            confirmed_conditions = []
         else:
-            result.append(
-                f"I couldn't match your symptoms precisely. Since you noticed this {notice}, please consult a doctor.")
+            if current_suspect:
+                affirmative_words = ['yes', 'yeah', 'it is', 'i have', 'yep', 'true', 'correct']
+                is_confirmed = any(word in input_lower for word in affirmative_words)
 
-        # Audio Generation
-        audio_path = generate_audio(" ".join(result))
-        audio_file = os.path.basename(audio_path)
+                if is_confirmed:
+                    if current_suspect not in confirmed_conditions:
+                        confirmed_conditions.append(current_suspect)
 
-        # --- STEP 4: HOSPITAL MAPPING (Improved Accuracy) ---
-        if lat_str and lon_str:
+                pending_conditions = [c for c in pending_conditions if c.lower() != current_suspect]
+
+        # --- PHASE C: THE GATEKEEPER ---
+        if pending_conditions:
+            next_target = pending_conditions[0].lower()
+            question = triage_map.get(next_target, f"Are you experiencing other symptoms of {next_target}?")
+            final_result_list = [question]
+            is_triage = True
+        else:
+            # --- STEP 3: Generate Advice ---
+            valid_conditions = confirmed_conditions
+            if valid_conditions:
+                matched_names = [c.upper() for c in valid_conditions]
+                intro = f"Based on the symptoms you described, this may be {' or '.join(matched_names)}."
+                combined_diet, combined_precautions, combined_avoid = [], [], []
+                primary_advice_notes = []
+
+                for cond_key in valid_conditions:
+                    cond_display = cond_key.title()
+                    cond_entry = symptom_data.get(cond_key.lower())
+                    if cond_entry:
+                        advice_dict = cond_entry.get("advice", {})
+                        raw_text = advice_dict.get(severity, advice_dict.get("moderate", ""))
+                        formatted_text = raw_text.format(subject=subj, possessive=poss, verb_has=v_has, verb_is=v_is, verb_needs=v_needs)
+
+                        def apply_conditional_if(text, condition, context_phrase="is suspected"):
+                            text = text.replace("###", "").replace("**", "").strip()
+                            if not text.lower().startswith("if "):
+                                return f"If {condition} {context_phrase}, {text[0].lower()}{text[1:]}"
+                            return text
+
+                        main_note = formatted_text.split("🍎")[0].split("🥗")[0].split("🛡️")[0].split("###")[0].strip()
+                        if main_note: primary_advice_notes.append(apply_conditional_if(main_note, cond_display))
+                        if "Diet Recommendation:" in formatted_text:
+                            diet = formatted_text.split("Diet Recommendation:")[1].split("🛡️")[0]
+                            combined_diet.append(apply_conditional_if(diet, cond_display, "symptoms are present"))
+                        if "Precautions:" in formatted_text:
+                            prec = formatted_text.split("Precautions:")[1].split("🚫")[0]
+                            combined_precautions.append(apply_conditional_if(prec, cond_display, "is being managed"))
+                        if "Avoid:" in formatted_text:
+                            avoid = formatted_text.split("Avoid:")[1]
+                            combined_avoid.append(apply_conditional_if(avoid, cond_display, "is a concern"))
+
+                profile_note = f"Patient Health Context: Symptom was noticed {notice} and last check up was {last_diagnosed}."
+                if age_group == "elderly": profile_note += " 🧓🏾 (Elderly monitoring required)."
+
+                final_msg = f"{intro}\n\n{profile_note}\n\n"
+                if primary_advice_notes:
+                    header = "🚨 EMERGENCY ACTION REQUIRED:" if severity == "high" else "📝 RECOMMENDED ACTION:"
+                    final_msg += f"{header}\n• " + "\n• ".join(list(set(primary_advice_notes))) + "\n\n"
+                if combined_diet: final_msg += "🥗 DIET & NUTRITION:\n• " + "\n• ".join(list(set(combined_diet))) + "\n\n"
+                if combined_precautions: final_msg += "🛡️ PRECAUTIONS:\n• " + "\n• ".join(list(set(combined_precautions))) + "\n\n"
+                if combined_avoid: final_msg += "🚫 THINGS TO AVOID:\n• " + "\n• ".join(list(set(combined_avoid)))
+                final_result_list = [final_msg]
+            else:
+                msg = f"I couldn't match these symptoms precisely. Since you noticed this {notice}, please visit a clinic for evaluation."
+                final_result_list = [msg]
+
+        # --- AUDIO GENERATION ---
+        combined_text = " ".join(final_result_list).strip()
+        if combined_text:
             try:
-                u_lat = float(lat_str)
-                u_lon = float(lon_str)
-
-                # Real-world adjustments for Nigeria:
-                AVG_SPEED_KMH = 25  # Lower speed better reflects urban traffic/potholes
-                ROAD_ADJUSTMENT = 1.3  # Adds 30% distance to account for road curves/turns
-
-                all_db_hospitals = Hospital.query.all()
-
-
-                for h in all_db_hospitals:
-                    # 1. Straight-line calculation
-                    dist_deg = ((u_lat - h.lat) ** 2 + (u_lon - h.lon) ** 2) ** 0.5
-                    straight_line_km = dist_deg * 111
-
-                    # 2. Road-distance calculation (The 'Google' distance)
-                    dist_km = round(straight_line_km * ROAD_ADJUSTMENT, 1)
-
-                    # Only process hospitals within a 50km road-distance radius
-                    if dist_km <= 40:
-                        h_is_emergency = False
-                        if hasattr(h, 'severity_tag') and h.severity_tag == 'high':
-                            h_is_emergency = True
-                        elif "teaching" in h.name.lower() or "emergency" in h.name.lower():
-                            h_is_emergency = True
-
-                        # 3. Travel time calculation
-                        # Calculate total hours first
-                        total_hours = dist_km / AVG_SPEED_KMH
-
-                        # Convert to total seconds (Hours * 3600)
-                        total_seconds = int(total_hours * 3600) + 180  # Adding 180 seconds (3 mins) as your buffer
-
-                        # Break down into H, M, S
-                        hours = total_seconds // 3600
-                        minutes = (total_seconds % 3600) // 60
-                        seconds = total_seconds % 60
-
-                        # Format the string based on whether hours exist
-                        if hours > 0:
-                            time_display = f"{hours}hr {minutes}min"
-                        else:
-                            time_display = f"{minutes}min"
-
-                        # Google Maps link (Using the modern 'dir' API for better compatibility)
-                        google_maps_link = f"https://www.google.com/maps/dir/?api=1&origin={u_lat},{u_lon}&destination={h.lat},{h.lon}&travelmode=driving"
-
-                        h_data = {
-                            "name": h.name,
-                            "city": h.city,
-                            "lat": h.lat,
-                            "lon": h.lon,
-                            "url": h.url if h.url else "#",
-                            "phone": getattr(h, 'phone_number', 'Not Available'),
-                            "distance": f"{dist_km} km",
-                            "travel_time": time_display,
-                            "maps_link": google_maps_link
-                        }
-
-                        # Filter Logic
-                        if severity == "high":
-                            hospitals_list.append(h_data)
-                        else:
-                            if not h_is_emergency:
-                                hospitals_list.append(h_data)
-
-                # Sort by road distance
-                hospitals_list.sort(key=lambda x: float(x['distance'].split()[0]))
-
+                audio_path = generate_audio(combined_text)
+                audio_file = os.path.basename(audio_path)
             except Exception as e:
-                print(f"Hospital Logic Error: {e}")
+                print(f"Audio Error: {e}")
+
+        # --- STEP 4: HOSPITAL MAPPING ---
+        if not is_triage and lat_str and lon_str:
+            try:
+                u_lat, u_lon = float(lat_str), float(lon_str)
+                AVG_SPEED_KMH, ROAD_ADJUSTMENT = 25, 1.3
+                all_db_hospitals = Hospital.query.all()
+                for h in all_db_hospitals:
+                    dist_deg = ((u_lat - h.lat) ** 2 + (u_lon - h.lon) ** 2) ** 0.5
+                    dist_km = round(dist_deg * 111 * ROAD_ADJUSTMENT, 1)
+                    if dist_km <= 40:
+                        h_is_emergency = any(x in h.name.lower() for x in ["teaching", "emergency"]) or getattr(h, 'severity_tag', '') == 'high'
+                        total_seconds = int((dist_km / AVG_SPEED_KMH) * 3600) + 180
+                        hours, minutes = total_seconds // 3600, (total_seconds % 3600) // 60
+                        time_display = f"{hours}hr {minutes}min" if hours > 0 else f"{minutes}min"
+                        google_maps_link = f"https://www.google.com/maps/dir/?api=1&origin={u_lat},{u_lon}&destination={h.lat},{h.lon}&travelmode=driving"
+                        h_data = {"name": h.name, "city": h.city, "phone": getattr(h, 'phone_number', 'N/A'), "distance": f"{dist_km} km", "travel_time": time_display, "maps_link": google_maps_link, "lat": h.lat, "lon": h.lon}
+                        if severity == "high" or not h_is_emergency: hospitals_list.append(h_data)
+                hospitals_list.sort(key=lambda x: float(x['distance'].split()[0]))
+            except Exception as e:
+                print(f"Hospital Error: {e}")
 
         # --- STEP 5: DATABASE SAVE ---
         try:
-            new_report = SymptomReport(
-                user_id=current_user.id,
-                input_text=user_input,
-                result=" ".join(result),
-                location=f"{lat_str},{lon_str}",
-                severity=severity,
-                last_diagnosed=last_diagnosed,
-                notice=notice,
-                # Ensure these columns exist in your SymptomReport model:
-                recipient=recipient,
-                gender=gender,
-                age=age_group,
-                timestamp=datetime.utcnow()
-            )
-            db.session.add(new_report)
-            db.session.commit()
+            # Only save to the database if it is NOT a follow-up/triage answer
+            # This prevents "Yes" or "No" from filling up your history
+            if not is_triage:
+                new_report = SymptomReport(
+                    user_id=current_user.id,
+                    input_text=original_description,
+                    result=combined_text,  # This will now be the full advice string
+                    location=f"{lat_str},{lon_str}",
+                    severity=severity,
+                    last_diagnosed=last_diagnosed,
+                    notice=notice,
+                    recipient=recipient,
+                    gender=gender,
+                    age=age_group,
+                    timestamp=datetime.utcnow() + timedelta(hours=1)
+                )
+                db.session.add(new_report)
+                db.session.commit()
         except Exception as e:
             db.session.rollback()
             print(f"Database error: {e}")
 
         # 6. Final AJAX Response
         return jsonify({
-            "result": result,
-            "audio_file": url_for('static', filename=audio_file),
+            "result": final_result_list,
+            "is_triage": is_triage,
+            "suspected": next_target if is_triage else "",
+            "pending_conditions": pending_conditions,
+            "confirmed_conditions": confirmed_conditions,
+            "audio_file": url_for('static', filename=audio_file) if audio_file else "",
             "hospitals": hospitals_list,
             "severity": severity
         })
 
-    # GET request: Show the chat page
     return render_template('chat.html')
 
 
