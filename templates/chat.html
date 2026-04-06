@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
+    
     <style>
         :root {
             --primary-color: #007bff;
@@ -204,6 +204,7 @@
         .chat-input-fixed {
            position: fixed;
             bottom: 0;
+            min-height: 65px;
             left: var(--sidebar-width);
             right: 0;
             background: var(--background-white);
@@ -420,6 +421,7 @@
             <button class="mic-btn" onclick="startDictation()"><i class="fa-solid fa-microphone"></i></button>
             <button class="circle-btn" onclick="handleSend()"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
+        <br>
     </div>
 
     <input type="hidden" id="lat" value="0.0">
@@ -433,6 +435,7 @@
         const mainContent = document.querySelector('.main-content');
         const inputFixedBar = document.querySelector('.chat-input-fixed');
         let triageStep = 0;
+        let firstSymptomInput = "";
         let isProcessing = false; 
         let storedSymptoms = "";
         let triageAnswers = { patient: null, gender: null, age: null, severity: null, notice_self: null, last_diagnosed: null, notice_others: null };
@@ -441,23 +444,11 @@
         const triageQuestions = [
             { id: "patient", q: "Who is this for?", opt: [{l:"Myself", v:"self"}, {l:"Someone else", v:"someone"}] },
             { id: "gender", q: "What is the gender?", opt: [{l:"Male", v:"male"}, {l:"Female", v:"female"}] },
-            { id: "age", q: "What is the age group?", opt: [] },
-            { id: "severity", q: "How severe is the symptom?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
+            { id: "age", q: "What is your age group?", opt: [{l:"18-29 ", v:"young adult"}, {l:"30-44 ", v:"middle adult"}, {l:"45-59", v:"mature adult"}, {l:"60+", v:"elderly"}] },
+            { id: "severity", q: "How severe is your symptom?", opt: [{l:"Low", v:"low"}, {l:"Moderate", v:"moderate"}, {l:"High", v:"high"}] },
             { id: "notice_self", q: "When did you notice this?", opt: [{l:"Recently", v:"recently"}, {l:"Long ago", v:"long ago"}], condition: "self" },
-            { id: "last_diagnosed", q: "When did you last go for a check up?", opt: [{l:"Never", v:"never"}, {l:"Months ago", v:"months ago"}, {l:"Years ago", v:"years ago"}], condition: "self" },
-            { id: "notice_others", q: "When was this noticed?", opt: [{l:"Recently", v:"recently"}, {l:"Long ago", v:"long ago"}], condition: "someone" }
-        ];
-
-        const AGE_OPTIONS_SELF = [
-            {l:"18-29 ", v:"young adult"}, 
-            {l:"30-44 ", v:"middle adult"}, 
-            {l:"45-59", v:"mature adult"}, 
-            {l:"60+", v:"elderly"}
-        ];
-
-        const AGE_OPTIONS_OTHERS = [
-            {l:"Under 18", v:"minor"},
-            ...AGE_OPTIONS_SELF
+            { id: "notice_others", q: "When did you noticed this?", opt: [{l:"Recently", v:"recently"}, {l:"Long ago", v:"long ago"}], condition: "someone" },
+            { id: "last_diagnosed", q: "When did you last go for a check up?", opt: [{l:"Never", v:"never"}, {l:"Months ago", v:"months ago"}, {l:"Years ago", v:"years ago"}]},
         ];
 
         /*Theme logic (light, dark, and system)*/
@@ -576,6 +567,7 @@
             }
 
             isProcessing = true;
+            firstSymptomInput = text;
             storedSymptoms = text;
             appendMessage(`<b>${text}</b>`, 'input-sympt');
             symptomInput.value = "";
@@ -585,64 +577,75 @@
             askTriage();
         }
 
+        // 1. Centralized timing configuration (Milliseconds)
+        const FAST_DELAY = 1000;  // 1 seconds for Triage & Follow-up questions
+        const FINAL_DELAY = 3000; // 3 seconds for the final diagnosis
+
         function askTriage() {
+            symptomInput.disabled = true;
+
             if (triageStep >= triageQuestions.length) {
                 submitFinal();
                 return;
             }
 
             const current = triageQuestions[triageStep];
-            
 
-            // --- LOGIC: SKIP QUESTIONS BASED ON CONDITION ---
             if (current.condition && triageAnswers.patient !== current.condition) {
                 triageStep++;
                 askTriage();
                 return;
             }
 
-            // --- DYNAMIC AGE LOGIC START ---
-            if (current.id === "age") {
-                if (triageAnswers.patient === "self") {
-                    current.opt = AGE_OPTIONS_SELF;
-                } else {
-                    current.opt = AGE_OPTIONS_OTHERS;
-                }
-            }
-
             showTyping();
 
             setTimeout(() => {
                 removeTyping();
-                appendMessage(`<b>${current.q}</b>`, 'reply-me');
                 
-                const optContainer = document.createElement('div');
-                optContainer.className = 'triage-options';
-                current.opt.forEach(o => {
-                    const btn = document.createElement('button');
-                    btn.innerText = o.l;
-                    btn.onclick = () => {
-                        triageAnswers[current.id] = o.v;
-                        optContainer.remove();
-                        appendMessage(`<b>${o.l}</b>`, 'input-sympt');
-                        triageStep++;
-                        askTriage();
-                    };
-                    optContainer.appendChild(btn);
+                // ... (Existing logic for replacing pronouns: you -> he/she) ...
+                let questionText = current.q;
+                if (triageAnswers.patient === "someone") {
+                    const isMale = triageAnswers.gender === "male";
+                    const sub = isMale ? "he" : "she";
+                    const poss = isMale ? "his" : "her";
+                    questionText = questionText.replace(/you last/g, `${sub} last`).replace(/you notice/g, `${sub} notice`).replace(/your/g, poss);
+                }
+
+                appendMessage(`<b>${questionText}</b>`, 'reply-me');
+                
+                renderOptions(current.opt, (val, label) => {
+                    triageAnswers[current.id] = val;
+                    appendMessage(`<b>${label}</b>`, 'input-sympt');
+                    triageStep++;
+                    askTriage();
                 });
-                chatArea.appendChild(optContainer);
-                mainContent.scrollTop = mainContent.scrollHeight;
-            }, 1000);
+            }, FAST_DELAY);
         }
 
-
-        function submitFinal() {
+        function submitFinal(isFollowUp = false, lastSuspected = null, pendingConditions = [], confirmedConditions = []) {
+            symptomInput.disabled = true;
+            isProcessing = true;
             showTyping();
+
+            // Track exactly when the request started
+            const startTime = Date.now();
+
             const payload = {
-                symptoms: storedSymptoms,
-                ...triageAnswers,
+                symptoms: isFollowUp ? window.currentChoice : storedSymptoms,
+                original_symptoms: firstSymptomInput,
                 lat: document.getElementById('lat').value,
-                lon: document.getElementById('lon').value
+                lon: document.getElementById('lon').value,
+                is_follow_up: isFollowUp,
+                suspected: lastSuspected,
+                pending_conditions: pendingConditions,
+                confirmed_conditions: confirmedConditions,
+                patient: triageAnswers.patient,
+                gender: triageAnswers.gender,
+                age: triageAnswers.age,
+                severity: triageAnswers.severity,
+                notice_self: triageAnswers.notice_self,
+                notice_others: triageAnswers.notice_others,
+                last_diagnosed: triageAnswers.last_diagnosed
             };
 
             fetch("/chat", {
@@ -652,21 +655,60 @@
             })
             .then(res => res.json())
             .then(data => {
-                removeTyping();
-                symptomInput.disabled = false;
-                isProcessing = false; 
-                triageStep = 0; 
+                const elapsed = Date.now() - startTime;
                 
-                if (data.result) appendMessage(`<b>${data.result.join('<br><br>')}</b>`, 'reply-me');
-                if (data.audio_file) setupAudio(data.audio_file);
-                if (data.hospitals) setupHospitals(data.hospitals, data.severity);
+                // Logic: If the server says it's triage, use 3s. If it's the final result, use 5s.
+                const targetDelay = data.is_triage ? FAST_DELAY : FINAL_DELAY;
+                
+                // Subtract the time already spent waiting for the network
+                const remainingDelay = Math.max(0, targetDelay - elapsed);
+
+                setTimeout(() => {
+                    removeTyping();
+
+                    if (data.is_triage) {
+                        // FOLLOW-UP QUESTION (3 Seconds total)
+                        appendMessage(`<b>${data.result[0]}</b>`, 'reply-me');
+                        renderOptions([{l: "Yes", v: "yes"}, {l: "No", v: "no"}], (val, label) => {
+                            appendMessage(`<b>${label}</b>`, 'input-sympt');
+                            window.currentChoice = val;
+                            submitFinal(true, data.suspected, data.pending_conditions, data.confirmed_conditions);
+                        });
+                    } else {
+                        // FINAL RESULTS (5 Seconds total)
+                        symptomInput.disabled = false;
+                        isProcessing = false;
+                        triageStep = 0;
+                        if (data.result) appendMessage(`<b>${data.result.join('<br><br>')}</b>`, 'reply-me');
+                        if (data.audio_file) setupAudio(data.audio_file);
+                        if (data.hospitals) setupHospitals(data.hospitals, data.severity);
+                    }
+                    mainContent.scrollTo({ top: mainContent.scrollHeight, behavior: 'smooth' });
+                }, remainingDelay);
             })
             .catch(err => {
                 removeTyping();
-                appendMessage("<b>Connection error.</b>", 'reply-me');
                 symptomInput.disabled = false;
                 isProcessing = false;
+                appendMessage("<b>Connection lost. Please check your internet.</b>", 'reply-me');
             });
+        }
+
+        // Helper function to render buttons and maintain the flow
+        function renderOptions(options, callback) {
+            const optContainer = document.createElement('div');
+            optContainer.className = 'triage-options';
+            options.forEach(o => {
+                const btn = document.createElement('button');
+                btn.innerText = o.l;
+                btn.onclick = () => {
+                    optContainer.remove();
+                    callback(o.v, o.l);
+                };
+                optContainer.appendChild(btn);
+            });
+            chatArea.appendChild(optContainer);
+            mainContent.scrollTo({ top: mainContent.scrollHeight, behavior: 'smooth' });
         }
 
         function setupAudio(url) {
@@ -711,7 +753,7 @@
             }
 
             container.style.display = 'block';
-            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Seek Medical Care Immediately!!...Go To The Nearest Emergency Health facilities or Government Hospitals Around You Now' : 'Just Incase, These Are Nearby Government Hospitals Around You'}:</h4>`;
+            let html = `<h4 style="margin-bottom:15px;">${severity === 'high' ? '🚨 Emergency Facilities Plus Hospitals Near You, Hurry And Go To One Of Them Before It Is to Late' : 'Just Incase, These Are Nearby Hospitals Around You'}:</h4>`;
             
             hospitals.forEach(h => {
                 html += `
