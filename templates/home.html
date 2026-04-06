@@ -431,6 +431,7 @@
                                 <strong><i class="fas fa-stethoscope"></i> Symptom Report:</strong>
                                 <p>{{ item.input_text }}</p>
                                 <div style="padding: 5px; border-radius: 8px;">
+                                    <strong>Status:</strong> {{ item.severity }}<br>
                                     <strong>AI Advice:</strong> {{ item.result }}
                                 </div>
                                 <small>{{ item.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
@@ -725,5 +726,4 @@
     </script>
 </body>
 </html>
-
 
