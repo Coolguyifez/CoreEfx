@@ -131,7 +131,7 @@ class VitalsLog(db.Model):
     # Results
     severity = db.Column(db.String(20))  # Normal, Warning, Critical
     result = db.Column(db.Text)  # AI advice based on numbers
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow() + timedelta(hours=1))
 
 
 
