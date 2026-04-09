@@ -1781,7 +1781,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may {verb_has} UTI. {subject} should drink plenty of clean water to wash {possessive} system and not hold pee."
+                "\nIs likely {subject} {verb_has} UTI. {subject} should drink plenty of clean water to wash {possessive} system and not hold pee."
                 "\n\n🍎 **Diet Recommendation:** Drink unsweetened cranberry juice if available. Eat water-rich fruits like watermelon and cucumbers to encourage frequent urination."
                 "\n\n🛡️ **Precautions:** Always wipe from front to back after using the toilet to prevent bacteria from entering the tract. Wear loose-fitting cotton underwear."
                 "\n\n🚫 **Avoid:** Avoid sugary drinks and artificial sweeteners, which can feed the bacteria. Limit spicy foods that might irritate the bladder."
@@ -1818,7 +1818,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may {verb_has} a skin infection or reaction. {subject} should avoid scratching and keep the area clean and dry. Go to the nearest hospital to confirm."
+                "\nIs likely {subject} {verb_has} a skin infection or reaction. {subject} should avoid scratching and keep the area clean and dry. Go to the nearest hospital to confirm."
                 "\n\n🍎 **Diet Recommendation:** Eat foods high in Vitamin C (oranges, guavas) and Zinc (beans, nuts) to help the skin heal faster."
                 "\n\n🛡️ **Precautions:** Use mild, fragrance-free soap. Wear loose, breathable cotton clothing to avoid further irritation. Wash bedsheets and towels in hot water."
                 "\n\n🚫 **Avoid:** Avoid sharing towels, sponges, or clothes with others to prevent spreading. Do not apply strong local herbs or 'concoctions' that can burn the skin."
@@ -1962,7 +1962,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may {verb_has} early pregnancy signs. {subject} should take a test to confirm the condition."
+                "\nIs likely {subject} {verb_has} early pregnancy signs. {subject} should take a test to confirm the condition."
                 "\n\n🍎 **Diet Recommendation:** Eat small, frequent meals rather than three large ones to manage nausea. Ginger biscuits or lemon water can help with morning sickness."
                 "\n\n🛡️ **Precautions:** Start tracking the date of the last menstrual period. Rest as much as possible, as the body is using a lot of energy."
                 "\n\n🚫 **Avoid:** Avoid all alcohol, tobacco, and unnecessary medications. Stop eating raw or undercooked eggs and meat."
@@ -1999,7 +1999,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may {verb_has} Apollo. {subject} should avoid touching {possessive} eyes and wash {possessive} hands frequently."
+                "\nIs likely {subject} {verb_has} Apollo. {subject} should avoid touching {possessive} eyes and wash {possessive} hands frequently."
                 "\n\n🍎 **Diet Recommendation:** Eat foods rich in Vitamin A (carrots, sweet potatoes, palm oil) to support general eye health."
                 "\n\n🛡️ **Precautions:** Use a clean, separate towel for the face. Change pillowcases daily while the infection is active to prevent re-infection."
                 "\n\n🚫 **Avoid:** Avoid rubbing the eyes, as this spreads the infection and causes more damage. Do not share towels, sponges, or eye makeup with anyone."
@@ -2041,7 +2041,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid staring at phone or TV screens in a dark room. Do not use over-the-counter eye drops without knowing the cause of the blurriness."
             ),
             "moderate": (
-                "\n{subject} {verb_has} noticeable eye trouble. {subject} {verb_needs} an urgent check-up with an eye specialist (ophthalmologist)."
+                "\n Is likely {subject} {verb_has} noticeable eye trouble. {subject} {verb_needs} an urgent check-up with an eye specialist (ophthalmologist)."
                 "\n\n🥗 **Diet Recommendation:** Control blood sugar and blood pressure through diet (low salt, low sugar), as these are major causes of vision problems."
                 "\n\n🛡️ **Precautions:** If {subject} has a history of high blood pressure, check it immediately. Wear protective eyewear if working in dusty or bright environments."
                 "\n\n🚫 **Avoid:** Avoid driving or operating machinery if vision is not clear. Do not buy 'reading glasses' from the roadside without a proper eye test."
@@ -2072,7 +2072,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} {verb_has} a chest infection. Monitor {possessive} breathing closely and stay warm."
+                "\n Is likely {subject} {verb_has} a chest infection. Monitor {possessive} breathing closely and stay warm."
                 "\n\n🍎 **Diet Recommendation:** Eat warm, easy-to-digest meals like oats or pap. Garlic and onions have mild natural antimicrobial properties that can be added to soups."
                 "\n\n🛡️ **Precautions:** Keep the chest warm. Use a humidifier or sit in a steamy bathroom to help loosen mucus in the lungs."
                 "\n\n🚫 **Avoid:** Avoid cold drinks and sitting directly under a fan or air conditioner. Do not smoke or stay near people who are smoking."
@@ -2226,7 +2226,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid fried foods and trans-fats (margarine, fast food). Limit high-sugar foods which contribute to heart inflammation."
             ),
             "moderate": (
-                "\n{subject} may {verb_has} an heart problem. {subject} {verb_needs} a check-up with a cardiologist for an ECG or scan."
+                "\n Is likely {subject} {verb_has} an heart problem. {subject} {verb_needs} a check-up with a cardiologist for an ECG or scan."
                 "\n\n🥗 **Diet Recommendation:** Focus on 'Titus' or Mackerel fish (Omega-3) which protects the heart. Reduce total carbohydrate intake (yam, fufu) if overweight."
                 "\n\n🛡️ **Precautions:** If legs are swelling, try to keep them elevated when sitting. Monitor how many pillows are needed to breathe comfortably at night."
                 "\n\n🚫 **Avoid:** Avoid high-caffeine energy drinks which can cause irregular heartbeats. Avoid 'bitters' or local herbs that claim to 'wash the heart'—they can be dangerous."
@@ -2294,7 +2294,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid hot pepper, citrus fruits (lemons/oranges), and vinegar. Avoid smoking, which increases stomach acid."
             ),
             "moderate": (
-                "\nT{subject} may {verb_has} ulcer. {subject} {verb_needs} to see a doctor for treatment to protect the stomach lining."
+                "\nIs likely {subject} {verb_has} ulcer. {subject} {verb_needs} to see a doctor for treatment to protect the stomach lining."
                 "\n\n🥗 **Diet Recommendation:** Yogurt with live cultures can help balance gut bacteria. Steamed fish or chicken is better than fried or highly seasoned meats."
                 "\n\n🛡️ **Precautions:** Manage stress, as it can increase acid production. Finish the full course of ulcer medication (like Omeprazole) as directed by the doctor."
                 "\n\n🚫 **Avoid:** Avoid NSAIDs (Ibuprofen, Aspirin, Diclofenac) as these can cause the ulcer to bleed. Avoid coffee and strong tea."
@@ -2348,7 +2348,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may {verb_has} mild tonsillitis. {subject} should drink warm water and gargle with salt water to soothe the pain."
+                "\nIs likely {subject} {verb_has} mild tonsillitis. {subject} should drink warm water and gargle with salt water to soothe the pain."
                 "\n\n🍎 **Diet Recommendation:** Stick to soft foods like pap, mashed potatoes, or yogurt. Warm honey and lemon water can coat the throat and reduce pain."
                 "\n\n🛡️ **Precautions:** Get plenty of rest to allow the immune system to fight the infection. Replace the toothbrush after the infection clears to avoid re-infection."
                 "\n\n🚫 **Avoid:** Avoid very crunchy or hard foods (like fried plantain chips) that can scratch the throat. Avoid sharing drinking cups or cutlery."
@@ -2494,7 +2494,7 @@ symptom_data = {
         ],
         "advice": {
             "low": (
-                "\n{subject} may {verb_has} mild menstrual pain. {subject} should use a hot water bottle on {possessive} belly and rest."
+                "\n likely, {subject} {verb_has} mild menstrual pain. {subject} should use a hot water bottle on {possessive} belly and rest."
                 "\n\n🍎 **Diet Recommendation:** Eat bananas and dark chocolate to help with cramps. Ginger or chamomile tea can also relax the uterine muscles."
                 "\n\n🛡️ **Precautions:** Light exercise like walking or stretching can actually help reduce pain by increasing blood flow."
                 "\n\n🚫 **Avoid:** Reduce salt and caffeine intake a few days before {possessive} period to reduce bloating and tension."
@@ -2528,7 +2528,7 @@ symptom_data = {
                 "\n\n🚫 **Avoid:** Avoid adding extra salt to food. Do not use 'herbal' pregnancy cleansers, as these can dangerously spike blood pressure."
             ),
             "moderate": (
-                "\n{subject} {verb_has} signs of preeclampsia. {subject} {verb_needs} to see {possessive} doctor today for a check-up."
+                "\n{subject} likely {verb_has} signs of preeclampsia. {subject} {verb_needs} to see {possessive} doctor today for a check-up."
                 "\n\n🥗 **Diet Recommendation:** Focus on high-protein foods and fiber. Avoid processed snacks and canned foods that are high in sodium."
                 "\n\n🛡️ **Precautions:** Watch for 'warning signs' like seeing spots/stars or pain just below the ribs. Reduce physical activity and stress immediately."
                 "\n\n🚫 **Avoid:** Avoid high-stress situations and long hours of standing. Do not skip blood pressure medication if it has been prescribed by a doctor."
@@ -3455,49 +3455,303 @@ def chat():
             v_has, v_is, v_needs = "has", "is", "needs"
 
         triage_map = {
-            "malaria": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} also experiencing a bitter taste in {poss} mouth or chills?",
-            "typhoid fever": f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have stomach pain or notice small red spots on {poss} skin?",
-            "common cold": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} sneezing frequently or having a runny nose?",
-            "influenza (flu)": f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have severe body aches and a very high fever?",
-            "diarrheal disease": f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} passed watery stool more than 3 times today?",
-            "urinary tract infection (UTI)": f"Is there a burning sensation when {'you are' if recipient == 'self' else f'{subj.lower()} is'} urinating?",
-            "skin infection (rash/measles/chickenpox/pimples/fungi/bacteria)": f"Is the rash itchy or appearing as fluid-filled blisters?",
-            "dehydration": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling extremely thirsty with very dark urine?",
-            "headache": f"Is the pain concentrated in one specific spot or felt all over the head?",
-            "body pain": f"Is the pain felt mostly in the joints or in the muscles?",
-            "pregnancy": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing morning sickness or a missed period?",
-            "apollo/conjunctivitis": f"Are {poss} eyes red, itchy, or swollen with discharge?",
-            "blurred vision": f"Is {poss} vision cloudy, or {'are you' if recipient == 'self' else f'is {subj.lower()}'} seeing double?",
-            "pneumonia": f"Is it difficult to breathe, or is there sharp chest pain when coughing?",
-            "tuberculosis (tb)": f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been coughing for more than three weeks?",
-            "diabetes": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} urinating very frequently, especially at night?",
-            "hypertension": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling dizzy or hearing ringing sounds in {poss} ears?",
-            "heart disease": f"Is there a squeezing sensation or heavy pressure in {poss} chest?",
-            "malnutrition": f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed extreme weakness or rapid weight loss?",
-            "stomach ulcer": f"Does the pain feel like burning that gets worse on an empty stomach?",
-            "asthma": f"Is there a whistling or wheezing sound during breathing?",
-            "tonsillitis": f"Is it very painful to swallow, and are the tonsils or adenoids visibly swollen?",
-            "hepatitis (viral)": f"Have the whites of {poss} eyes or the skin turned yellowish?",
-            "kidney stones": f"Is there sharp, severe pain in the side of the back or lower abdomen?",
-            "anemia": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling unusually tired and looking pale?",
-            "epilepsy/seizure": f"Was there a sudden loss of consciousness or uncontrollable shaking?",
-            "menstrual pain": f"Is the cramping severe enough to stop daily activities?",
-            "preeclampsia": f"Are there severe headaches, blurred vision, or swollen feet during this pregnancy?",
-            "fracture": f"Is there an obvious deformity or an inability to move the limb?",
-            "allergic reaction": f"Is there any swelling of the face, lips, or difficulty breathing?",
-            "schistosomiasis": f"Is there any noticeable blood in the urine?",
-            "gallstones": f"Is there intense pain in the upper right side of the stomach?",
-            "dengue fever": f"Is there a high fever accompanied by severe pain behind the eyes?",
-            "stroke": f"Is there sudden weakness on one side of the body or slurred speech?",
-            "appendicitis": f"Is the pain sharp and located in the lower right side of the stomach?",
-            "lassa fever": f"Is there any unexplained bleeding from the nose, mouth, or gums?",
-            "hemorrhoids (piles)": f"Is there pain or bright red blood during bowel movements?",
-            "gonorrhea (std)": f"Is there any unusual discharge or pain during urination?",
-            "syphilis (std)": f"Are there any painless sores or a rash on the palms of the hands?",
-            "hypoglycemia": f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling shaky, sweaty, and very hungry?",
-            "glaucoma": f"Is there severe eye pain with nausea or seeing rainbows around lights?"
+            "malaria": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} also experiencing a bitter taste in {poss} mouth or chills?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed the fever coming and going in waves or cycles?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling significant joint or muscle pain?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} had any nausea, vomiting, or loss of appetite?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing persistent headaches or dizziness?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any unusual yellowing of the eyes or skin?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling unusually tired or weak (fatigue)?"
+            ),
+            "typhoid fever": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a fever that seems to be getting worse each day?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any dull pain or pressure in the stomach area?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} dealing with persistent constipation or, conversely, diarrhea?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} spotted any small, faint rose-colored spots on {poss} chest or stomach?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling a general sense of weakness, exhaustion, or fatigue?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been suffering from a continuous, dry cough?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a severe headache or loss of appetite?"
+            ),
+            "common cold": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} sneezing frequently or dealing with a runny or stuffy nose?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have a sore throat or a persistent cough?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing mild body aches or a slight headache?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any watery eyes or post-nasal drip?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling a general sense of congestion in {poss} chest or sinuses?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have a low-grade fever or occasional chills?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed a decreased sense of taste or smell due to congestion?"
+            ),
+            "influenza (flu)": (
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have severe body aches and a very high fever?",
+                f"{'Did your' if recipient == 'self' else f'Did {poss}'} symptoms come on very suddenly, almost all at once?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have a dry, hacking cough or a sore throat?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling extreme exhaustion or fatigue that makes it hard to get out of bed?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a stuffed or runny nose along with chest discomfort?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} had any shaking chills or sweating spells?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a persistent headache or sensitivity to light?"
+            ),
+            "diarrheal disease": (
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} passed watery stool more than 3 times today?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have any stomach cramps or bloating?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} seeing any blood or mucus in the stool?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} had any nausea or vomiting along with the diarrhea?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel any urgency or inability to control bowel movements?"
+            ),
+            "urinary tract infection (UTI)": (
+                f"Is there a burning sensation when {'you are' if recipient == "self" else f"{subj.lower()} is"} urinating?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel a constant, strong urge to urinate frequently?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} urine looking cloudy, dark, or smelling unusually strong?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling any pain or pressure in {poss} lower abdomen or pelvic area?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any blood in {poss} urine?"
+            ),
+            "skin infection (rash/measles/chickenpox/pimples/fungi/bacteria)": (
+                f"Is the rash itchy or appearing as fluid-filled blisters?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any swelling, warmth, or redness around the affected area?",
+                f"Is there any pus or discharge coming from the sores or pimples?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} also running a fever along with the skin changes?",
+                f"Has the rash spread rapidly to other parts of {poss} body?"
+            ),
+            "dehydration": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling extremely thirsty with very dark urine?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} mouth or tongue feeling very dry or sticky?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling dizzy, lightheaded, or unusually confused?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed that {'you are' if recipient == 'self' else f'{subj.lower()} is'} urinating much less than usual?",
+                f"Does {poss} skin stay 'tented' or slow to go back down when pinched?"
+            ),
+            "headache": (
+                f"Is the pain concentrated in one specific spot or felt all over the head?",
+                f"Would {'you' if recipient == 'self' else subj.lower()} describe the pain as throbbing, sharp, or a dull pressure?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any nausea or sensitivity to light and sound?",
+                f"Did the headache start suddenly after an injury or physical strain?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any blurred vision or neck stiffness along with it?"
+            ),
+            "body pain": (
+                f"Is the pain felt mostly in the joints or in the muscles?",
+                f"Is the pain localized to one area, or does it feel like it is all over {poss} body?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} finding it difficult to move {poss} limbs or perform daily tasks?",
+                f"Is there any visible swelling, redness, or bruising in the painful area?",
+                f"Does the pain get worse with movement or during rest?"
+            ),
+            "pregnancy": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing morning sickness or a missed period?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any breast tenderness or unusual fatigue?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} urinating more frequently than normal?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} taken a pregnancy test to confirm the status?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any unusual food cravings or aversions?"
+            ),
+            "apollo/conjunctivitis": (
+                f"Are {poss} eyes red, itchy, or swollen with discharge?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a gritty feeling, like there is sand in {poss} eyes?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} eyelids sticking together, especially in the morning?",
+                f"Is there any increased sensitivity to light or blurred vision?",
+                f"Are both eyes affected, or did it start in just one eye?"
+            ),
+            "blurred vision": (
+                f"Is {poss} vision cloudy, or {'are you' if recipient == 'self' else f'is {subj.lower()}'} seeing double?",
+                f"Did the blurred vision come on suddenly or has it been getting worse over time?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} seeing any flashes of light or 'floaters' in {poss} field of vision?",
+                f"Does the blurring go away when {'you' if recipient == 'self' else subj.lower()} blink or rub {poss} eyes?",
+                f"Is the blurriness accompanied by an eye ache or a headache?"
+            ),
+            "pneumonia": (
+                f"Is it difficult to breathe, or is there sharp chest pain when coughing?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been coughing up green, yellow, or bloody mucus?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a high fever, sweating, and shaking chills?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel a crackling or bubbling sensation in {poss} chest when breathing?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling very weak or short of breath even while resting?"
+            ),
+            "tuberculosis (tb)": (
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been coughing for more than three weeks?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any blood in the phlegm or mucus when coughing?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing night sweats or a persistent low-grade fever?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} lost a significant amount of weight without trying?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel a persistent pain in the chest when breathing or coughing?"
+            ),
+            "diabetes": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} urinating very frequently, especially at night?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been feeling unusually thirsty despite drinking a lot of water?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing unexplained weight loss or extreme hunger?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed that sores or cuts are taking a very long time to heal?",
+                f"Is {poss} vision becoming blurry or frequently changing?"
+            ),
+            "hypertension": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling dizzy or hearing ringing sounds in {poss} ears?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been having frequent, severe headaches, especially in the morning?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any chest pain, palpitations, or shortness of breath?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any sudden changes in {poss} vision or nosebleeds?",
+                f"Was {poss} blood pressure reading high the last time it was checked?"
+            ),
+            "heart disease": (
+                f"Is there a squeezing sensation or heavy pressure in {poss} chest?",
+                f"Does the pain or discomfort spread to {poss} neck, jaw, or left arm?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling short of breath, even with light activity?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any swelling in {poss} legs, ankles, or feet?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel like {poss} heart is racing, fluttering, or skipping beats?"
+            ),
+            "malnutrition": (
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed extreme weakness or rapid weight loss?",
+                f"Is {poss} hair becoming thin, dry, or falling out easily?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any swelling in the stomach or legs (edema)?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} finding it hard to concentrate or feeling unusually irritable?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed that {poss} skin has become very dry or pale?"
+            ),
+            "stomach ulcer": (
+                f"Does the pain feel like burning that gets worse on an empty stomach?",
+                f"Is the pain temporarily relieved by eating or taking antacids?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} felt bloated, or have you been burping a lot lately?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any dark, tarry stools or vomit that looks like coffee grounds?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel full very quickly after starting a meal?"
+            ),
+            "asthma": (
+                f"Is there a whistling or wheezing sound during breathing?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel a tightness or pressure in {poss} chest?",
+                f"Is the shortness of breath worse at night or early in the morning?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed that symptoms are triggered by exercise, dust, or cold air?",
+                f"Is there a persistent dry cough that gets worse when {'you' if recipient == 'self' else subj.lower()} laugh or exercise?"
+            ),
+            "tonsillitis": (
+                f"Is it very painful to swallow, and are the tonsils or adenoids visibly swollen?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any white or yellow patches on the back of {poss} throat?",
+                f"Is {poss} voice sounding muffled or 'throaty'?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} also running a fever or having chills?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any swollen or tender lymph nodes in {poss} neck?"
+            ),
+            "hepatitis (viral)": (
+                f"Have the whites of {poss} eyes or the skin turned yellowish?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} urine becoming very dark, like tea or cola?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling a lot of pain in the upper right side of {poss} abdomen?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} lost {poss} appetite or felt nauseated lately?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing unusual fatigue or joint pain?"
+            ),
+            "kidney stones": (
+                f"Is there sharp, severe pain in the side of the back or lower abdomen?",
+                f"Does the pain come in waves and shift down toward the groin?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any blood in {poss} urine (pink, red, or brown)?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling the need to urinate more often than usual?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} experienced any nausea or vomiting due to the pain?"
+            ),
+            "anemia": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling unusually tired and looking pale?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel short of breath or dizzy with minor exertion?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} hands and feet feeling unusually cold?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any chest pain or a rapid heartbeat?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any brittle nails or a strange craving for ice or dirt?"
+            ),
+            "epilepsy/seizure": (
+                f"Was there a sudden loss of consciousness or uncontrollable shaking?",
+                f"Did {'you' if recipient == 'self' else subj.lower()} experience a 'warning sign' like a strange smell or taste before it happened?",
+                f"Was there any tongue-biting or loss of bladder control during the episode?",
+                f"Did {'you' if recipient == 'self' else subj.lower()} feel very confused or sleepy for a long time after the event?",
+                f"Did the person stare blankly into space or make repetitive movements without realizing it?"
+            ),
+            "menstrual pain": (
+                f"Is the cramping severe enough to stop daily activities?",
+                f"Does the pain radiate to {poss} lower back or down {poss} thighs?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} also experiencing nausea, diarrhea, or headaches during {poss} period?",
+                f"Does the pain usually start just before or at the beginning of the period?",
+                f"Has the pain become significantly worse or different from previous cycles?"
+            ),
+            "preeclampsia": (
+                f"Are there severe headaches, blurred vision, or swollen feet during this pregnancy?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed sudden swelling in {poss} face or hands?",
+                f"Is there any pain in the upper abdomen, usually under the ribs on the right side?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed a sudden decrease in the amount of urine produced?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} seeing spots or having other vision changes?"
+            ),
+            "fracture": (
+                f"Is there an obvious deformity or an inability to move the limb?",
+                f"Is there significant swelling, bruising, or tenderness over a bone?",
+                f"Did {'you' if recipient == 'self' else subj.lower()} hear or feel a snap or grinding sound at the time of injury?",
+                f"Is the pain so severe that {'you' if recipient == 'self' else subj.lower()} cannot bear any weight on the affected part?",
+                f"Is there any numbness or tingling below the site of the injury?"
+            ),
+            "allergic reaction": (
+                f"Is there any swelling of the face, lips, or difficulty breathing?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} developed hives or a very itchy skin rash suddenly?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling lightheaded or like {'you' if recipient == 'self' else subj.lower()} might faint?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel a tightness in the throat or a hoarse voice?",
+                f"Did this happen shortly after eating something new or being stung by an insect?"
+            ),
+            "schistosomiasis": (
+                f"Is there any noticeable blood in the urine?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} had frequent contact with fresh water like lakes or rivers?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any abdominal pain or diarrhea?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed an itchy rash shortly after being in water?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling generally unwell with a fever or muscle aches?"
+            ),
+            "gallstones": (
+                f"Is there intense pain in the upper right side of the stomach?",
+                f"Does the pain radiate to {poss} right shoulder or between the shoulder blades?",
+                f"Does the pain often occur after eating a heavy or fatty meal?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} felt nauseated or vomited during these episodes of pain?",
+                f"Is the pain accompanied by any yellowing of the skin or eyes?"
+            ),
+            "dengue fever": (
+                f"Is there a high fever accompanied by severe pain behind the eyes?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling intense pain in {poss} joints and muscles ('breakbone fever')?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed a flat, red rash over most of {poss} body?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} have any mild bleeding from the nose or gums?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling extremely exhausted or having severe headaches?"
+            ),
+            "stroke": (
+                f"Is there sudden weakness or numbness on one side of the body?",
+                f"Is {poss} speech slurred, or {'are you' if recipient == 'self' else f'is {subj.lower()}'} having trouble understanding others?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a sudden, severe headache with no known cause?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed a sudden drooping on one side of {poss} face?",
+                f"Is there a sudden loss of balance, coordination, or trouble walking?"
+            ),
+            "appendicitis": (
+                f"Is the pain sharp and located in the lower right side of the stomach?",
+                f"Did the pain start around the belly button before moving to the lower right?",
+                f"Does the pain get worse if {'you' if recipient == 'self' else subj.lower()} cough, walk, or make jarring movements?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} lost {poss} appetite or felt nauseated?",
+                f"Is {poss} abdomen feeling bloated or very tender to the touch?"
+            ),
+            "lassa fever": (
+                f"Is there any unexplained bleeding from the nose, mouth, or gums?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing a sore throat, cough, and chest pain?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any swelling in the face or neck?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} having any hearing loss or ringing in {poss} ears?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} had a fever that isn't responding to typical treatments?"
+            ),
+            "hemorrhoids (piles)": (
+                f"Is there pain or bright red blood during bowel movements?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any itching or irritation around the anal area?",
+                f"Is there a sensitive or painful lump near the anus?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel like there is swelling or discomfort when sitting?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} been straining a lot due to constipation lately?"
+            ),
+            "gonorrhea (std)": (
+                f"Is there any unusual discharge (yellow, green, or white) from the genitals?",
+                f"Is there pain or a burning sensation during urination?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any swelling or pain in the testicles or pelvic area?",
+                f"Is there any unusual bleeding between periods (for women)?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any throat pain or rectal discomfort?"
+            ),
+            "syphilis (std)": (
+                f"Are there any painless sores on the genitals, mouth, or rectum?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed a rough, red rash on the palms of {poss} hands or soles of {poss} feet?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} experiencing any fever, swollen glands, or sore throat?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed any patchy hair loss?",
+                f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel unusual fatigue or muscle aches?"
+            ),
+            "hypoglycemia": (
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling shaky, sweaty, and very hungry?",
+                f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} heart beating very fast or fluttering?",
+                f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling unusually irritable, anxious, or confused?",
+                f"Is {poss} vision becoming blurry or are {'you' if recipient == 'self' else subj.lower()} feeling dizzy?",
+                f"Did these symptoms happen after skipping a meal or intense exercise?"
+            ),
+            "glaucoma": (
+                f"Is there severe eye pain with nausea or seeing rainbows around lights?",
+                f"Has {poss} vision become suddenly blurred or is there a 'tunnel vision' effect?",
+                f"Do {poss} eyes feel unusually hard or firm to the touch?",
+                f"Is there any noticeable redness in the eye accompanied by pain?",
+                f"Did the vision loss or pain start very suddenly?"
+            )
         }
-
+        
         # --- STEP 2: Hybrid NLP/ML Logic ---
         if not is_follow_up:
             ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.15)
@@ -3543,9 +3797,28 @@ def chat():
                 pending_conditions = [c for c in pending_conditions if c.lower() != current_suspect]
 
         # --- PHASE C: THE GATEKEEPER ---
+        next_target = ""
         if pending_conditions:
             next_target = pending_conditions[0].lower()
-            question = triage_map.get(next_target, f"Are you experiencing other symptoms of {next_target}?")
+            res = triage_map.get(next_target, f"Are you experiencing other symptoms of {next_target}?")
+
+            if isinstance(res, tuple):
+                # Separate questions based on severity
+                if severity == "low":
+                    # Take the first question
+                    selected_questions = res[:1]
+                elif severity == "moderate":
+                    # Take the first 2 questions
+                    selected_questions = res[:2]
+                else:
+                    # "high" severity: take all questions
+                    selected_questions = res
+
+                # Join only the selected subset into a string
+                question = " ".join(selected_questions)
+            else:
+                question = res
+
             final_result_list = [question]
             is_triage = True
         else:
