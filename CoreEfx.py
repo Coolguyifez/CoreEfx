@@ -3499,7 +3499,7 @@ def chat():
                 f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel any urgency or inability to control bowel movements?"
             ),
             "urinary tract infection (UTI)": (
-                f"Is there a burning sensation when {'you are' if recipient == "self" else f"{subj.lower()} is"} urinating?",
+                f"Is there a burning sensation when {'you are' if recipient == 'self' else f'{subj.lower()} is'} urinating?",
                 f"{'Do you' if recipient == 'self' else f'Does {subj.lower()}'} feel a constant, strong urge to urinate frequently?",
                 f"{'Have you' if recipient == 'self' else f'Has {subj.lower()}'} noticed {poss} urine looking cloudy, dark, or smelling unusually strong?",
                 f"{'Are you' if recipient == 'self' else f'Is {subj.lower()}'} feeling any pain or pressure in {poss} lower abdomen or pelvic area?",
