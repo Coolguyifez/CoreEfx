@@ -583,15 +583,10 @@
                     resultDiv.style.display = 'block';
                     
                     // Applying "Box" styling based on severity
-                    if (res.severity === 'High') {
-                        resultDiv.style.background = 'var(--header-light)'; // Light red tint
-                        resultDiv.style.border = '2px solid #dc3545';            // Strong red border
-                        resultDiv.style.color = '#721c24';                       // Dark red text
-                    } else {
-                        resultDiv.style.background = 'var(--header-light)'; // Light green tint
-                        resultDiv.style.border = '2px solid var(--accent-color)'; // Theme green border
-                        resultDiv.style.color = '#155724';                        // Dark green text
-                    }
+                    const isHigh = res.severity === 'High';
+                    resultDiv.style.background = isHigh ? '#fff5f5' : '#f0fff4'; // Light red tint : Light green tint 
+                    resultDiv.style.border = `2px solid ${isHigh ? '#dc3545' : 'var(--accent-color)'}`; // Strong red border : Strong green border
+                    resultDiv.style.color = isHigh ? '#721c24' : '#155724'; // Dark red text : Dark green text
 
                     // Adding an icon and better spacing to the inside of the box
                     resultDiv.innerHTML = `
@@ -634,7 +629,22 @@
                     this.reset();
                 }
             } catch (err) {
-                alert("Error connecting to server.");
+                // --- THE ERROR APPEND LOGIC ---
+                resultDiv.style.display = 'block';
+                resultDiv.style.background = '#fff3cd'; // Yellow warning background
+                resultDiv.style.border = '2px solid #ffeeba';
+                resultDiv.style.color = '#856404';
+                
+                const errorMsg = !navigator.onLine 
+                    ? "<strong>Offline Mode:</strong> Your vitals cannot be analyzed by the AI Advisor without an internet connection. Please save these values and try again when online." 
+                    : "<strong>Connection Error:</strong> We couldn't reach the medical server. Please try again in a few minutes.";
+
+                resultDiv.innerHTML = `
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i class="fas fa-wifi-slash" style="font-size: 1.5rem;"></i>
+                        <span>${errorMsg}</span>
+                    </div>
+                `;
             }
         });
 
@@ -653,27 +663,63 @@
                 body: 'feedback_message=' + encodeURIComponent(message)
             })
             .then(response => {
-                // If the server returns a JSON response (like we set up in app.py)
+                if (!response.ok) throw new Error("Network response was not ok");
                 return response.json();
             })
             .then(data => {
+                responseDiv.style.display = "block";
+                responseDiv.style.padding = "12px";
+                responseDiv.style.borderRadius = "8px";
+                responseDiv.style.marginTop = "15px";
+
                 if (data.status === 'success') {
+                    // Success Card
+                    responseDiv.style.background = "#f0fff4";
+                    responseDiv.style.border = "1px solid var(--accent-color)";
+                    responseDiv.style.color = "#155724";
                     responseDiv.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${data.message}`;
-                    responseDiv.style.color = "var(--accent-color)";
                     
-                    messageField.value = ""; // Clear box
-                    setTimeout(() => { responseDiv.innerHTML = ""; }, 5000);
+                    messageField.value = ""; // Clear input
+                    setTimeout(() => { responseDiv.style.display = "none"; }, 5000);
                 } else {
-                    responseDiv.style.color = "red";
-                    responseDiv.innerText = "❌ " + (data.message || "Error sending feedback.");
+                    throw new Error(data.message || "Error sending feedback.");
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                responseDiv.style.color = "red";
-                responseDiv.innerText = "❌ Connection error.";
+                responseDiv.style.display = "block";
+                responseDiv.style.padding = "12px";
+                responseDiv.style.borderRadius = "8px";
+                responseDiv.style.marginTop = "15px";
+
+                if (!navigator.onLine) {
+                    // Offline Card
+                    responseDiv.style.background = "#fff3cd";
+                    responseDiv.style.border = "1px solid #ffeeba";
+                    responseDiv.style.color = "#856404";
+                    responseDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fas fa-wifi-slash"></i>
+                            <span>Offline: We'll send your feedback once you're back online!</span>
+                        </div>
+                    `;
+                } else {
+                    // Server Error Card
+                    responseDiv.style.background = "#f8d7da";
+                    responseDiv.style.border = "1px solid #f5c6cb";
+                    responseDiv.style.color = "#721c24";
+                    responseDiv.innerHTML = `<i class="fas fa-circle-exclamation"></i> Connection error. There is a problem with the server, please try again in a few minute.`;
+                }
+            })
+            .finally(() => {
+                // Re-enable button
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Send Feedback';
+                }
             });
         });
+
 
 
         // Theme Toggle
