@@ -4,6 +4,11 @@ const OFFLINE_URL = '/';
 const urlsToCache = [
   '/', 
   '/login',
+  '/signup',
+  '/home',
+  '/chat',
+  '/privacy_policy',
+  '/terms_of_service',
   '/static/style.css', 
   '/static/images/brain.png',
   '/manifest.json'
@@ -42,8 +47,11 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(event.request)
         .catch(() => {
-          // If network fails, serve the cached Splash screen (/)
-          return caches.match(OFFLINE_URL);
+          // If network fails, try to find the SPECIFIC page requested (e.g., /chat)
+          return caches.match(event.request).then(response => {
+            // If the specific page isn't in cache, show the Splash Screen (OFFLINE_URL)
+            return response || caches.match(OFFLINE_URL);
+          });
         })
     );
   } else {
