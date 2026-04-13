@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coreefx-v5';
+const CACHE_NAME = 'coreefx-v6';
 const OFFLINE_URL = '/'; 
 
 const urlsToCache = [
