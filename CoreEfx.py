@@ -1898,7 +1898,7 @@ symptom_data = {
             "moderate": (
                 "\n{subject} can take paracetamol. If the pain continues, {subject} should be checked for malaria or high blood pressure."
                 "\n\n🥗 **Diet Recommendation:** Ginger tea can help if the headache is accompanied by light nausea. Stay away from very salty foods which can increase blood pressure."
-                "\n\n🛡️ **Precautions:** Keep a 'headache diary' to see if certain foods or smells trigger the pain. Ensure {subject} is getting at least 7-8 hours of sleep."
+                "\n\n🛡️ **Precautions:** Keep a 'headache diary' to see if certain foods or smells trigger the pain. Ensure {subject} {verb_is} getting at least 7-8 hours of sleep."
                 "\n\n🚫 **Avoid:** Avoid processed meats and foods with high MSG (certain bouillon cubes/seasonings). Limit caffeine intake, as 'caffeine withdrawal' can also cause headaches."
             ),
             "high": "\n🚨 If this is the worst headache {subject} {verb_has} ever felt, or if it comes with a stiff neck, confusion, or loss of vision, go to the hospital immediately."
