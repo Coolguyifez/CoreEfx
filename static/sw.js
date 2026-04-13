@@ -1,30 +1,52 @@
-const CACHE_NAME = 'coreefx-cache-v2'; // Changed version to force an update
+const CACHE_NAME = 'coreefx-cache-v3'; // Bumped version
+const OFFLINE_URL = '/'; // This is the page users see when offline
+
 const urlsToCache = [
   '/',
   '/static/style.css', 
   '/static/images/brain.png',
-  '/login' // Add your login page to the initial cache
+  '/login'
 ];
 
+// 1. Install: Pre-cache the "Offline" landing page
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('Cache Pre-filled');
+      return cache.addAll(urlsToCache);
+    })
+  );
+  self.skipWaiting(); // Force the new service worker to take over immediately
+});
+
+// 2. Activate: Clean up old cache versions so they don't take up space
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
   );
 });
 
-// --- NEW NETWORK-FIRST STRATEGY ---
+// 3. Fetch: The Offline Strategy
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
-    // For page changes, try the network (the server) first
     event.respondWith(
       fetch(event.request)
         .catch(() => {
-          // If offline, then look in the cache
-          return caches.match(event.request) || caches.match('/login');
+          // If the network fails, always return the cached Splash/Home page
+          // This prevents the "No Internet" dinosaur/browser screen
+          return caches.match(OFFLINE_URL);
         })
     );
   } else {
-    // For images/CSS, keep using the cache to save data
+    // For images, CSS, and JS: try Cache first, then Network
     event.respondWith(
       caches.match(event.request).then(response => {
         return response || fetch(event.request);
