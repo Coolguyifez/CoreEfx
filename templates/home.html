@@ -631,20 +631,40 @@
             } catch (err) {
                 // --- THE ERROR APPEND LOGIC ---
                 resultDiv.style.display = 'block';
-                resultDiv.style.background = '#fff3cd'; // Yellow warning background
-                resultDiv.style.border = '2px solid #ffeeba';
-                resultDiv.style.color = '#856404';
                 
-                const errorMsg = !navigator.onLine 
-                    ? "<strong>Offline Mode:</strong> Your vitals cannot be analyzed by the AI Advisor without an internet connection. Please save these values and try again when online." 
-                    : "<strong>Connection Error:</strong> We couldn't reach the medical server. Please try again in a few minutes.";
-
-                resultDiv.innerHTML = `
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <i class="fas fa-wifi-slash" style="font-size: 1.5rem;"></i>
-                        <span>${errorMsg}</span>
-                    </div>
-                `;
+                // Determine colors and message based on connection
+                if (!navigator.onLine) {
+                    // OFFLINE STYLING (Yellow/Amber)
+                    resultDiv.style.background = '#fff3cd'; 
+                    resultDiv.style.border = '2px solid #ffeeba';
+                    resultDiv.style.color = '#856404';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div>
+                                <i class="fa-solid fa-triangle-exclamation" style="font-size: 1.5rem;"></i><br><br>
+                                <strong>Offline Mode:</strong><br>
+                                Your vitals cannot be analyzed without internet. Please save these values and try again when you are back online.
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // SERVER/CONNECTION ERROR STYLING (Soft Red)
+                    resultDiv.style.background = '#f8d7da'; 
+                    resultDiv.style.border = '2px solid #f5c6cb';
+                    resultDiv.style.color = '#721c24';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                           
+                            <div>
+                                <i class="fas fa-server" style="font-size: 1.5rem;"></i><br><br>
+                                <strong>Connection Error:</strong><br>
+                                We couldn't reach the medical server. Please try again in a few minutes or later.
+                            </div>
+                        </div>
+                    `;
+                }
             }
         });
 
