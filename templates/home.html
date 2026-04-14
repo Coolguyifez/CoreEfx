@@ -417,17 +417,17 @@
                     {% for item in all_history %}
                         {# Check if the item is a VitalsLog (has temperature) or SymptomReport #}
                         {% if item.temperature is defined %}
-                            <li class="history-item vitals-record" style="border-left: 5px solid var(--primary-color);">
+                            <li class="history-item vitals-record" style="border-left: 5px solid var(--primary-color); padding: 15px; margin-bottom: 15px; overflow-wrap: break-word; word-wrap: break-word;">
                                 <strong><i class="fas fa-heartbeat"></i> Vitals Reading:</strong>
                                 <p>Temp: {{ item.temperature }}°C | HR: {{ item.heart_rate }} bpm | BP: {{ item.bp_systolic }}/{{ item.bp_diastolic }} | SpO2: {{ item.spo2 }}%</p>
                                 <div style= "padding: 5px; border-radius: 8px;">
                                     <strong>Status:</strong> {{ item.severity }}<br>
-                                    <strong>Advice:</strong> {{ item.result }}
+                                    <strong>AI Advice:</strong> {{ item.result }}
                                 </div>
                                 <small>{{ item.timestamp.strftime('%d-%m-%Y %H:%M') }}</small>
                             </li>
                         {% else %}
-                            <li class="history-item symptom-record" style="border-left: 5px solid var(--accent-color);">
+                            <li class="history-item symptom-record" style="border-left: 5px solid var(--accent-color); padding: 15px; margin-bottom: 15px; overflow-wrap: break-word; word-wrap: break-word;">
                                 <strong><i class="fas fa-stethoscope"></i> Symptom Report:</strong>
                                 <p>{{ item.input_text }}</p>
                                 <div style="padding: 5px; border-radius: 8px;">
