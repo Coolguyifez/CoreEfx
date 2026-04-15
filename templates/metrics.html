@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>CoreEfx AI Research Performance Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s; }
+        .backdrop-blur-md { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        
+        /* Ensures the main content is never hidden behind the header */
+        .layout-container {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-[#1a1a1b] dark:text-slate-100 min-h-screen">
+
+    <div class="layout-container">
+        <header class="sticky top-0 z-50 bg-slate-50/90 dark:bg-[#1a1a1b]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">Technical Performance Metrics</h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm font-medium">Secondary Analysis: AI Advisor System Evaluation</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="{{ url_for('chat') }}" class="bg-white dark:bg-[#2c2f33] border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center shadow-sm">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Back to Chat
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-4 md:p-8 max-w-6xl mx-auto w-full">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white dark:bg-[#2c2f33] p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                    <h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Metric I: Latency</h3>
+                    <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                        {{ stats.avg_latency if stats else '0' }} 
+                        <span class="text-sm font-normal text-slate-400">ms avg</span>
+                    </p>
+                    <p class="text-slate-400 dark:text-slate-500 text-xs mt-2 italic">Targeting < 500ms for real-time NLP</p>
+                </div>
+                
+                <div class="bg-white dark:bg-[#2c2f33] p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                    <h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Metric II: Accuracy</h3>
+                    <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+                        {{ stats.avg_confidence if stats else '0' }}<span class="text-lg">%</span>
+                    </p>
+                    <p class="text-slate-400 dark:text-slate-500 text-xs mt-2 italic">Mean Hybrid (ML/NLP) confidence</p>
+                </div>
+
+                <div class="bg-white dark:bg-[#2c2f33] p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+                    <h3 class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-widest mb-2">Metric III: Referral</h3>
+                    <p class="text-3xl font-bold text-amber-600 dark:text-amber-400">
+                        ± {{ stats.avg_geo_error if stats else '0' }} 
+                        <span class="text-sm font-normal text-slate-400">km</span>
+                    </p>
+                    <p class="text-slate-400 dark:text-slate-500 text-xs mt-2 italic">WGS-84 calculation error margin</p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-[#2c2f33] p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800 mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center">
+                        <span class="w-2 h-6 bg-blue-500 rounded mr-2"></span>
+                        Response Time Trend Analysis
+                    </h2>
+                    <span class="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-md font-bold uppercase">Live Data</span>
+                </div>
+                
+                <div class="flex justify-center bg-slate-50 dark:bg-[#1a1a1b] rounded-xl p-4 border border-dashed border-slate-200 dark:border-slate-800">
+                    {% if plot_url %}
+                        <img src="data:image/png;base64,{{ plot_url }}" alt="Latency Graph" class="max-w-full h-auto rounded-lg shadow-sm dark:brightness-90">
+                    {% else %}
+                        <div class="py-20 text-slate-400 dark:text-slate-600 text-center">
+                            <p class="italic">Insufficient data for visualization.</p>
+                            <p class="text-xs mt-2">Interact with the chatbot to populate performance logs.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-slate-50 dark:bg-[#1a1a1b] rounded-lg">
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 underline underline-offset-4">Research Methodology</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Latency is captured using <code>time.perf_counter()</code> at the request entry and exit. 
+                            Includes TfidfVectorizer transformation, LogisticRegression prediction, 
+                            and spaCy entity matching.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 underline underline-offset-4">Analysis Objective</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Validating the system's ability to maintain sub-second response 
+                            while processing complex medical symptoms and geospatial queries for hospital referrals.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
