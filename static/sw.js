@@ -8,7 +8,7 @@ const urlsToCache = [
   '/signup',
   '/home',
   '/chat',
-  '/research_metrics',
+  '/metrics',
   '/privacy_policy',
   '/terms_of_service',
   '/static/style.css', 
