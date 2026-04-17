@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coreefx-v10';
+const CACHE_NAME = 'coreefx-v11';
 const OFFLINE_URL = '/'; 
 
 // 1. The list of every file and route you want available offline
