@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coreefx-cache-v3'; // Changed version to force an update 
+const CACHE_NAME = 'coreefx-cache-v1'; // Changed version to force an update 
 const urlsToCache = [
   '/',
   '/static/style.css', 
