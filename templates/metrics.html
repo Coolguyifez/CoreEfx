@@ -32,8 +32,8 @@
                     <div class="flex items-center gap-2 mb-1">
                         <span class="px-2 py-0.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded">Researcher Space</span>
                     </div>
-                    <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">Technical Performance Metrics</h1>
-                    <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm font-medium">Secondary Analysis: AI Advisor System Evaluation</p>
+                    <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">Global System Telemetry</h1>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs md:text-sm font-medium">Secondary Analysis: AI-powered Digital Health Advisory System Evaluation</p>
                 </div>
                 <div class="flex gap-3">
                     <a href="{{ url_for('chat') }}" class="bg-white dark:bg-[#2c2f33] border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center shadow-sm">
@@ -83,7 +83,7 @@
                     <p class="text-3xl font-bold text-amber-600 dark:text-amber-400">
                         {{ stats.referral_rate if stats else '0.0' }}<span class="text-lg">%</span>
                     </p>
-                    <p class="text-slate-400 dark:text-slate-500 text-xs mt-2 italic">Geo-mapping hit rate (within 40km)</p>
+                    <p class="text-slate-400 dark:text-slate-500 text-xs mt-2 italic">Geo-mapping success rate (within 40km)</p>
                 </div>
             </div>
 
@@ -91,9 +91,9 @@
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center">
                         <span class="w-2 h-6 bg-blue-500 rounded mr-2"></span>
-                        Response Time Trend Analysis
+                        System Performance Trend Analysis
                     </h2>
-                    <span class="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-md font-bold uppercase tracking-wider">Live Researcher Feed</span>
+                    <span class="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded-md font-bold uppercase tracking-wider">Live Aggregated Feed</span>
                 </div>
                 
                 <div class="flex justify-center bg-slate-50 dark:bg-[#1a1a1b] rounded-xl p-4 border border-dashed border-slate-200 dark:border-slate-800">
@@ -110,14 +110,30 @@
                     <div>
                         <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 underline underline-offset-4 decoration-blue-500">Research Methodology</h4>
                         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed font-mono">
-                            Latency includes TfidfVectorizer, LogisticRegression prediction, 
-                            and spaCy entity matching cycles.
+                            The diagnostic instrument utilizes a hybrid NLP/ML pipeline where the spaCy library performs linguistic tokenization and entity extraction. 
+                            The core classification logic is driven by a TfidfVectorizer and a LogisticRegression model, mapping user-reported symptoms to established health protocols. 
+                            System effectiveness is verified through real-time telemetry, tracking the stability of the machine learning model outputs against secondary analysis trends to ensure high-fidelity classification and reliable preliminary assessments.
                         </p>
                     </div>
                     <div>
                         <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 underline underline-offset-4 decoration-emerald-500">Analysis Objective</h4>
                         <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                            Validating sub-second response while processing complex medical symptoms and geospatial queries.
+                            The primary objective is to validate the prototype's performance across three key domains: 
+                            Diagnostic Accuracy (NLP/ML success rate), 
+                            Response Latency (computational efficiency of the Python/Flask backend), 
+                            and Referral Correctness (mathematical verification of the Leaflet-based geospatial mapping). 
+                            By cross-referencing live user coordinates with the hospital database, 
+                            this analysis ensures the instrument effectively directs users to accredited healthcare facilities, validating both system usability and clinical utility.
+                        </p>
+
+                    </div>
+
+                    <div>
+                        <h4 class="text-sm font-bold text-slate-700 dark:text-slate-200 mb-2 underline underline-offset-4 decoration-emerald-500">Scientific Integrity & Instrument Validity</h4>
+                        <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                            To maintain academic rigor, this dashboard provides a technical validation of the AI logic. The integrity of the system is measured by comparing the spaCy-informed classification against standard medical diagnostic protocols. 
+                            This ensures the instrument measures what it was intended to measure: accurate preliminary assessments and reliable geographic mapping. 
+                            Access is restricted to authorized personnel to protect the telemetry data used in the final research dissertation.
                         </p>
                     </div>
                 </div>
