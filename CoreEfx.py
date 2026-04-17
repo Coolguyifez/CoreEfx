@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, jsonify, url_for, flash, send_from_directory
+from flask import Flask, request, redirect, render_template, jsonify, url_for, flash, send_from_directory, make_response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import spacy
@@ -3113,7 +3113,11 @@ def serve_manifest():
 
 @app.route('/sw.js')
 def serve_sw():
-    return send_from_directory('static', 'sw.js', mimetype='application/javascript')
+    response = make_response(send_from_directory('static', 'sw.js'))
+    # This header is the "magic" that lets /static/sw.js control the root (/)
+    response.headers['Service-Worker-Allowed'] = '/'
+    response.headers['Content-Type'] = 'application/javascript'
+    return response
 
 # MIN_HYBRID_THRESHOLD = 5 # more lenient
 
