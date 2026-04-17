@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, render_template, jsonify, url_for, flash
+from flask import Flask, request, redirect, render_template, jsonify, url_for, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import spacy
