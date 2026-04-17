@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coreefx-v6';
+const CACHE_NAME = 'coreefx-v12';
 const OFFLINE_URL = '/'; 
 
 // All pages you want to be available offline
