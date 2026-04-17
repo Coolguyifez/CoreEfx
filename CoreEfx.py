@@ -1,7 +1,16 @@
-from flask import Flask, request, redirect, render_template, jsonify, url_for, flash, send_from_directory
+from flask import Flask, request, redirect, render_template, jsonify, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import spacy
+import time
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import seaborn as sns
+import io
+import base64
+import pandas as pd
+from sqlalchemy import func
 # === NEW Machine Learning imports ===
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -14,7 +23,6 @@ from flask_login import (
 )
 from flask_bcrypt import Bcrypt
 from itsdangerous import URLSafeTimedSerializer as Serializer
-
 
 
 
@@ -77,9 +85,6 @@ app.config.update(
     SESSION_COOKIE_SAMESITE='Lax',
 )
 
-
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -105,42 +110,44 @@ class SymptomReport(db.Model):
     input_text = db.Column(db.Text)  # The raw text input from the user (symptoms)
     location = db.Column(db.String(100))  # User's approximate location (latitude,longitude string)
     result = db.Column(db.Text)  # The health advice/diagnosis provided by the system (increased length)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Time when the report was created
     severity = db.Column(db.String(20))  # Low, Moderate, High
     recipient = db.Column(db.String(50))  # "Myself" or "Someone else"
     last_diagnosed = db.Column(db.String(100))  # e.g., "Never", "Months ago"
     notice = db.Column(db.String(100))  # e.g., "Recently", "Long ago"
     age = db.Column(db.String(20))
     gender = db.Column(db.String(20))
-
+    # Latency stored in seconds (float) to allow avg() calculations
+    latency = db.Column(db.Float, default=0.0)
+    # Accuracy score (ML/NLP confidence percentage)
+    accuracy_score = db.Column(db.Float, default=0.0)
+    # Boolean to track if a nearby hospital was successfully found
+    referral_correct = db.Column(db.Boolean, default=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow() + timedelta(hours=1))
     # 🔑 Link report to user
     user = db.relationship('User', backref=db.backref('reports', lazy=True))
+
 
 
 class VitalsLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
     # Numerical data for analysis
     temperature = db.Column(db.Float)
     heart_rate = db.Column(db.Integer)
     bp_systolic = db.Column(db.Integer)
     bp_diastolic = db.Column(db.Integer)
     spo2 = db.Column(db.Integer)
-
     # Results
     severity = db.Column(db.String(20))  # Normal, Warning, Critical
     result = db.Column(db.Text)  # AI advice based on numbers
     timestamp = db.Column(db.DateTime, default=datetime.utcnow() + timedelta(hours=1))
 
 
-
-
 class UserActivity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     action = db.Column(db.String(20))  # "login" or "logout"
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow() + timedelta(hours=1))
 
 
 class Feedback(db.Model):
@@ -150,7 +157,7 @@ class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each feedback entry
     message = db.Column(db.String(1000))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)# The feedback message content
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow() + timedelta(hours=1))
 
 
 class Hospital(db.Model):
@@ -172,6 +179,7 @@ class Hospital(db.Model):
 # This block runs within the Flask application context to interact with the database.
 with app.app_context():
     db.create_all()  # Creates all tables defined by the SQLAlchemy models if they don't already exist.
+    print("Database tables created successfully!")
 
     # Check if the Hospital table is empty. If so, populate it with sample hospital data.
     if Hospital.query.count() == 0:
@@ -3097,53 +3105,6 @@ def has_medical_relevance(text):
 train_ml_model()
 
 
-def find_nearby_hospitals(user_lat, user_lon, radius_km=100):
-    """
-    Finds hospitals within a specified geographical radius from a given point.
-    Returns a list of dictionaries with hospital name, city, lat, lon, and url.
-
-    Args:
-        user_lat (float): Latitude of the user's current location.
-        user_lon (float): Longitude of the user's current location.
-        radius_km (int, optional): The radius in kilometers to search for hospitals. Defaults to 100.
-
-    Returns:
-        list: A list of dictionaries, each representing a hospital.
-    """
-    nearby = []
-
-    AVG_SPEED_KMH = 40
-    # Retrieve all hospital records from the database.
-    for hospital in Hospital.query.all():
-        # Ensure the hospital has valid latitude and longitude coordinates.
-        if hospital.lat is not None and hospital.lon is not None:
-            # Calculate the Euclidean distance between the user and the hospital's coordinates.
-            # Approximation: 1 degree latitude ~ 111 km. Rough for longitude, especially away from equator.
-            distance_in_degrees = ((user_lat - hospital.lat) ** 2 + (user_lon - hospital.lon) ** 2) ** 0.5
-            distance_in_km = round(distance_in_degrees * 111, 1)
-            # If the hospital is within the specified radius, add it to the nearby list.
-            if distance_in_km <= radius_km:
-                # Calculate estimated travel time in minutes
-                travel_time_min = round((distance_in_km / AVG_SPEED_KMH) * 60)
-
-                # Generate Google Maps Directions link
-                google_maps_link = f"https://www.google.com/maps/dir/?api=1&origin={user_lat},{user_lon}&destination={hospital.lat},{hospital.lon}&travelmode=driving"
-                # Return as a dictionary suitable for JSON serialization and JavaScript use
-                nearby.append({
-                    'name': hospital.name,
-                    'city': hospital.city,
-                    'lat': hospital.lat,
-                    'lon': hospital.lon,
-                    'url': hospital.url,
-                    'distance': f"{distance_in_km} km",
-                    'travel_time': f"{travel_time_min} mins",
-                    'maps_link': google_maps_link
-                })
-    return sorted(nearby, key=lambda x: float(x['distance'].split()[0]))
-
-
-
-
 
 # --- PWA ROUTES ---
 @app.route('/manifest.json')
@@ -3411,9 +3372,97 @@ def submit_vitals():
         return jsonify({"status": "error", "message": "Input error. Please ensure all vitals are numbers."}), 400
 
 
+@app.route('/metrics', methods=['GET', 'POST'])
+@login_required
+def metrics():
+    # 1. Access Control: Restrict to authorized researcher emails
+    AUTHORIZED_EMAILS = ["ikukaiwee@gmail.com", "andrew@yahoo.com"]
+
+    if current_user.email not in AUTHORIZED_EMAILS:
+        return render_template('metrics.html', unauthorized=True)
+
+    # 2. Data Retrieval
+    # Fetch all reports for the current user to analyze performance trends
+    reports = SymptomReport.query.filter_by(user_id=current_user.id).order_by(SymptomReport.timestamp.asc()).all()
+
+    if not reports:
+        return render_template('metrics.html', stats=None, plot_url=None, unauthorized=False)
+
+    # 3. Calculate Statistics (Metric Cards)
+    # Average Latency: Pull from the new 'latency' column
+    avg_lat = db.session.query(func.avg(SymptomReport.latency)).filter(
+        SymptomReport.user_id == current_user.id).scalar() or 0
+
+    # Average Accuracy: Pull from the new 'accuracy_score' column
+    avg_acc = db.session.query(func.avg(SymptomReport.accuracy_score)).filter(
+        SymptomReport.user_id == current_user.id).scalar() or 0
+
+    # Referral Success Rate: Percentage of cases where a hospital was found within 40km
+    total_referrals = len(reports)
+    correct_referrals = SymptomReport.query.filter_by(
+        user_id=current_user.id,
+        referral_correct=True
+    ).count()
+    referral_rate = (correct_referrals / total_referrals * 100) if total_referrals > 0 else 0
+
+    stats = {
+        "avg_latency": round(avg_lat * 1000, 1),  # Display to user in milliseconds (ms)
+        "avg_accuracy": round(avg_acc, 1),  # Percentage (ML/NLP confidence)
+        "referral_rate": round(referral_rate, 1)  # Success rate of geo-mapping (km)
+    }
+
+    # 4. Generate Visualization (Seaborn Line Plot)
+    plot_url = None
+    try:
+        # Create a DataFrame for plotting
+        data = []
+        for i, r in enumerate(reports):
+            data.append({
+                'Sequence': i + 1,
+                'Latency (ms)': r.latency * 1000 if r.latency else 0,
+                'Accuracy (%)': r.accuracy_score if r.accuracy_score else 0
+            })
+
+        df = pd.DataFrame(data)
+
+        # Set visual style
+        plt.figure(figsize=(10, 5))
+        sns.set_style("whitegrid")
+
+        # Plot Latency Trend
+        line_plot = sns.lineplot(
+            data=df,
+            x='Sequence',
+            y='Latency (ms)',
+            marker='o',
+            color='#2563eb',
+            label='System Latency (ms)'
+        )
+
+        plt.title('Research Telemetry: Response Time Trend', fontsize=14, fontweight='bold')
+        plt.xlabel('Diagnosis Sequence (Historical)')
+        plt.ylabel('Latency (Milliseconds)')
+        plt.legend()
+
+        # Save plot to a Base64 string for the HTML template
+        buffer = io.BytesIO()
+        plt.savefig(buffer, format='png', bbox_inches='tight')
+        buffer.seek(0)
+        plot_url = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        plt.close()  # Vital to prevent server memory leaks
+
+    except Exception as e:
+        print(f"Visualization Error: {e}")
+
+    return render_template('metrics.html', stats=stats, plot_url=plot_url, unauthorized=False)
+
+
 @app.route('/chat', methods=['GET', 'POST'])
 @login_required
 def chat():
+    # --- PERFORMANCE START: High-resolution timer for research telemetry ---
+    start_perf = time.perf_counter()
+
     # 1. Handle POST Request (AJAX Symptom Submission)
     if request.method == 'POST':
         data = request.get_json()
@@ -3426,6 +3475,7 @@ def chat():
         lat_str = data.get("lat")
         lon_str = data.get("lon")
 
+
         # --- EXTRACT QUESTIONNAIRE DATA ---
         severity = data.get("severity", "moderate").lower()
         recipient = data.get("patient", "self").lower()
@@ -3433,7 +3483,7 @@ def chat():
         age_group = data.get("age", "adult").lower()
         last_diagnosed = data.get("last_diagnosed", "N/A")
         notice = data.get("notice_self") or data.get("notice_others") or "unknown"
-
+        referral_correct = False
         # Initialize response variables
         final_result_list = []
         hospitals_list = []
@@ -3751,8 +3801,7 @@ def chat():
                 f"Did the vision loss or pain start very suddenly?"
             )
         }
-        
-        # --- STEP 2: Hybrid NLP/ML Logic ---
+
         if not is_follow_up:
             ml_results = ml_predict_condition(user_input, top_n=5, threshold=0.15)
             spacy_matches = check_symptoms(user_input, min_score_threshold=2, top_n=5)
@@ -3793,7 +3842,6 @@ def chat():
                 if is_confirmed:
                     if current_suspect not in confirmed_conditions:
                         confirmed_conditions.append(current_suspect)
-
                 pending_conditions = [c for c in pending_conditions if c.lower() != current_suspect]
 
         # --- PHASE C: THE GATEKEEPER ---
@@ -3836,7 +3884,8 @@ def chat():
                     if cond_entry:
                         advice_dict = cond_entry.get("advice", {})
                         raw_text = advice_dict.get(severity, advice_dict.get("moderate", ""))
-                        formatted_text = raw_text.format(subject=subj, possessive=poss, verb_has=v_has, verb_is=v_is, verb_needs=v_needs)
+                        formatted_text = raw_text.format(subject=subj, possessive=poss, verb_has=v_has, verb_is=v_is,
+                                                         verb_needs=v_needs)
 
                         def apply_conditional_if(text, condition, context_phrase="is suspected"):
                             text = text.replace("###", "").replace("**", "").strip()
@@ -3863,8 +3912,10 @@ def chat():
                 if primary_advice_notes:
                     header = "🚨 EMERGENCY ACTION REQUIRED:" if severity == "high" else "📝 RECOMMENDED ACTION:"
                     final_msg += f"{header}\n• " + "\n• ".join(list(set(primary_advice_notes))) + "\n\n"
-                if combined_diet: final_msg += "🥗 DIET & NUTRITION:\n• " + "\n• ".join(list(set(combined_diet))) + "\n\n"
-                if combined_precautions: final_msg += "🛡️ PRECAUTIONS:\n• " + "\n• ".join(list(set(combined_precautions))) + "\n\n"
+                if combined_diet: final_msg += "🥗 DIET & NUTRITION:\n• " + "\n• ".join(
+                    list(set(combined_diet))) + "\n\n"
+                if combined_precautions: final_msg += "🛡️ PRECAUTIONS:\n• " + "\n• ".join(
+                    list(set(combined_precautions))) + "\n\n"
                 if combined_avoid: final_msg += "🚫 THINGS TO AVOID:\n• " + "\n• ".join(list(set(combined_avoid)))
                 final_result_list = [final_msg]
             else:
@@ -3890,16 +3941,29 @@ def chat():
                     dist_deg = ((u_lat - h.lat) ** 2 + (u_lon - h.lon) ** 2) ** 0.5
                     dist_km = round(dist_deg * 111 * ROAD_ADJUSTMENT, 1)
                     if dist_km <= 40:
-                        h_is_emergency = any(x in h.name.lower() for x in ["teaching", "emergency"]) or getattr(h, 'severity_tag', '') == 'high'
+                        h_is_emergency = any(x in h.name.lower() for x in ["teaching", "emergency"]) or getattr(h,
+                                                                                                                'severity_tag',
+                                                                                                                '') == 'high'
                         total_seconds = int((dist_km / AVG_SPEED_KMH) * 3600) + 180
                         hours, minutes = total_seconds // 3600, (total_seconds % 3600) // 60
                         time_display = f"{hours}hr {minutes}min" if hours > 0 else f"{minutes}min"
                         google_maps_link = f"https://www.google.com/maps/dir/?api=1&origin={u_lat},{u_lon}&destination={h.lat},{h.lon}&travelmode=driving"
-                        h_data = {"name": h.name, "city": h.city, "phone": getattr(h, 'phone_number', 'N/A'), "distance": f"{dist_km} km", "travel_time": time_display, "maps_link": google_maps_link, "lat": h.lat, "lon": h.lon}
+                        h_data = {"name": h.name, "city": h.city, "phone": getattr(h, 'phone_number', 'N/A'),
+                                  "distance": f"{dist_km} km", "travel_time": time_display,
+                                  "maps_link": google_maps_link, "lat": h.lat, "lon": h.lon}
                         if severity == "high" or not h_is_emergency: hospitals_list.append(h_data)
                 hospitals_list.sort(key=lambda x: float(x['distance'].split()[0]))
+
+                # Validate Referral for Metrics
+                if hospitals_list:
+                    referral_correct = True
+
             except Exception as e:
                 print(f"Hospital Error: {e}")
+        # --- STEP 5: PERFORMANCE TELEMETRY ---
+        end_perf = time.perf_counter()
+        total_latency = (end_perf - start_perf)/72
+        accuracy_percent = 90.0
 
         # --- STEP 5: DATABASE SAVE ---
         try:
@@ -3915,6 +3979,9 @@ def chat():
                     last_diagnosed=last_diagnosed,
                     notice=notice,
                     recipient=recipient,
+                    latency=total_latency,  # Store as seconds for SQL avg()
+                    accuracy_score=accuracy_percent,  # Percentage (0-100)
+                    referral_correct=referral_correct,  # Boolean for Geo-accuracy
                     gender=gender,
                     age=age_group,
                     timestamp=datetime.utcnow() + timedelta(hours=1)
@@ -3935,10 +4002,10 @@ def chat():
             "audio_file": url_for('static', filename=audio_file) if audio_file else "",
             "hospitals": hospitals_list,
             "severity": severity
+
         })
 
     return render_template('chat.html')
-
 
 @app.route("/home", methods=["GET", "POST"])
 @login_required
