@@ -3113,7 +3113,7 @@ def serve_manifest():
 
 @app.route('/sw.js')
 def serve_sw():
-    return send_from_directory('static', 'sw.js')
+    return send_from_directory('static', 'sw.js', mimetype='application/javascript)
 
 
 # MIN_HYBRID_THRESHOLD = 5 # more lenient
