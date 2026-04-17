@@ -1,4 +1,4 @@
-const CACHE_NAME = 'coreefx-v2';
+const CACHE_NAME = 'coreefx-v3';
 const OFFLINE_URL = '/'; 
 
 // 1. The list of every file and route you want available offline
@@ -88,4 +88,3 @@ self.addEventListener('fetch', event => {
     );
   }
 });
-give me the full code 
