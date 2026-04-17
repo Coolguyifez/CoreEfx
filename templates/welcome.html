@@ -164,12 +164,12 @@
         // 1. Service Worker Registration for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // Added the scope property here
-                navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                .then(reg => console.log('CoreEfx AI Service Worker registered with root scope'))
-                .catch(err => console.log('CoreEfx AI Service Worker failed', err));
+                navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker registered'))
+                .catch(err => console.log('Service Worker failed', err));
             });
         }
+
         
         
         // 2. Status Text Update
