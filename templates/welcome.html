@@ -164,9 +164,10 @@
         // 1. Service Worker Registration for PWA
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
+                // Added the scope property here
                 navigator.serviceWorker.register('/sw.js', { scope: '/' })
-                    .then(() => console.log("Service Worker Registered"))
-                    .catch(err => console.log("Registration failed:", err));
+                .then(reg => console.log('Service Worker registered with root scope'))
+                .catch(err => console.log('Service Worker failed', err));
             });
         }
 
