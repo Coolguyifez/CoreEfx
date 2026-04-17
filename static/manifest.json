@@ -2,7 +2,7 @@
   "name": "CoreEfx AI Health Advisory System",
   "short_name": "CoreEfx AI",
   "description": "AI-Powered Health Advisory System",
-  "start_url": "/?utm_source=pwa"
+  "start_url": "/"
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
