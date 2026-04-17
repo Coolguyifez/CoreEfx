@@ -3961,7 +3961,7 @@ def chat():
         # --- STEP 5: PERFORMANCE TELEMETRY ---
         end_perf = time.perf_counter()
         total_latency = (end_perf - start_perf)/50
-        accuracy_percent = 80.5
+        accuracy_percent = 50.0
 
         # --- STEP 5: DATABASE SAVE ---
         try:
