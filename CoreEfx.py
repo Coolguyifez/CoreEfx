@@ -3382,25 +3382,22 @@ def metrics():
         return render_template('metrics.html', unauthorized=True)
 
     # 2. Data Retrieval
-    # Fetch all reports for the current user to analyze performance trends
-    reports = SymptomReport.query.filter_by(user_id=current_user.id).order_by(SymptomReport.timestamp.asc()).all()
+    # Fetch all reports from all users to analyze the global system performance trends
+    reports = SymptomReport.query.order_by(SymptomReport.timestamp.asc()).all()
 
     if not reports:
         return render_template('metrics.html', stats=None, plot_url=None, unauthorized=False)
 
-    # 3. Calculate Statistics (Metric Cards)
-    # Average Latency: Pull from the new 'latency' column
-    avg_lat = db.session.query(func.avg(SymptomReport.latency)).filter(
-        SymptomReport.user_id == current_user.id).scalar() or 0
+    # 3. Calculate Statistics (Global System Performance)
+    # Global Average Latency: Pull from the new 'latency' column
+    avg_lat = db.session.query(func.avg(SymptomReport.latency)).scalar() or 0
 
-    # Average Accuracy: Pull from the new 'accuracy_score' column
-    avg_acc = db.session.query(func.avg(SymptomReport.accuracy_score)).filter(
-        SymptomReport.user_id == current_user.id).scalar() or 0
+    # Global Average Accuracy: Pull from the new 'accuracy_score' column
+    avg_acc = db.session.query(func.avg(SymptomReport.accuracy_score)).scalar() or 0
 
-    # Referral Success Rate: Percentage of cases where a hospital was found within 40km
+    # Global Referral Success Rate: Percentage of cases where a hospital was found within 40km
     total_referrals = len(reports)
     correct_referrals = SymptomReport.query.filter_by(
-        user_id=current_user.id,
         referral_correct=True
     ).count()
     referral_rate = (correct_referrals / total_referrals * 100) if total_referrals > 0 else 0
@@ -3439,8 +3436,8 @@ def metrics():
             label='System Latency (ms)'
         )
 
-        plt.title('Research Telemetry: Response Time Trend', fontsize=14, fontweight='bold')
-        plt.xlabel('Diagnosis Sequence (Historical)')
+        plt.title('Global Research Telemetry: System-Wide Performance', fontsize=14, fontweight='bold')
+        plt.xlabel('Cumulative Diagnosis Sequence (All Users))')
         plt.ylabel('Latency (Milliseconds)')
         plt.legend()
 
