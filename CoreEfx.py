@@ -200,7 +200,7 @@ with app.app_context():
                      url="https://deltastate.gov.ng/", severity_tag="High", phone_number="09011234506"),
             Hospital(name="Central Hospital Sapele", city="Sapele", lat=5.9004, lon=5.6811,
                      url="https://deltastate.gov.ng/", severity_tag="High", phone_number="07051234507"),
-            Hospital(name="Central Hospital Warri", city="Warri", lat=5.5170, lon=5.7344,
+            Hospital(name="Warri Central Hospital", city="Warri", lat=5.5180, lon=5.7342,
                      url="https://deltastate.gov.ng/", severity_tag="moderate"),
             Hospital(name="General Hospital Ogwashi-Uku", city="Ogwashi-Uku", lat=6.1816, lon=6.5302,
                      url="https://deltastate.gov.ng/", severity_tag="Moderate"),
