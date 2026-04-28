@@ -3936,10 +3936,25 @@ def chat():
             try:
                 u_lat, u_lon = float(lat_str), float(lon_str)
                 AVG_SPEED_KMH, ROAD_ADJUSTMENT = 25, 1.3
+                R = 6371.0  # Earth's radius in km
                 all_db_hospitals = Hospital.query.all()
                 for h in all_db_hospitals:
-                    dist_deg = ((u_lat - h.lat) ** 2 + (u_lon - h.lon) ** 2) ** 0.5
-                    dist_km = round(dist_deg * 111 * ROAD_ADJUSTMENT, 1)
+                    # Haversine Calculation Method
+                    phi1, phi2 = math.radians(u_lat), math.radians(h.lat)
+                    d_phi = math.radians(h.lat - u_lat)
+                    d_lambda = math.radians(h.lon - u_lon)
+                    
+                    a = math.sin(d_phi / 2) ** 2 + \
+                        math.cos(phi1) * math.cos(phi2) * \
+                        math.sin(d_lambda / 2) ** 2
+
+                    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+                    # Straight-line distance in km
+                    dist_km_straight = R * c
+
+                    # Apply road adjustment to estimate driving distance
+                    dist_km = round(dist_km_straight * ROAD_ADJUSTMENT, 1)
                     if dist_km <= 40:
                         h_is_emergency = any(x in h.name.lower() for x in ["teaching", "emergency"]) or getattr(h,
                                                                                                                 'severity_tag',
